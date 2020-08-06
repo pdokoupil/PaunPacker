@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmp7497E0B354AEA7F54D987BCDF7301E52" Guid="*">
+                <File Id="fil553C5E9BD821B2301960E964847F4481" KeyPath="yes" Source="$(var.HarvestPath)\CommonServiceLocator.dll" />
+            </Component>
+            <Component Id="cmpB04C01360F77D5F999F2956EB1E6A625" Guid="*">
+                <File Id="fil6E79A557A8542620F8D668383F6144B9" KeyPath="yes" Source="$(var.HarvestPath)\folder.ico" />
+            </Component>
+            <Component Id="cmp75964F0F256D545DDC5D2C126473C72E" Guid="*">
+                <File Id="filAA8A10EF5B6B2614E2A2DC9F761835DD" KeyPath="yes" Source="$(var.HarvestPath)\folder.png" />
+            </Component>
+            <Component Id="cmp6008A86AE138BD45314608B385266AA3" Guid="*">
+                <File Id="fil1903E10C302552AF0F25292D924A8B57" KeyPath="yes" Source="$(var.HarvestPath)\icon.ico" />
+            </Component>
+            <Component Id="cmp16861E24C897764CA922EC062BA74EC9" Guid="*">
+                <File Id="filD8E300ACBEFE74B5C24D4D06DCE96AAC" KeyPath="yes" Source="$(var.HarvestPath)\Microsoft.Win32.SystemEvents.dll" />
+            </Component>
+            <Component Id="cmpDB5444BE0F476C89C1690DB627E81E34" Guid="*">
+                <File Id="fil5539B1B948511EA6A38977160690B9C6" KeyPath="yes" Source="$(var.HarvestPath)\MoreLinq.dll" />
+            </Component>
+            <Component Id="cmp4FCC51DC9165559B3682920EFC918A52" Guid="*">
+                <File Id="fil2F89DDAA361198EE71421978839F346E" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.Core.dll" />
+            </Component>
+            <Component Id="cmpA0549BC69C53771008CCE38F593E2019" Guid="*">
+                <File Id="fil0971050A0DF7628D1621CD205FA0A6D3" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.Core.pdb" />
+            </Component>
+            <Component Id="cmp064BAF4E4B11AA9AA16DDC61B6B6A344" Guid="*">
+                <File Id="filC078D73CF58DAC9EA2FD93CBD37FD847" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.Core.xml" />
+            </Component>
+            <Component Id="cmp7AB9194461118D3852C07694D0B3D7BF" Guid="*">
+                <File Id="filF40954D6E21FA765AEC2E0FBC0B8F297" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.deps.json" />
+            </Component>
+            <Component Id="cmp8077E761D3CDE01B4235E2B1E7B115F2" Guid="*">
+                <File Id="fil7C5926F8E2BF3B07497AA05B1B0480B8" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.dll" />
+            </Component>
+            <Component Id="cmp7561101A99137E3123293F5728532E32" Guid="*">
+                <File Id="fil44DB4AECFBBB8BF2B34C86A5A3ED0C38" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.exe" />
+            </Component>
+            <Component Id="cmp8EAB1FB9B4797F10B87FAD2830F8A427" Guid="*">
+                <File Id="filF6A3C7831887721AD64EA437E970E3F2" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.pdb" />
+            </Component>
+            <Component Id="cmpCA92F40CCE450984A68C1679F8D34725" Guid="*">
+                <File Id="fil941E22373539FB7821145A94851185BE" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.runtimeconfig.json" />
+            </Component>
+            <Component Id="cmp6CBFA1572E62991E1B1A006274DEBECF" Guid="*">
+                <File Id="fil142AD9362810DF3A34413CABFE3BB0DA" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.WPF.Common.dll" />
+            </Component>
+            <Component Id="cmp9EC08518C35FEDF9863F7D67C87D3BC6" Guid="*">
+                <File Id="filF510FF9C94308D46591E32F2E425F61C" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.WPF.Common.pdb" />
+            </Component>
+            <Component Id="cmpEC318A7F1A60C0EC592E3C13B6FB14F2" Guid="*">
+                <File Id="fil8C9FEB2ED5ECDD59673EDC3217B733D1" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.WPF.Common.xml" />
+            </Component>
+            <Component Id="cmp78173E3713F90ADA6745D53EA8C8DC58" Guid="*">
+                <File Id="filBED53754792371377B79100951C58FCA" KeyPath="yes" Source="$(var.HarvestPath)\PaunPacker.GUI.xml" />
+            </Component>
+            <Component Id="cmp59564654D02343646998A8D6A6F0C25F" Guid="*">
+                <File Id="fil86F2842A309A2CABD479166F2B4E0588" KeyPath="yes" Source="$(var.HarvestPath)\Prism.dll" />
+            </Component>
+            <Component Id="cmpA9A2AB3353E22A8DA16EAAEE63473B2F" Guid="*">
+                <File Id="fil88EDC55735A4B2968B2469EF3EB5D6E7" KeyPath="yes" Source="$(var.HarvestPath)\Prism.Wpf.dll" />
+            </Component>
+            <Component Id="cmp9143FBEDB0909CDF06ED8DF33E7A8A5E" Guid="*">
+                <File Id="fil25B3F878ECBF570C2E9C747E6B044290" KeyPath="yes" Source="$(var.HarvestPath)\SkiaSharp.dll" />
+            </Component>
+            <Component Id="cmp0DE5F574843B9187F424FCB115B6E1A0" Guid="*">
+                <File Id="filC1D2736B7B25E4ECC6A99200A58A251A" KeyPath="yes" Source="$(var.HarvestPath)\SplashScreen.png" />
+            </Component>
+            <Component Id="cmp20C6CE18E4017B218C78AF03A8C762C1" Guid="*">
+                <File Id="fil5885AF3C043A769C2E5A0881AD64AE5F" KeyPath="yes" Source="$(var.HarvestPath)\System.Composition.AttributedModel.dll" />
+            </Component>
+            <Component Id="cmpE540C8005DC2698541D893C0FDA10637" Guid="*">
+                <File Id="filE9BD5D0BA943D0897F85D1082851C90F" KeyPath="yes" Source="$(var.HarvestPath)\System.Composition.Convention.dll" />
+            </Component>
+            <Component Id="cmp5BF919A75FF1D9A34F3B0872EBD3C459" Guid="*">
+                <File Id="filB6E57803E99EDFFBCF40854C518A0C54" KeyPath="yes" Source="$(var.HarvestPath)\System.Composition.Hosting.dll" />
+            </Component>
+            <Component Id="cmpEBAD90944ADD8C3B7013CEF7739915FE" Guid="*">
+                <File Id="fil473F9207A3F70A57C6D9B452CEF7138E" KeyPath="yes" Source="$(var.HarvestPath)\System.Composition.Runtime.dll" />
+            </Component>
+            <Component Id="cmp189F2E06B258A9D3D21D7B73576C2DEC" Guid="*">
+                <File Id="fil5A5DA32A5EB4987F64B418B7BFB8C09D" KeyPath="yes" Source="$(var.HarvestPath)\System.Composition.TypedParts.dll" />
+            </Component>
+            <Component Id="cmp08EBD8C605FF27A4F0FCEC5A1317087B" Guid="*">
+                <File Id="fil01C46D7B4C6F372B6DD0D0DC961DAE47" KeyPath="yes" Source="$(var.HarvestPath)\System.Drawing.Common.dll" />
+            </Component>
+            <Component Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" Guid="*">
+                <File Id="fil17E34524E8398461D615894C92558FE9" KeyPath="yes" Source="$(var.HarvestPath)\System.Windows.Interactivity.dll" />
+            </Component>
+            <Component Id="cmpBEC715782490BD2AC6E2C93F2525865F" Guid="*">
+                <File Id="filF7E6EF61D1437B4669D7DE7C4066BD7E" KeyPath="yes" Source="$(var.HarvestPath)\Unity.Abstractions.dll" />
+            </Component>
+            <Component Id="cmp665B78AB4AC844F961BF5ECBB81E189B" Guid="*">
+                <File Id="filA3C7419293ACF778143324C6DB73F920" KeyPath="yes" Source="$(var.HarvestPath)\Unity.Container.dll" />
+            </Component>
+            <Component Id="cmpB2278F8CD3B6911E65C3D669480F176F" Guid="*">
+                <File Id="filF810E6DCB367741EFF5168BBECE950F4" KeyPath="yes" Source="$(var.HarvestPath)\Unity.ServiceLocation.dll" />
+            </Component>
+            <Directory Id="dir655E50E5ABDD0F7183A54CFA0F822CE2" Name="plugins">
+                <Component Id="cmp54C20E777D82C1B31E7AAF208968E548" Guid="*">
+                    <File Id="fil1427B049649DC81CF6BC7F7E7A20D5E5" KeyPath="yes" Source="$(var.HarvestPath)\plugins\PaunPacker.Plugins.DefaultImplementationsProviderPlugin.dll" />
+                </Component>
+                <Component Id="cmp3CA8A97F718D9502C802B6C536D3ECCD" Guid="*">
+                    <File Id="fil0422F92CDCD1C84E2646598E0E712D8D" KeyPath="yes" Source="$(var.HarvestPath)\plugins\PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.dll" />
+                </Component>
+                <Component Id="cmpA32ECDFED60454148A4CC0EEE88C5E79" Guid="*">
+                    <File Id="filB985D3787CB36A1273AFA0C9EA8EDC09" KeyPath="yes" Source="$(var.HarvestPath)\plugins\PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin.dll" />
+                </Component>
+                <Component Id="cmp9C0E0D7097E0A5DE60A12054902A2F79" Guid="*">
+                    <File Id="filEA19ADC359FD26BFC104BC7347DD6E58" KeyPath="yes" Source="$(var.HarvestPath)\plugins\PaunPacker.Plugins.LibGDXMetadataWriter.dll" />
+                </Component>
+                <Component Id="cmp0F1698936B5CECFBAF97A945DE8DC2C9" Guid="*">
+                    <File Id="filDD019FCECC1231F1726A1ACE1072CB6C" KeyPath="yes" Source="$(var.HarvestPath)\plugins\PaunPacker.Plugins.SkylineAlgorithmProviderPlugin.dll" />
+                </Component>
+                <Component Id="cmpBF21063AD0D220522A779025F7B42A8F" Guid="*">
+                    <File Id="fil16AB4B54B1BBAA8EB19BDBFEE7D7F5DA" KeyPath="yes" Source="$(var.HarvestPath)\plugins\PaunPacker.Plugins.UnityMetadataWriter.dll" />
+                </Component>
+            </Directory>
+            <Directory Id="dir58E8247E2885C01898CAD009F9EFD8BA" Name="runtimes">
+                <Directory Id="dir3DA9BA8D811ABA6F3AFA391339C320BE" Name="osx">
+                    <Directory Id="dir2887E24B7F769B7740C67C14A1BE2316" Name="native">
+                        <Component Id="cmp568E4AD6DA39DD95EFE883A676D7ED4E" Guid="*">
+                            <File Id="filC40FD61C164DA6CACE578457C2DACEB6" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\osx\native\libSkiaSharp.dylib" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dir974C199E4667BF14D5271236C97563BD" Name="tizen-armel">
+                    <Directory Id="dir8F49DB5232E56A906233E80984E7D70E" Name="native">
+                        <Component Id="cmp4FD6A5BD78648363E194AE3C3F01D9F0" Guid="*">
+                            <File Id="filA3E32BB7E842C7E5C83A07347C2055F6" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\tizen-armel\native\libSkiaSharp.so" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dirFF739DCC1BFDEF4B28D501D6D2971C5B" Name="tizen-x86">
+                    <Directory Id="dir33E90124E557039616B0D8E4BBE61079" Name="native">
+                        <Component Id="cmpF1D5A023A8ADDB4C25FFD8D2E93700F5" Guid="*">
+                            <File Id="fil03DA827C3D5EA67D7668DB08DEF36553" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\tizen-x86\native\libSkiaSharp.so" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dirDD6F90495A1A6169171F36CE85E975B6" Name="unix">
+                    <Directory Id="dirF5C312D00ABBDC163194A7BEF01BFACF" Name="lib">
+                        <Directory Id="dir294AEFEFF4E8C5A86E7E1147588E123E" Name="netcoreapp3.0">
+                            <Component Id="cmpF4AD5C5B3BFAF3AFE5BC8AA957546247" Guid="*">
+                                <File Id="fil1797D6F7F2B351E1E42ACA50FC09D80D" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll" />
+                            </Component>
+                        </Directory>
+                    </Directory>
+                </Directory>
+                <Directory Id="dir9BE9104649A116CC7BCCF4D9CCD3331B" Name="win">
+                    <Directory Id="dirD19B0610952D1EE2D417EB5361695989" Name="lib">
+                        <Directory Id="dir9CFC3E32F9CD3F5D85C1CE5068697BC1" Name="netcoreapp3.0">
+                            <Component Id="cmp946EB16BD114CBF5B87B4E5FF94153E3" Guid="*">
+                                <File Id="filA5B8427E19E08327B11E12487D2638B7" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll" />
+                            </Component>
+                            <Component Id="cmp2AAA2FAA1C898CAB5E25F29DCD76CA1F" Guid="*">
+                                <File Id="fil0E8F659D0BD2A39DD4E825B30BA45270" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll" />
+                            </Component>
+                        </Directory>
+                    </Directory>
+                </Directory>
+                <Directory Id="dirB9C75524282911E40C3C964A8836A714" Name="win-x64">
+                    <Directory Id="dir1F9DF9DD2FB29AE2942604FAC206D5C4" Name="native">
+                        <Component Id="cmp16AABE693EA93995D2EC516C350282D1" Guid="*">
+                            <File Id="fil43234505EE71DDE9F0870503839AF6B4" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\win-x64\native\libSkiaSharp.dll" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dir92F336DAA82E5A629052407A3F87EF27" Name="win-x86">
+                    <Directory Id="dir2B43AAE918D399CEF13EC6CBA2D3D5EA" Name="native">
+                        <Component Id="cmp6B0DE9B3B377E1A5843728D12580964C" Guid="*">
+                            <File Id="filA67EA38A4D3B70E3D211E99EB83C38A8" KeyPath="yes" Source="$(var.HarvestPath)\runtimes\win-x86\native\libSkiaSharp.dll" />
+                        </Component>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="HeatGenerated">
+            <ComponentRef Id="cmp7497E0B354AEA7F54D987BCDF7301E52" />
+            <ComponentRef Id="cmpB04C01360F77D5F999F2956EB1E6A625" />
+            <ComponentRef Id="cmp75964F0F256D545DDC5D2C126473C72E" />
+            <ComponentRef Id="cmp6008A86AE138BD45314608B385266AA3" />
+            <ComponentRef Id="cmp16861E24C897764CA922EC062BA74EC9" />
+            <ComponentRef Id="cmpDB5444BE0F476C89C1690DB627E81E34" />
+            <ComponentRef Id="cmp4FCC51DC9165559B3682920EFC918A52" />
+            <ComponentRef Id="cmpA0549BC69C53771008CCE38F593E2019" />
+            <ComponentRef Id="cmp064BAF4E4B11AA9AA16DDC61B6B6A344" />
+            <ComponentRef Id="cmp7AB9194461118D3852C07694D0B3D7BF" />
+            <ComponentRef Id="cmp8077E761D3CDE01B4235E2B1E7B115F2" />
+            <ComponentRef Id="cmp7561101A99137E3123293F5728532E32" />
+            <ComponentRef Id="cmp8EAB1FB9B4797F10B87FAD2830F8A427" />
+            <ComponentRef Id="cmpCA92F40CCE450984A68C1679F8D34725" />
+            <ComponentRef Id="cmp6CBFA1572E62991E1B1A006274DEBECF" />
+            <ComponentRef Id="cmp9EC08518C35FEDF9863F7D67C87D3BC6" />
+            <ComponentRef Id="cmpEC318A7F1A60C0EC592E3C13B6FB14F2" />
+            <ComponentRef Id="cmp78173E3713F90ADA6745D53EA8C8DC58" />
+            <ComponentRef Id="cmp59564654D02343646998A8D6A6F0C25F" />
+            <ComponentRef Id="cmpA9A2AB3353E22A8DA16EAAEE63473B2F" />
+            <ComponentRef Id="cmp9143FBEDB0909CDF06ED8DF33E7A8A5E" />
+            <ComponentRef Id="cmp0DE5F574843B9187F424FCB115B6E1A0" />
+            <ComponentRef Id="cmp20C6CE18E4017B218C78AF03A8C762C1" />
+            <ComponentRef Id="cmpE540C8005DC2698541D893C0FDA10637" />
+            <ComponentRef Id="cmp5BF919A75FF1D9A34F3B0872EBD3C459" />
+            <ComponentRef Id="cmpEBAD90944ADD8C3B7013CEF7739915FE" />
+            <ComponentRef Id="cmp189F2E06B258A9D3D21D7B73576C2DEC" />
+            <ComponentRef Id="cmp08EBD8C605FF27A4F0FCEC5A1317087B" />
+            <ComponentRef Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" />
+            <ComponentRef Id="cmpBEC715782490BD2AC6E2C93F2525865F" />
+            <ComponentRef Id="cmp665B78AB4AC844F961BF5ECBB81E189B" />
+            <ComponentRef Id="cmpB2278F8CD3B6911E65C3D669480F176F" />
+            <ComponentRef Id="cmp54C20E777D82C1B31E7AAF208968E548" />
+            <ComponentRef Id="cmp3CA8A97F718D9502C802B6C536D3ECCD" />
+            <ComponentRef Id="cmpA32ECDFED60454148A4CC0EEE88C5E79" />
+            <ComponentRef Id="cmp9C0E0D7097E0A5DE60A12054902A2F79" />
+            <ComponentRef Id="cmp0F1698936B5CECFBAF97A945DE8DC2C9" />
+            <ComponentRef Id="cmpBF21063AD0D220522A779025F7B42A8F" />
+            <ComponentRef Id="cmp568E4AD6DA39DD95EFE883A676D7ED4E" />
+            <ComponentRef Id="cmp4FD6A5BD78648363E194AE3C3F01D9F0" />
+            <ComponentRef Id="cmpF1D5A023A8ADDB4C25FFD8D2E93700F5" />
+            <ComponentRef Id="cmpF4AD5C5B3BFAF3AFE5BC8AA957546247" />
+            <ComponentRef Id="cmp946EB16BD114CBF5B87B4E5FF94153E3" />
+            <ComponentRef Id="cmp2AAA2FAA1C898CAB5E25F29DCD76CA1F" />
+            <ComponentRef Id="cmp16AABE693EA93995D2EC516C350282D1" />
+            <ComponentRef Id="cmp6B0DE9B3B377E1A5843728D12580964C" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

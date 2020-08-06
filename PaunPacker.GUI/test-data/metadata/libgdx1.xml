@@ -1,0 +1,34 @@
+libgdx1.xml
+size: 464, 128
+format: Rgba8888
+repeat: none
+32.png
+ rotate: false
+ xy: 0, 32
+ size: 32, 32
+ index: -1
+48.png
+ rotate: false
+ xy: 32, 80
+ size: 48, 48
+ index: -1
+64.png
+ rotate: false
+ xy: 80, 144
+ size: 64, 64
+ index: -1
+96.png
+ rotate: false
+ xy: 144, 240
+ size: 96, 96
+ index: -1
+96x128.png
+ rotate: false
+ xy: 240, 336
+ size: 96, 128
+ index: -1
+128.png
+ rotate: false
+ xy: 336, 464
+ size: 128, 128
+ index: -1

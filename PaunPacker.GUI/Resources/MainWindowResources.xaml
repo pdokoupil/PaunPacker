@@ -1,0 +1,97 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:vm="clr-namespace:PaunPacker.GUI.ViewModels"
+                    xmlns:vw="clr-namespace:PaunPacker.GUI.Views"
+                    xmlns:vc="clr-namespace:PaunPacker.GUI.Converters"
+                    xmlns:pl="clr-namespace:PaunPacker.GUI.WPF.Common.Attributes;assembly=PaunPacker.GUI.WPF.Common"
+                    xmlns:skia="clr-namespace:SkiaSharp;assembly=SkiaSharp">
+
+    <system:String x:Key="WindowTitle">
+        PaunPacker
+    </system:String>
+
+    <vc:NullToBooleanConverter x:Key="NullToBooleanConverter" />
+
+    <vc:InverseNullToBooleanConverter x:Key="InverseNullToBooleanConverter" />
+
+    <vc:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+
+    <vc:StringToUint16Converter x:Key="StringToUint16Converter" />
+
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+    <vc:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+
+    <vc:IconToImageSourceConverter x:Key="IconToImageSourceConverter"/>
+
+    <vc:TypeToPluginInfoConverter x:Key="TypeToPluginInfoConverter"/>
+
+    <DataTemplate DataType="{x:Type vm:TextureAtlasViewModel}">
+        <vw:TextureAtlasView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LoadedImagesTreeViewModel}">
+        <vw:LoadedImagesTreeView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ExportedTypeViewModel}">
+        <vw:ExportedTypeView/>
+    </DataTemplate>
+
+    <Style x:Key="ProgressBarConditionalStyle" TargetType="ProgressBar">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsJobCancelling, Mode=OneWay}" Value="True"> <!--When we are cancelling, show progress bar in red instead of green-->
+                <Setter Property="Foreground" Value="Red" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TextBlockConditionalStyle" TargetType="TextBlock">
+        <Setter Property="Text">
+            <Setter.Value>
+                <MultiBinding StringFormat="{}{0} {1}%"> <!--When progress bar shows progress (i.e. algorithm supports progress reporting, show %)-->
+                    <Binding Path="CurrentJob.JobName"/>
+                    <Binding Path="Value" ElementName="progressBarGenerate" />
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ElementName=progressBarGenerate, Path=IsIndeterminate}" Value="True"> <!--When progress bar is indeterminate (i.e. current algorithm does not report progress), we show only Generating/Cancelling, no percentage--> 
+                <Setter Property="Text" Value="{Binding CurrentJob.JobName}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsJobCancelling, Mode=OneWay}" Value="True"> <!--Upon cancelling, only cancelling without % is showed (ALWAYS)-->
+                <Setter Property="Text" Value="Cancelling"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--Style for toggling the text on the button from "Show borders" to "Unshow borders" and vice versa based on the current state-->
+    <Style x:Key="ToggleShowBordersButton" TargetType="Button">
+        <Setter Property="Content" Value="Show borders" />
+        <Setter Property="Command" Value="{Binding ShowBorders}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding TextureAtlasVM.AreBordersShown}" Value="True">
+                <Setter Property="Content" Value="Unshow borders" />
+                <Setter Property="Command" Value="{Binding UnshowBorders}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--Extracts values from the FrameworkID enum-->
+    <ObjectDataProvider x:Key="FrameworkIDEnumData" MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="pl:FrameworkID"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <!--Extracts values from the ColorType enum-->
+    <ObjectDataProvider x:Key="ColorTypeEnumData" MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="skia:SKColorType"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+</ResourceDictionary>

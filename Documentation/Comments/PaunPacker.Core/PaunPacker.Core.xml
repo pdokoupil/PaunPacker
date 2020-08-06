@@ -1,0 +1,1848 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.Core</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.Core.ImageProcessing.BackgroundRemoverBase">
+            <summary>
+            Base class for implementations of background remove image processor
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.BackgroundRemoverBase.ProcessImage(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.BackgroundRemoverBase.RemoveBackground(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Performs the remove background operation
+            </summary>
+            <param name="input">Input image</param>
+            <param name="token">The cancellation token</param>
+            <remarks>The input image is copied, processed and the processed version is then returned</remarks>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="input"/> is null</exception>
+            <returns>An image with background removed, unmodified <paramref name="input"/> when cancellation was requested</returns>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase">
+            <summary>
+            Base class for implementations of ColorType changer image processor
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase.#ctor(SkiaSharp.SKColorType)">
+            <summary>
+            Constructor initializing a target color type
+            </summary>
+            <param name="type">The target color type</param>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase.ProcessImage(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase.ChangeColorType(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Performs the ColorType change operation
+            </summary>
+            <param name="input">Input image</param>
+            <param name="token">The cancellation token</param>
+            <remarks>
+            The input image is copied, processed and the processed version is then returned
+            The target color type is given by the <see cref="P:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase.NewColorType"/>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="input"/> is null</exception>
+            <returns>An image with a color type changed to the <see cref="P:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase.NewColorType"/>, null when the cancellation was requested</returns>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase.ChangeColorType(PaunPacker.Core.Types.PPImage,SkiaSharp.SKColorType,System.Threading.CancellationToken)">
+            <summary>
+            Performs the ColorType change operation
+            </summary>
+            <param name="input">Input image</param>
+            <param name="targetColorType">The target color type</param>
+            <param name="token">The cancellation token</param>
+            <remarks>The input image is copied, processed and the processed version is then returned</remarks>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="input"/> is null</exception>
+            <returns>An image with a color type changed to the target color type, unmodified <paramref name="input"/> when the cancellation was requested</returns>
+        </member>
+        <member name="P:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase.NewColorType">
+            <summary>
+            Determines the new color type for the image
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.IImageProcessor">
+            <summary>
+            Interface representing an image processor
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.IImageProcessor.ProcessImage(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Takes an image on the input and returns a modified (processed) copy of it on it's output
+            </summary>
+            <param name="input">The input image</param>
+            <param name="token">The cancellation token</param>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="input"/> is null</exception>
+            <remarks>Whenever a cancellation is requested via the <paramref name="token"/>, the corresponding image processor should stop in a consistent state, returning the input, unmodified image</remarks>
+            <returns>Modified image</returns>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.ImageProcessors.ColorTypeChanger">
+            <summary>
+            Default implementation of <see cref="T:PaunPacker.Core.ImageProcessing.ColorTypeChangerBase"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.ColorTypeChanger.#ctor(SkiaSharp.SKColorType)">
+            <summary>
+            Constructs new ColorTypeChanger from a target ColorType (the ColorType to which the current ColorType should be changed)
+            </summary>
+            <param name="newColorType">The target ColorType</param>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.ColorTypeChanger.ChangeColorType(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.ColorTypeChanger.ChangeColorType(PaunPacker.Core.Types.PPImage,SkiaSharp.SKColorType,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.ImageProcessors.CroppingTrimmer">
+            <summary>
+            Represents the Crop image processor
+            </summary>
+            <remarks>
+            Same as Trim image processor <see cref="T:PaunPacker.Core.ImageProcessing.ImageProcessors.Trimmer"/> except that the modified size is also stored in the metadata
+            Current implementation does not "keep position" (as they call it in TexturePacker) therefore the transparent pixels are simply removed and the offset stays at 0,0
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.CroppingTrimmer.#ctor">
+            <summary>
+            Constructs a new CroppingTrimmer with alphaTolerance equal to 0
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.CroppingTrimmer.#ctor(System.Int32)">
+            <summary>
+            Constructs a new CroppingTrimmer with a given <paramref name="alphaTolerance"/>
+            </summary>
+            <param name="alphaTolerance">The alpha tolerance to be used when cropping</param>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.CroppingTrimmer.Trim(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Performs the "Cropping" Trim operation (i.e. the Crop)
+            </summary>
+            <param name="input">Removes transparent pixels from border of the image permamently</param>
+            <param name="token">The cancellation token</param>
+            <remarks>The cropped pixels are reflected in the metadata</remarks>
+            <returns>Cropped texture, unmodified <paramref name="input"/> if the cancellation was requested</returns>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder">
+            <summary>
+            Class represeting an add padding operation
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder.#ctor(System.Int32)">
+            <summary>
+            Constructs a new padding adder
+            </summary>
+            <param name="amount">The amount of transparent pixels to add around the borders</param>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder.AddPadding(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Adds a padding, i.e. <see cref="P:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder.Amount"/> of transparent pixels to each side of the <paramref name="input"/> image's border
+            </summary>
+            <param name="input">The input image</param>
+            <param name="token">The cancellation token</param>
+            <returns>The copy of the input texture with added padding or unmodified input texture if the cancellation was requested</returns>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder.AddPadding(PaunPacker.Core.Types.PPImage,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Adds a padding, i.e. <paramref name="amount"/> of transparent pixels to each side of the <paramref name="input"/> image's border
+            </summary>
+            <param name="input">The input image</param>
+            <param name="amount">Amount of transparent pixels to add</param>
+            <param name="token">The cancellation token</param>
+            <remarks>Changes the <see cref="P:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder.Amount"/> to <paramref name="amount"/></remarks>
+            <returns>The copy of the input texture with added padding or unmodified input texture if the cancellation was requested</returns>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder.ProcessImage(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.ImageProcessing.ImageProcessors.PaddingAdder.Amount">
+            <summary>
+            The amount of transparent pixels to padd around the input image
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.ImageProcessors.Trimmer">
+            <summary>
+            Default implementation of the <see cref="T:PaunPacker.Core.ImageProcessing.TrimmerBase"/>
+            </summary>
+            <remarks>Trims transparent pixels from the border of the input image</remarks>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.Trimmer.#ctor">
+            <summary>
+            Constructs a new Trimmer with alphaTolerance equal to 0
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.Trimmer.#ctor(System.Int32)">
+            <summary>
+            Constructs a new Trimmer with a given <paramref name="alphaTolerance"/>
+            </summary>
+            <param name="alphaTolerance">The alpha tolerance to be used when trimming</param>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.ImageProcessors.Trimmer.Trim(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.Core.ImageProcessing.ImageProcessors.Trimmer.alphaTolerance">
+            <summary>
+            A number between 0 and 255
+            Pixels with alpha value lower than this tolerance are treated as transparent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.Extruder">
+            <summary>
+            The image processor performing an Extrude operation
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.Extruder.#ctor(System.Int32)">
+            <summary>
+            Constructs a new Extruder with a specified amount of pixels to be added
+            </summary>
+            <param name="amount">Amount of pixels to be added</param>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.Extruder.ProcessImage(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.Extruder.Extrude(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Extrude operation
+            </summary>
+            <param name="input">Input image</param>
+            <param name="token">The cancellation token</param>
+            <remarks>The input image is copied, processed and the processed version is then returned</remarks>
+            <returns>An image extruded by a <see cref="P:PaunPacker.Core.ImageProcessing.Extruder.Amount"/> of pixels</returns>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.Extruder.Extrude(PaunPacker.Core.Types.PPImage,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Trim operation with a specified amount
+            </summary>
+            <param name="input">Input image</param>
+            <param name="amount">Amount of pixels to be added</param>
+            <param name="token">The cancellation token</param>
+            <remarks>
+            The input image is copied, processed and the processed version is then returned
+            Changes the <see cref="P:PaunPacker.Core.ImageProcessing.Extruder.Amount"/> to <paramref name="amount"/>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="input"/> is null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Is thrown when the <paramref name="amount"/> is negative</exception>
+            <returns>An image extruded by a <paramref name="amount"/> of pixels, unmodified <paramref name="input"/> if cancellation was requested</returns>
+        </member>
+        <member name="P:PaunPacker.Core.ImageProcessing.Extruder.Amount">
+            <summary>
+            The amount of pixels to be added around the sides of the image
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.HeuristicBackgroundRemover">
+            <summary>
+            Default implementation of the <see cref="T:PaunPacker.Core.ImageProcessing.BackgroundRemoverBase"/>
+            </summary>
+            <remarks>
+            Very simple implementation that tries to guess a background color from the corners of the image and then
+            removes all the pixels that have the guessed color
+            An idea for improvement: Introduce a "tolerance" value
+            Assumes single colored background
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.HeuristicBackgroundRemover.RemoveBackground(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.HeuristicBackgroundRemover.SelectBackground(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Selects a guessed background of the input image
+            </summary>
+            <param name="input">The input image</param>
+            <param name="token">The cancellation token</param>
+            <remarks>Performs a BFS</remarks>
+            <returns>Returns the list of pixels having the same color as the color of the guessed background, null when cancellation was requested</returns>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.HeuristicBackgroundRemover.GetNeighborhood(System.Int32,PaunPacker.Core.Types.PPImage)">
+            <summary>
+            Returns a neighborhood pixels of the pixel at a given index (index in the flat 1D instead of 2D array) within the given image
+            </summary>
+            <remarks>The neighborhood is "Moore neighborhood"</remarks>
+            <param name="index">The index of the pixel for which the neighborhood should be returned</param>
+            <param name="image">The image containing the pixel at the given index</param>
+            <returns>The indices of the neighborhood pixels</returns>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.HeuristicBackgroundRemover.Abs(System.Single)">
+            <summary>
+            Simple implementation of absolute value for float values only
+            </summary>
+            <param name="a">A value for which an absolute value should be found</param>
+            <returns>The absolute value of <paramref name="a"/></returns>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.HeuristicBackgroundRemover.Max(System.Single,System.Single)">
+            <summary>
+            Simple implementation of max(a,b) for float values only
+            </summary>
+            <param name="a">First comparand</param>
+            <param name="b">Second comparand</param>
+            <returns>The greater of the two numbers, or <paramref name="a"/> if both comparands are equal</returns>
+        </member>
+        <member name="T:PaunPacker.Core.ImageProcessing.TrimmerBase">
+            <summary>
+            Base class for implementations of Trim image processor
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.TrimmerBase.ProcessImage(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.ImageProcessing.TrimmerBase.Trim(PaunPacker.Core.Types.PPImage,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Trim operation
+            </summary>
+            <param name="input">Input image</param>
+            <param name="token">The cancellation token</param>
+            <remarks>The input image is copied, processed and the processed version is then returned</remarks>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="input"/> is null</exception>
+            <returns>Trimmed image, null if the cancellation was requested</returns>
+        </member>
+        <member name="T:PaunPacker.Core.IProgressReporter">
+            <summary>
+            Interface for extensible components which are reporting progress
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.IProgressReporter.Progress">
+            <summary>
+            The progress of the component
+            </summary>
+        </member>
+        <member name="E:PaunPacker.Core.IProgressReporter.ProgressChange">
+            <summary>
+            Event which is fired when the progress has changed
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.IProgressReporter.ReportsProgress">
+            <summary>
+            Whether the class really reports progress
+            </summary>
+            <remarks>It could seem obvious that the class implementing this interface should report progress, but consider a scenario in which there is a FixedSizePacker that reports progress only when the underlying placement algorithm report progrees</remarks>
+        </member>
+        <member name="T:PaunPacker.Core.Metadata.ImageMetadata">
+            <summary>
+            Represents a metadata of a single image
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Metadata.ImageMetadata.#ctor(System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Creates a metadata for a single image
+            </summary>
+            <param name="props">An array of key value pairs</param>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="props"/> is null</exception>
+        </member>
+        <member name="P:PaunPacker.Core.Metadata.ImageMetadata.Item(System.String)">
+            <summary>
+            Indexer
+            </summary>
+            <param name="x">The attribute name</param>
+            <returns>The value of the attribute <paramref name="x"/></returns>
+        </member>
+        <member name="F:PaunPacker.Core.Metadata.ImageMetadata.properties">
+            <summary>
+            Properties (the key, value pairs)
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Metadata.IMetadataWriter">
+            <summary>
+            Interface representing a metadata writer
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Metadata.IMetadataWriter.WriteAsync(System.String,System.String,PaunPacker.Core.Metadata.MetadataCollection,System.Threading.CancellationToken)">
+            <summary>
+            Writes the <paramref name="metadata"/> into a file at path <paramref name="path"/>
+            </summary>
+            <param name="path">The path of the metadata file</param>
+            <param name="metadata">The metadata to be written to the file</param>
+            <param name="token">The cancellation token</param>
+            <param name="textureAtlasPath">The path of the texture atlas, this is required by some metadata writers</param>
+            <remarks>When cancellation is requested, the partially written file is deleted</remarks>
+            <returns>A task of the writing</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Metadata.MetadataCollection">
+            <summary>
+            Represents metadata of a whole texture atlas
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Metadata.MetadataCollection.#ctor(PaunPacker.Core.Atlas.TextureAtlas)">
+            <summary>
+            Constructs a metadata for a given texture atlas
+            </summary>
+            <param name="textureAtlas">Texture atlas for which a metadata should be created</param>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="textureAtlas"/> is null</exception>
+        </member>
+        <member name="P:PaunPacker.Core.Metadata.MetadataCollection.Count">
+            <summary>
+            The number of images within the texture atlas
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Metadata.MetadataCollection.metadata">
+            <summary>
+            The metadata about images within the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Metadata.MetadataCollection.Width">
+            <summary>
+            Width of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Metadata.MetadataCollection.Height">
+            <summary>
+            Height of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Metadata.MetadataCollection.Format">
+            <summary>
+            Color format of the texture atlas
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Metadata.MetadataCollection.GetEnumerator">
+            <summary>
+            Returns an enumerator for enumeration of the metadata of the texture atlas' individual images
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.MBBF.FixedSizePacker">
+            <summary>
+            Implementation of <see cref="T:PaunPacker.Core.Packing.MBBF.IMinimumBoundingBoxFinder"/> that allows to pack the rectangles into a bounding box of a fixed size
+            </summary>
+            <remarks>
+            This class only wraps the <see cref="T:PaunPacker.Core.Packing.Placement.IPlacementAlgorithm"/> and the reason for introducing this wrapper is to have an ability to use
+            placement into fixed size bounding box at places where <see cref="T:PaunPacker.Core.Packing.MBBF.IMinimumBoundingBoxFinder"/> is expected
+            If we know we are packing into W x H sized bounding box -> then this is simply a wrapper around placement algorithm
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.FixedSizePacker.#ctor(System.Int32,System.Int32,PaunPacker.Core.Packing.Placement.IPlacementAlgorithm)">
+            <summary>
+            Constructs a FixedSizePacker which uses a given placement algorithm <paramref name="placementAlgo"/> and packs the rectangles into a bounding box with dimensions of <paramref name="width"/> x <paramref name="height"/>
+            </summary>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+            <param name="placementAlgo">The placement algorithm to be used</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.FixedSizePacker.FindMinimumBoundingBox(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+            <remarks>
+            Does not find the minimum bounding box in the right sense, but instead it tries to place (with the underlying placement algorithm)
+            into a bounding box with dimensions <see cref="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.Width"/> x <see cref="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.Height"/>
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.FixedSizePacker.FindMinimumBoundingBox(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <see cref="M:PaunPacker.Core.Packing.MBBF.FixedSizePacker.FindMinimumBoundingBox(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)"/>
+            <remarks>
+            Does not find the minimum bounding box in the right sense, but instead it tries to place (with the underlying placement algorithm)
+            into a bounding box with dimensions <paramref name="width"/> x <paramref name="height"/>
+            </remarks>
+            <param name="width">The width of the bounding box, overrides the <see cref="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.Width"/></param>
+            <param name="height">The height of the bounding box, overrides the <see cref="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.Height"/></param>
+            <param name="rects">The rectangles that should be packed into the bounding box of size width * height</param>
+            <param name="token">The cancellation token</param>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.Width">
+            <summary>
+            The width of the bounding box
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.Height">
+            <summary>
+            The height of the bounding box
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.FixedSizePacker.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.MBBF.FixedSizePacker.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.MBBF.IMinimumBoundingBoxFinder">
+            <summary>
+            Represents the minimum bounding box finder
+            </summary>
+            <remarks>
+            The "actual, top-level" packer
+            Generally used in situations when neither W nor H of the minimum bounding box is known, thus the space (potentially somehow reduced space) of possible W x H bounding box
+            has to be searched and the bounding box with minimum area = W*H is seeked.
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.IMinimumBoundingBoxFinder.FindMinimumBoundingBox(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <summary>
+            Finds the minimum bounding box for the rectangles given by <paramref name="rects"/>
+            </summary>
+            <param name="rects">The rectangle for which the bounding box is searched for</param>
+            <param name="cancellationToken">Cancellation token to allow cancellation of the search</param>
+            <returns><see cref="T:PaunPacker.Core.Packing.PackingResult"/> representing the minimum bounding box</returns>
+            <exception cref="T:System.ArgumentNullException">Should be thrown when the <paramref name="rects"/> is null</exception>
+            <remarks>When <paramref name="rects"/> is empty, the method should return valid <see cref="T:PaunPacker.Core.Packing.PackingResult"/></remarks>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker">
+            <summary>
+            Implementation of <see cref="T:PaunPacker.Core.Packing.MBBF.IMinimumBoundingBoxFinder"/> that packs (and tries to find MBBF) the rectangles into a minimum bounding box
+            that has dimensions which are powers of two
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.#ctor(PaunPacker.Core.Packing.Placement.IPlacementAlgorithm)">
+            <summary>
+            Constructs a PowerOfTwoSizePacker that finds a minimum bounding box whose dimensions are in powers of two and tries to pack (using the <paramref name="placementAlgorithm"/>) the rectangles into that bounding box
+            </summary>
+            <param name="placementAlgorithm">The placement algorithm to be used</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.FindMinimumBoundingBox(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.GetDimensionsToTry(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Enumerates the dimensions of the bounding box finder that the algorithm will try pack the rectangles into
+            </summary>
+            <remarks>Only dimensions that are in powers of two are considered</remarks>
+            <param name="rects">Rectangles that should be contained within the bounding box</param>
+            <returns>Possible, power of two dimensions of the bounding box</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.IsPoT(System.Int32)">
+            <summary>
+            Checks whether a given value is in power of two
+            </summary>
+            <param name="value">Value to be checked</param>
+            <returns>True if the <paramref name="value"/> is a power of two, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.NextPoT(System.Int32)">
+            <summary>
+            Returns the smallest number that is a power of two and that is (strictly) greater than <paramref name="value"/>
+            </summary>
+            <remarks>Based on https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2 </remarks>
+            <param name="value">The lower bound</param>
+            <returns>The smallest number greater than <paramref name="value"/> which is a power of two</returns>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.MBBF.PowerOfTwoSizePacker.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.MBBF.UnknownSizePacker">
+            <summary>
+            Implementation of minimum bounding box finders which for a given rectangles tries to find a minimum bounding box of these rectangles
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.UnknownSizePacker.#ctor(PaunPacker.Core.Packing.Placement.IPlacementAlgorithm)">
+            <summary>
+            Constructs an UnknownSizePacker with a given placement algorithm
+            </summary>
+            <param name="placementAlgo">The placement algorithm to be used</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.UnknownSizePacker.FindMinimumBoundingBox(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.Packing.MBBF.UnknownSizePacker.GetInitialBoundary(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Finds initial boundary (bounding box), that is somemething like upperbound on the area of packing
+            </summary>
+            <param name="rects">The rectangles for which the initial bounding box will be searched</param>
+            <returns>The initial bounding box</returns>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.UnknownSizePacker.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.MBBF.UnknownSizePacker.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.MBBF.UnknownSizePacker.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.PackingResult">
+            <summary>
+            Represents a result of a packing algorithm (Placement algorithm / Minimum bounding box finder)
+            </summary>
+            <remarks>
+            This class is an immutable dataholder, but class is used instead of struct because it is very often useful to use null value (indicate impossible packing)
+            without polluting the code with Nullable (code would be more verbose)
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.PackingResult.#ctor(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Constructs a packing result that represents a bounding box of a given dimensions containing the given rectangles (at specified positions)
+            </summary>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+            <param name="rects">The rectangles within the bounding box</param>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.PackingResult.Width">
+            <summary>
+            The width of the bounding box
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.PackingResult.Height">
+            <summary>
+            The height of the bounding box
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.PackingResult.Rects">
+            <summary>
+            The rectangles within the bounding box
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker">
+            <summary>
+            Implementation of Bottom-Left algorithm
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker.#ctor">
+            <summary>
+            Constructs a BLAlgorithmPacker
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker.#ctor(PaunPacker.Core.Packing.Sorting.IImageSorter)">
+            <summary>
+            Constructs a BLAlgorithmPacker using a given image sorter
+            </summary>
+            <param name="sorter">The image sorter to be used</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker.PlaceRects(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker.TryImprove(PaunPacker.Core.Types.PPRect@,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Int32)">
+            <summary>
+            Tries to improve (decrease its area) the current minimum bounding box
+            </summary>
+            <param name="currentRect"></param>
+            <param name="possibleIntersections"></param>
+            <param name="direction">0 for try to move up, 1 for try to move left</param>
+            <returns></returns>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.Placement.BLAlgorithmPacker.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.BestAreaFitFreeRectangleExtractor">
+            <summary>
+            Extracts (picks) one of the free rectangles based on the "Best area fit" with the rectangle that should be placed to the free rectangle
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.BestAreaFitFreeRectangleExtractor.ExtractFreeRectangle(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Selects free rectangle from freeLists.
+            For BestAreaFit it means to select free rectangle of smallest area to which currentRectToPack can fit
+            </summary>
+            <param name="freeRects">Free rectangles</param>
+            <param name="currentRectToPack">Rectangle that will be placed to the selected rectangle</param>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="freeRects"/> is null</exception>
+            <returns>The best rectangle from <paramref name="freeRects"/> where the <paramref name="currentRectToPack"/> could be placed</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.DummyRectOrientationSelector">
+            <summary>
+            Default/dummy implementation of <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector"/> i.e. no orientation chage
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.DummyRectOrientationSelector.DetermineAndApplyRectOrientation(PaunPacker.Core.Types.PPRect)">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm">
+            <summary>
+            Parametrized/Specific implementation of the Guillotine algorithm called BestAreaFit
+            </summary>
+            <remarks>
+            Free rectangles are selected based on the "best area fit" using the <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.BestAreaFitFreeRectangleExtractor"/>
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm.#ctor">
+            <summary>
+            Constructs a new GuillotineBestAreaFitAlgorithm
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm.#ctor(PaunPacker.Core.Packing.Sorting.IImageSorter)">
+            <summary>
+            Constructs a new GuillotineBestAreaFitAlgorithm with a given image sorter
+            </summary>
+            <param name="imageSorter">Image sorter to be used</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm.PlaceRects(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm.placementAlgorithm">
+            <summary>
+            The guillotine placement algorithm used by this version of placement algorithm
+            </summary>
+            <remarks>
+            The only difference between the current implementation and GuillotinePlacementAlgorithm is in its parameterization
+            </remarks>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineBestAreaFitAlgorithm.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineFreeRectangleSortedMerger">
+            <summary>
+            Implementation of <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger"/> that represents a merger which merges a free rectangle
+            into a collection of free rectangle in sorted manner where the order is determined based on the <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.PPRectAreaComparer"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineFreeRectangleSortedMerger.MergeFreeRectangles(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Merges a <paramref name="freeRectsObtained"/> into <paramref name="freeRectangles"/> at a position so that the updated collection
+            of free rectangles is sorted according to <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.PPRectAreaComparer"/>
+            </summary>
+            <param name="freeRectangles">List of free rectangles</param>
+            <param name="freeRectsObtained">New free rectangle that should be merged to the <paramref name="freeRectangles"/></param>
+            <exception cref="T:System.ArgumentNullException">Is thrown when any of the <paramref name="freeRectangles"/>, <paramref name="freeRectsObtained"/> is null</exception>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineFreeRectangleSortedMerger.SortedInsertion(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Utility method for sorted (based on order given by <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.PPRectAreaComparer"/>) insertion
+            </summary>
+            <param name="list">List of rectangles</param>
+            <param name="item">Rectangle that should be inserted</param>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.PPRectAreaComparer">
+            <summary>
+            Compares two rectangles based on their area
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.PPRectAreaComparer.Compare(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Compares two rectangles <paramref name="x"/> and <paramref name="y"/> based on their areas
+            </summary>
+            <param name="x">The first comparand</param>
+            <param name="y">The second comparand</param>
+            <returns>Negative number if the area of <paramref name="x"/> is lass than the area of <paramref name="y"/>, 0 if they are equal, positive number otherwise</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm">
+            <summary>
+            The fully parameterizable implementation of the Guillotine algorithm (placement algorithm)
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.#ctor(PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor,PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter,PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger,PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector,PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor)">
+            <summary>
+            Constructs a new Guillotine algorithm based on the passed parameters
+            </summary>
+            <param name="freeRectExtractor">Free rectangle extractor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor"/>) used by the Guillotine algorithm</param>
+            <param name="freeRectangleSplitter">Free rectangle splitter (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter"/>) used by the Guillotine algorithm</param>
+            <param name="freeRectangleMerger">Free rectangle extractor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger"/>) used by the Guillotine algorithm</param>
+            <param name="rectOrientationSelector">Rectangle orientation selector (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector"/>) used by the Guillotine algorithm</param>
+            <param name="freeRectanglePostProcessor">Free post processor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor"/>) used by the Guillotine algorithm</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.#ctor(PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor,PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter,PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger,PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector,PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor,PaunPacker.Core.Packing.Sorting.IImageSorter)">
+            <summary>
+            Constructs a new Guillotine algorithm based on the passed parameters and ImageSorter
+            </summary>
+            <param name="freeRectExtractor">Free rectangle extractor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor"/>) used by the Guillotine algorithm</param>
+            <param name="freeRectangleSplitter">Free rectangle splitter (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter"/>) used by the Guillotine algorithm</param>
+            <param name="freeRectangleMerger">Free rectangle extractor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger"/>) used by the Guillotine algorithm</param>
+            <param name="rectOrientationSelector">Rectangle orientation selector (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector"/>) used by the Guillotine algorithm</param>
+            <param name="freeRectanglePostProcessor">Free post processor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor"/>) used by the Guillotine algorithm</param>
+            <param name="sorter">The image sorter</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.#ctor">
+            <summary>
+            Default constructor for GuillotinePlacementAlgorithm
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.PlaceRects(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.DecideOrientationOfRect(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Decides the orientation of the rectangle
+            </summary>
+            <remarks>
+            The rectangle could either be rotated by 90 degrees, or not rotated at all
+            This default orientation does not rotate
+            </remarks>
+            <param name="rect">The rect for which the orientation should be selected</param>
+            <returns>The <paramref name="rect"/>, possibly rotated</returns>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.freeRectanglesList">
+            <summary>
+            List of free rectangkes
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.freeRectExtractor">
+            <summary>
+            Free rectangle extractor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor"/>) used by the Guillotine algorithm
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.freeRectangleSplitter">
+            <summary>
+            Free rectangle splitter (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter"/>) used by the Guillotine algorithm
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.freeRectangleMerger">
+            <summary>
+            Free rectangle extractor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger"/>) used by the Guillotine algorithm
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.rectOrientationSelector">
+            <summary>
+            Rectangle orientation selector (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector"/>) used by the Guillotine algorithm
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.freeRectanglePostProcessor">
+            <summary>
+            Free post processor (<seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor"/>) used by the Guillotine algorithm
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm.imageSorter">
+            <summary>
+            Used image sorter
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor">
+            <summary>
+            Allows to extract a free rectangle from a list of free rectangles
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor.ExtractFreeRectangle(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Extracts a free rectangly (free rectangle "best" according to some (implementation specific) rules
+            </summary>
+            <param name="freeRects">The list of free rectangles to select from</param>
+            <param name="currentRectToBePlaced">The current rectangle that will be placed to the selected rectangle</param>
+            <returns></returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger">
+            <summary>
+            Allows to merge new free rectangles into a list of free rectangles
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger.MergeFreeRectangles(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Merges a free rectangles from <paramref name="freeRectsObtained"/> into the <paramref name="freeRectangles"/>
+            </summary>
+            <param name="freeRectangles">Current, already existing free rectangles</param>
+            <param name="freeRectsObtained">Newly obtained free rectangles</param>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor">
+            <summary>
+            Allows to perform post-processing of free rectangles after a placement of a rectangle to one of the free rectangles
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor.PostProcess(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Post process the free rectangles after select, split, merge i.e. when the rectangle was placed
+            </summary>
+            <param name="freeRectangles">The list of free rectangles</param>
+            <param name="rectJustPlaced">The rectangle that just was placed</param>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter">
+            <summary>
+            Allows to split a free rectangle after placing a rectangle into it
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter.SplitFreeRectangle(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Splits the <paramref name="freeRect"/> after placing <paramref name="rectJustPlaced"/> into it
+            </summary>
+            <param name="freeRect">The free rectangle where the <paramref name="rectJustPlaced"/> was placed</param>
+            <param name="rectJustPlaced">The just placed rectangle</param>
+            <returns>Free rectangles that resulted from the split</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector">
+            <summary>
+            Allows to select an orientation of the rectangle that should be placed
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector.DetermineAndApplyRectOrientation(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Selects an orientation of the rectangle that should be placed
+            </summary>
+            <param name="sourceRect">The rectangle to be placed</param>
+            <returns>THe <paramref name="sourceRect"/>, possibly rotated</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Guillotine.LongerAxisGuillotineFreeRectangleSplitter">
+            <summary>
+            Implementation of <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter"/> that splits a free rectangle by it's longer axis
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.LongerAxisGuillotineFreeRectangleSplitter.SplitFreeRectangle(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <inheritdoc />
+            <summary>
+            Split the <paramref name="selectedFreeRectangle"/> by it's longer axis
+            </summary>
+            <param name="selectedFreeRectangle">The free rectangle that was selected for a placement of <paramref name="rectToBePlaced"/></param>
+            <param name="rectToBePlaced">The rectangle that should be placed</param>
+            <returns>Free rectangle that results from the splitting of <paramref name="selectedFreeRectangle"/></returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.LongerAxisGuillotineFreeRectangleSplitter.SplitFreeRectangleHorizontal(PaunPacker.Core.Types.PPRect@,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Performs a split of <paramref name="freeRectangle"/> by a horizontal axis
+            </summary>
+            <param name="freeRectangle">The free rectangle that was selected for a placement of the free rectangle that should be placed</param>
+            <param name="justPlacedRect">The rectangle that was just placed into <paramref name="freeRectangle"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.LongerAxisGuillotineFreeRectangleSplitter.SplitFreeRectangleVertical(PaunPacker.Core.Types.PPRect@,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Performs a split of <paramref name="freeRectangle"/> by a vertical axis
+            </summary>
+            <param name="freeRectangle">The free rectangle that was selected for a placement of rectangle to be placed</param>
+            <param name="justPlacedRect">The rectangle that was just placed into <paramref name="freeRectangle"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Guillotine.LongerAxisGuillotineFreeRectangleSplitter.SelectSplitDirection(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            For a given rectangle that is being placed, selets the split direction (axis)
+            </summary>
+            <param name="rectToBePlaced">The rectangle that will be placed</param>
+            <remarks>The direction is determined only be the <paramref name="rectToBePlaced"/> not by a free rectangle where it will be placed</remarks>
+            <returns>The SplitDirection (the longer axis)</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.IPlacementAlgorithm">
+            <summary>
+            Represents a placement algorithm
+            </summary>
+            <remarks>
+            Generally used in situations where the W and H of the bounding box is known and the input only has to be placed into this bounding box
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.IPlacementAlgorithm.PlaceRects(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <summary>
+            Tries to place the <paramref name="rects"/> into a bounding box with width <paramref name="width"/>
+            and height <paramref name="height"/>
+            </summary>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+            <param name="rects">The rectangles to be placed</param>
+            <param name="token">The cancellation token</param>
+            <returns>The packing result, null if the placement is not possible or if the cancellation was requested</returns>
+            <exception cref="T:System.ArgumentNullException">Is thrown when <paramref name="rects"/> is null</exception>
+            <remarks>If the <paramref name="rects"/> is empty then a valid result should be returned</remarks>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm">
+            <summary>
+            Implementation of MaxRects algorithm
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm.#ctor">
+            <summary>
+            Constructs a MaximalRectanglesAlgorithm
+            </summary>
+            <remarks>
+            The MaximalRectanglesAlgorithm is only a special case of <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.GuillotinePlacementAlgorithm"/> with a proper parameterization
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm.#ctor(PaunPacker.Core.Packing.Sorting.IImageSorter)">
+            <summary>
+            Constructs a MaxRects algorithm with a given image sorter
+            </summary>
+            <param name="sorter">Image sorter to be used</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm.PlaceRects(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaximalRectanglesAlgorithm.placementAlgorithm">
+            <summary>
+            The underlying guillotine algorithm
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectanglePostProcessor">
+            <summary>
+            Post processor for a MaxRects (Maximal rectangles) algorithm
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectanglePostProcessor.PostProcess(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},PaunPacker.Core.Types.PPRect)">
+            <inheritdoc />
+            <remarks>
+            Performs the post-processing after placing the rectangle <paramref name="rectJustPlaced"/>
+            This includes a "repair" of all the free rectangles that intersects with a <paramref name="rectJustPlaced"/> and removal of free rectangles that are fully included in other free rectangle
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="freeRectangles"/> is null</exception>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectangleSortedMerger">
+            <summary>
+            Implementation of <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger"/> for MaxRects algorithm
+            </summary>
+            <seealso cref="T:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineFreeRectangleSortedMerger"/>
+            <remarks>Currently behaves same as the <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.GuillotineFreeRectangleSortedMerger"/></remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectangleSortedMerger.#ctor">
+            <summary>
+            Constructs a <see cref="T:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectangleSortedMerger"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectangleSortedMerger.MergeFreeRectangles(System.Collections.Generic.List{PaunPacker.Core.Types.PPRect},System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Merges a <paramref name="freeRectsObtained"/> into <paramref name="freeRectangles"/> at a position so that the updated collection
+            of free rectangles is sorted according to <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.PPRectAreaComparer"/>
+            </summary>
+            <param name="freeRectangles">List of free rectangles</param>
+            <param name="freeRectsObtained">New free rectangle that should be merged to the <paramref name="freeRectangles"/></param>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectangleSortedMerger.guillotineMerger">
+            <summary>
+            The IFreeRectangleMerger used by this merger
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectangleSplitter">
+            <summary>
+            Implementation of <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter"/> for a MaxRects algorithm
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.MaximalRectangles.MaxRectsFreeRectangleSplitter.SplitFreeRectangle(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <inheritdoc />
+            <summary>
+            Splits a free rectangle by both vertical and horizontal axis
+            </summary>
+            <param name="freeRect">Free rectangle that should be splitted</param>
+            <param name="rectJustPlaced">The rectangle that should be placed to the <paramref name="freeRect"/></param>
+            <returns></returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.BottomLeftSkylinePointPicker">
+            <summary>
+            Implementation of ISkylineFeasiblePointPicker that selects a feasible point that is most to the left and to the bottom
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.BottomLeftSkylinePointPicker.GetIndexOfOneOfFeasiblePoints(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32}},PaunPacker.Core.Types.PPRect)">
+            <inheritdoc />
+            <remarks>Selects a feasible point from <paramref name="feasiblePoints"/> which is most to the left and to the bottom</remarks>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.ISkylineFeasiblePointPicker">
+            <summary>
+            Allows to pick a feasible point from a sequence of feasible points
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.ISkylineFeasiblePointPicker.GetIndexOfOneOfFeasiblePoints(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32}},PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Returns an index of a feasible point from a sequence of feasible points <paramref name="feasiblePoints"/> where a <paramref name="rectToBePacked"/> should be placed
+            </summary>
+            <param name="feasiblePoints">A sequence of feasible points</param>
+            <param name="rectToBePacked">A rectangle that will be placed</param>
+            <remarks>
+            In order to avoid namespace pollution with custom/helper type like FeasiblePoints, tuples are used instead
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="feasiblePoints"/> is null</exception>
+            <returns>An index of the feasible point</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.ISkylineRectAndPointPicker">
+            <summary>
+            Allows to pick a rectangle and index of feasible point where the rectangle should be placed
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.ISkylineRectAndPointPicker.PickRectAndPoint(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32}},System.Int32,System.Int32)">
+            <summary>
+            Returns a selected rectangle and selected feasible point where the selected rectangle should be placed
+            </summary>
+            <param name="rects">The input (to be placed) rectangles</param>
+            <param name="feasiblePoints">Sequence of feasible points</param>
+            <param name="width">Width of the bounding box</param>
+            <param name="height">Height of the bounding box</param>
+            <returns>The rectangle from <paramref name="rects"/> and a point from <paramref name="feasiblePoints"/> where the selected rectangle should be placed</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.LightweightRectAndPointPicker">
+            <summary>
+            Very simple implementation of ISkylineRectAndPointPicker that simply selects the first rectangle in the sequence and first of the feasible points for that rectangle
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.LightweightRectAndPointPicker.#ctor">
+            <summary>
+            Constructs a new LightweightRectAndPointPicker
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.LightweightRectAndPointPicker.PickRectAndPoint(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32}},System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.LightweightRectAndPointPicker.IsReallyFeasibleForGivenRect(System.Int32,System.Int32,System.Int32,System.Int32,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Checks whether the point with coordinates <paramref name="x"/>, <paramref name="y"/> within a bounding box with dimensions <paramref name="width"/> x <paramref name="height"/> is feasible for a rectangle <paramref name="rect"/>
+            </summary>
+            <param name="x">The X coordinate of the feasible point</param>
+            <param name="y">The Y coordinate of the feasible point</param>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+            <param name="rect">The rectangle that should be tested</param>
+            <returns>True if the point is feasible, false otherwise</returns>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Skyline.LightweightRectAndPointPicker.feasiblePointPicker">
+            <summary>
+            Internally used for feasible point picking
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.MinimalAreaWasteRectAndPointPicker">
+            <summary>
+            Implementation of ISkylineRectAndPointPicker that selects based on the mininal area waste
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.MinimalAreaWasteRectAndPointPicker.PickRectAndPoint(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32}},System.Int32,System.Int32)">
+            <summary>
+            Selects a pair (rect, index of a feasible point) for which the wasted area is minimal
+            </summary>
+            <param name="rects">Rectangles to be placed</param>
+            <param name="feasiblePoints">Feasible points</param>
+            <param name="width">Width of the bounding box</param>
+            <param name="height">Height of the bounding box</param>
+            <returns>The pair (rect, index of a feasible point) for which the wasted area is minimal</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.MinimalAreaWasteRectAndPointPicker.IsReallyFeasibleForGivenRect(System.Int32,System.Int32,System.Int32,System.Int32,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Checks whether the point with coordinates <paramref name="x"/>, <paramref name="y"/> within a bounding box with dimensions <paramref name="width"/> x <paramref name="height"/> is feasible for a rectangle <paramref name="rect"/>
+            </summary>
+            <param name="x">The X coordinate of the feasible point</param>
+            <param name="y">The Y coordinate of the feasible point</param>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+            <param name="rect">The rectangle that should be tested</param>
+            <returns>True if the point is feasible, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.MinimalAreaWasteRectAndPointPicker.CalculateGN(PaunPacker.Core.Types.PPRect@,System.Int32,System.Int32)">
+            <summary>
+            Calculates the "goodness number" value of a given rectangle
+            </summary>
+            <param name="rect">The rectangle for which the GN will be calculated</param>
+            <param name="verticalEdgeLength">The length of the vertical edge pointing out (to the top) from the feasible point</param>
+            <param name="horizontalEdgeLength">The length of the horizontal edge pointing out (to the right) from the feasible point</param>
+            <returns>The goodness number</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.MinimalAreaWasteRectAndPointPicker.CalculateWastedArea(PaunPacker.Core.Types.PPRect@,System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32})">
+            <summary>
+            Calculates the wasted area
+            </summary>
+            <param name="rect">The rectangle to be placed</param>
+            <param name="feasiblePoint">The feasible point where the rectangle should be placed</param>
+            <returns>The wasted area that would result from placing the <paramref name="rect"/> at the feasible point <paramref name="feasiblePoint"/></returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.RandomPointPicker">
+            <summary>
+            Implementation of ISkylineFeasiblePointPicker selecting randomly
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.RandomPointPicker.#ctor">
+            <summary>
+            Constructs a RandomPointPicker
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.RandomPointPicker.#ctor(System.Int32)">
+            <summary>
+            Constructs a RandomPointPicker using a given seed
+            </summary>
+            <param name="seed">Seed for the random generator</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.RandomPointPicker.GetIndexOfOneOfFeasiblePoints(System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32}},PaunPacker.Core.Types.PPRect)">
+            <inheritdoc />
+            <remarks>Selects the feasible point randomly</remarks>
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Placement.Skyline.RandomPointPicker.rnd">
+            <summary>
+            The random generator used for feasible point selection
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm" -->
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.#ctor(PaunPacker.Core.Packing.Sorting.IImageSorter,PaunPacker.Core.Packing.Placement.Skyline.ISkylineRectAndPointPicker)">
+            <summary>
+            Constructs a SkylineAlgorithm with a given image sorter and ISkylineRectAndPointPicker
+            </summary>
+            <param name="imageSorter">The image sorter to be used</param>
+            <param name="rectangleAndPointPicker">The rectangle and point picker to be used</param>
+            <remarks>
+            When <paramref name="imageSorter"/> is null, the <see cref="T:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorterDesc"/> is used as a default image sorter
+            When <paramref name="rectangleAndPointPicker"/> is null, the <see cref="T:PaunPacker.Core.Packing.Placement.Skyline.MinimalAreaWasteRectAndPointPicker"/> is used as a default rect and point picker
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.PlaceRects(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.PlaceRectsImpl(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+            <remarks>Private implementation</remarks>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.PPRectDimensionComparer">
+            <summary>
+            Comparer for PPRect based on their dimensions
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.PPRectDimensionComparer.Equals(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Checks whether two compared rectangles (comparands) have equal dimensions
+            </summary>
+            <param name="x">First comparand</param>
+            <param name="y">Second comparand</param>
+            <returns>True if the comparands have equal dimensions, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.PPRectDimensionComparer.GetHashCode(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Returns the hash code for a given rectangle
+            </summary>
+            <param name="obj">The rectangle for which the hash code is calculated</param>
+            <returns>The hash code of <paramref name="obj"/></returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.InitializeLists(System.Int32,System.Int32)">
+            <summary>
+            Initializes the list of feasible points
+            </summary>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.PlaceRect(System.ValueTuple{System.Int32,System.Int32},PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Places a rectangle onto a feasible point
+            </summary>
+            <param name="feasiblePoint">Feasible point where the rectangle should be placed</param>
+            <param name="rect">The rectangle that should be placed</param>
+            <returns>A new rectangle that is has same dimensions and corresponds to the same image but has different position (is placed onto the <paramref name="feasiblePoint"/>)</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.AdjustEnvelope(System.Int32,System.Int32,PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.FeasiblePoint,PaunPacker.Core.Types.PPRect,System.Int32,System.Int32)">
+            <summary>
+            Adjusts (repairs) the envelope after a placement of rectangle <paramref name="rectPlaced"/> onto a feasible point <paramref name="feasiblePointUsed"/>
+            </summary>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+            <param name="feasiblePointUsed">The feasible point that was used for a placement</param>
+            <param name="rectPlaced">The rectangle that was placed</param>
+            <param name="minWidth">Minimum width of the rectangles that remain to be placed</param>
+            <param name="minHeight">Minimum height of the rectangles that remain to be placed</param>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.RecalculateFeasiblePoints(System.Int32,System.Int32,PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.FeasiblePoint,PaunPacker.Core.Types.PPRect,System.Int32,System.Int32)">
+            <summary>
+            Recalculates the feasible points after a placement of rectangle <paramref name="rectPlaced"/> onto a feasible point <paramref name="feasiblePointUsed"/>
+            </summary>
+            <param name="width">The width of the bounding box</param>
+            <param name="height">The height of the bounding box</param>
+            <param name="feasiblePointUsed">The feasible point that was used for a placement</param>
+            <param name="rectPlaced">The rectangle that was placed</param>
+            <param name="minWidth">Minimum width of the rectangles that remain to be placed</param>
+            <param name="minHeight">Minimum height of the rectangles that remain to be placed</param>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.FeasiblePoint">
+            <summary>
+            Represents a feasible point
+            </summary>
+            <remarks>
+            Points are defined by two edges that are adjacent to it
+            Always specify it in a way that: vertical top, vertical bottom, horizontal left, horizontal right ! in order to avoid checks each time
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.FeasiblePoint.#ctor(PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge,PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge,System.ValueTuple{System.Int32,System.Int32})">
+            <summary>
+            Constructs a feasible point from it's adjacent edges and coordinates of this point
+            </summary>
+            <param name="verticalEdge"></param>
+            <param name="horizontalEdge"></param>
+            <param name="point2d"></param>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.FeasiblePoint.Point2D">
+            <summary>
+            The 2D coordinates of this feasible point
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.FeasiblePoint.VerticalEdge">
+            <summary>
+            Vertical edge (from the envelope / skyline) adjacent to this feasible point
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.FeasiblePoint.HorizontalEdge">
+            <summary>
+            Horizontal edge (from the envelope / skyline) adjacent to this feasible point
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge">
+            <summary>
+            Represents an edge of the envelope
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructs a new edge from coordinates of two points
+            </summary>
+            <param name="x1">The X coordinate of the first point</param>
+            <param name="y1">The Y coordinate of the first point</param>
+            <param name="x2">The X coordinate of the second point</param>
+            <param name="y2">The Y coordinate of the second point</param>
+            <remarks>
+            Always specify it in a way that: vertical top, vertical bottom, horizontal left, horizontal right ! in order to avoid checks each time
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge.#ctor(System.ValueTuple{System.Int32,System.Int32},System.ValueTuple{System.Int32,System.Int32})">
+            <summary>
+            Constructs a new edge from coordinates of two points (given as tuples)
+            </summary>
+            <param name="first">The coordinates of the first point</param>
+            <param name="second">The coordinates of the second point</param>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge.IsVertical">
+            <summary>
+            Indicates whether this edge is vertical
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge.Length">
+            <summary>
+            The length of the edge
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge.First">
+            <summary>
+            The first point of the edge
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm.Edge.Second">
+            <summary>
+            The second point of the edge
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorter">
+            <summary>
+            ImageSorter that sorts by the height and then by the width of the rectangles, in ascending order
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorter.#ctor">
+            <summary>
+            Constructs a <see cref="T:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorter"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorter.SortImages(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorter.comparer">
+            <summary>
+            The comparer used for sorting
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorterDesc">
+            <summary>
+            ImageSorter that sorts by the height and then by the width of the rectangles, in descending order
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorterDesc.#ctor">
+            <summary>
+            Constructs a <see cref="T:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorterDesc"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorterDesc.SortImages(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.Core.Packing.Sorting.ByHeightAndWidthImageSorterDesc.comparer">
+            <summary>
+            The comparer used for sorting
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Sorting.ByHeightThenWidthComparer">
+            <summary>
+            Implementation of <see cref="T:System.Collections.Generic.IComparer`1"/> for PPRect
+            Compares two rectangles based on their height and then on their width (in default, ascending order)
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Sorting.ByHeightThenWidthComparer.Compare(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Compares two rectangles based on their height and then on their width
+            </summary>
+            <param name="x">First comparand</param>
+            <param name="y">Second comparand</param>
+            <returns>Negative number if <paramref name="x"/> is smaller than <paramref name="y"/>, 0 if they are equal and positive number otherwise</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Sorting.IImageSorter">
+            <summary>
+            Represents an image sorter
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Sorting.IImageSorter.SortImages(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Sorts the images according to rules that are specific for a particular implementation
+            </summary>
+            <param name="rects">The rectangles to be sorted</param>
+            <returns>Sorted rectangles</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Sorting.PreserveOrderImageSorter">
+            <summary>
+            Represents an indentity sorter
+            </summary>
+            <remarks>
+             This sorter actually performs no sorting at all. It only offers a way to force placement algorithms / minimum bounding box finders (when they are parametrized by the sorter)
+             not to sort images and use the images in the order given to the algorithm
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Sorting.PreserveOrderImageSorter.SortImages(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Core.Packing.Utils.SingleDimensionEnumerator">
+            <summary>
+            For given rectangles, returns collection of possible widths / heights to try (for minimum bounding box of those rectangles)
+            </summary>
+            <example>
+            Usability: Imagine situation of strip-packing, unlimited height and you need to fix width. In case of rectangle packing + strip packing algorithm, the width must be set, but the
+            it is not knowh which width to use. This class could be used to enumerate several possible width that should be tried
+            </example>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Utils.SingleDimensionEnumerator.GetWidth(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Enumerates possible widths of a bounding box for given rectangles
+            </summary>
+            <param name="rects">The rectangles for which the widths of their bounding box should be enumerated</param>
+            <returns>Possible widths of the bounding box</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Packing.Utils.SingleDimensionEnumerator.GetHeight(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Enumerates possible heights of a bounding box for given rectangles
+            </summary>
+            <param name="rects">The rectangles for which the heights of their bounding box should be enumerated</param>
+            <returns>Possible heights of the bounding box</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Atlas.TextureAtlas">
+            <summary>
+            Represents the texture atlas
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Atlas.TextureAtlas.#ctor(PaunPacker.Core.Packing.PackingResult)">
+            <summary>
+            Creates a texture atlas from a given packing result
+            </summary>
+            <param name="packing"></param>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="packing"/> is null</exception>
+        </member>
+        <member name="M:PaunPacker.Core.Atlas.TextureAtlas.GetBitmap(SkiaSharp.SKColorType)">
+            <summary>
+            Returns Texture Atlas' Bitmap
+            </summary>
+            <param name="colorType">The color type of the resulting bitmap</param>
+            <returns>The texture atlas' bitmap</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Atlas.TextureAtlas.GetImageWithColorType(SkiaSharp.SKColorType)">
+            <summary>
+            Returns Texture Atlas' Image
+            </summary>
+            <param name="colorType">The color type of the resulting image</param>
+            <returns>The texture atlas' image</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Atlas.TextureAtlas.GetBitmapWithColorType(SkiaSharp.SKColorType)">
+            <summary>
+            Returns Texture Atlas' Bitmap
+            </summary>
+            <remarks>
+            Same as TextureAtlas.Bitmap, but allows a parametrization by <paramref name="colorType"/>
+            </remarks>
+            <param name="colorType">The color type of the resulting bitmap</param>
+            <returns>The texture atlas' bitmap</returns>
+        </member>
+        <member name="P:PaunPacker.Core.Atlas.TextureAtlas.Rects">
+            <summary>
+            Rectangles contained within the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Atlas.TextureAtlas.Width">
+            <summary>
+            Width of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Atlas.TextureAtlas.Height">
+            <summary>
+            Height of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Atlas.TextureAtlas.Bitmap">
+            <summary>
+            Bitmap of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Atlas.TextureAtlas.Image">
+            <summary>
+            Image of the texture atlas
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Atlas.TextureAtlas.GetImage">
+            <summary>
+            Returns an image of the texture atlas
+            </summary>
+            <returns>The image of the texture atlas</returns>
+        </member>
+        <member name="P:PaunPacker.Core.Atlas.TextureAtlas.Format">
+            <summary>
+            Color type of the texture atlas
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Types.PPImage">
+            <summary>
+            Represents an image
+            </summary>
+            <remarks>
+            Wrapper around <see cref="T:SkiaSharp.SKBitmap"/> with some additional members
+            About sizes: Width is the width of the "raw" bitmap, i.e. including any added pixels, exluding removed pixels .. i.e. the actual (real) width
+                         OriginalWidth is the width before image processing i.e. the width of the corresponding texture on the disk
+                         FinalWidth is the width that will be written to the metadata (which might differ from the previous two)
+                         Similarly for the Height
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPImage.#ctor">
+            <summary>
+            Constructs an empty image
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPImage.#ctor(SkiaSharp.SKBitmap)">
+            <summary>
+            Constructs an image from a given SKBitmap
+            </summary>
+            <param name="skBmp">The SKBitmap from which an image should be created</param>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPImage.#ctor(SkiaSharp.SKBitmap,System.String,System.Boolean)">
+            <summary>
+            Constructs an image from a given SKBitmap and obtains it's file name from a given pat
+            </summary>
+            <param name="skBmp">The SKBitmap from which an image should be created</param>
+            <param name="filePath">The path of the image</param>
+            <param name="isRotated">Whether the image is rotated by 90 degrees</param>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPImage.#ctor(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPImage})">
+            <summary>
+            Constructor that creates an image which aliases the other images from the sequence of identical images
+            </summary>
+            <remarks>Duplicates the first image of the sequence and makes the rest as it's aliases</remarks>
+            <param name="sameImages">The images that are same (the have same BitmapHash <see cref="P:PaunPacker.Core.Types.PPImage.BitmapHash"/></param>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.Aliases">
+            <summary>
+            Contains file names and file paths of all the same (aliased) images
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.Bitmap">
+            <summary>
+            The underlying SKBitmap
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.IsRotated">
+            <summary>
+            Determines whether the image is rotated (relative to the original image)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.ImagePath">
+            <summary>
+            The image path
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.ImageName">
+            <summary>
+            The image name
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.OffsetX">
+            <summary>
+            Determines X offset of the current image inside an image with size originalWidth x originalHeight
+            </summary>
+            <remarks>
+            Taken from top-left corner
+            When the OriginalWidth == Width then the X offset should be 0
+            </remarks>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.OffsetY">
+            <summary>
+            Determines Y offset of the current image inside an image with size originalWidth x originalHeight
+            </summary>
+            <remarks>
+            Taken from top-left corner
+             When the OriginalHeight == Height then the Y offset should be 0
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPImage.RotateBy90Degrees">
+            <summary>
+            Rotates the image by 90 degrees
+            </summary>
+            <remarks>
+            Only rotation by 90 degrees affect
+            If the image is not rotated (i.e. it has the same orientation as the original (with the given path)) then the rotation performs clock-wise rotation by 90 degrees
+            Otherwise if the image is already rotated, the rotation is taken by -90 degrees to turn it into the original position
+            This ensures that it is sufficient to only store flag "rotate" in the metadata and not additional degrees
+            More info at: https://docs.microsoft.com/cs-cz/xamarin/xamarin-forms/user-interface/graphics/skiasharp/transforms/rotate
+            </remarks>
+            <returns>The rotated image</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPImage.RotateClockWiseByDegrees(SkiaSharp.SKBitmap,System.Single)">
+            <summary>
+            Rotates a SKBitmap clock-wise by <paramref name="n"/> degrees
+            </summary>
+            <param name="bmp">The SKBitmap to be rotated</param>
+            <param name="n">The amount of degrees for clock-wise rotation</param>
+            <remarks>Both negative degrees and degrees greater than 360 are allowed</remarks>
+            <returns>The rotated SKBitmap</returns>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.OriginalWidth">
+            <summary>
+            The original width of the image (i.e. before possibly changing the bitmap in the image processing)
+            </summary>
+            <remarks>Is used when creating the metadata</remarks>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.OriginalHeight">
+            <summary>
+            The original height of the image (i.e. before possibly changing the bitmap in the image processing)
+            </summary>
+            <remarks>Is used when creating the metadata</remarks>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.FinalWidth">
+            <summary>
+            The final width that will be stored in the metadata
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.FinalHeight">
+            <summary>
+            The final height that will be stored in the metadata
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.NoWhiteSpaceXOffset">
+            <summary>
+            The "final" X coordinate that will be used when creating the texture atlas
+            </summary>
+            <remarks>
+            Used by for example Extruder / PaddingAdder, which adds some pixels to the texture but in the metadata, these pixels should not be considered as a part of the texture
+            Not handled by the OffsetX beacuse the OFfsetX is responsible only for whitespace (transparent pixels) (same approach is taken by TexturePacker when creating LibGDX metadata)
+            </remarks>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.NoWhiteSpaceYOffset">
+            <summary>
+            The "final" Y coordinate that will be used when creating the texture atlas
+            </summary>
+            <remarks>
+            Used by for example Extruder / PaddingAdder, which adds some pixels to the texture but in the metadata, these pixels should not be considered as a part of the texture
+            Not handled by the OffsetY beacuse the OFfsetY is responsible only for whitespace (transparent pixels) (same approach is taken by TexturePacker when creating LibGDX metadata)
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPImage.Dispose">
+            <summary>
+            Implementation of the IDisposable interface
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPImage.BitmapHash">
+            <summary>
+            The hash of the bitmap pixels (bytes)
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Types.PPImage.bitmapHash">
+            <summary>
+            The lazy evaluated hash of the bitmap
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Core.Types.PPPoint">
+            <summary>
+            Represents a 2D point with integer coordinates
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPPoint.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new point
+            </summary>
+            <param name="left">The x coordinate of the point</param>
+            <param name="top">The y coordinate of the point</param>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPPoint.Left">
+            <summary>
+            The x coordinate of the point
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPPoint.Top">
+            <summary>
+            The y coordinate of the point
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPPoint.Equals(System.Object)">
+            <summary>
+            Implementation of IEquatable interface
+            </summary>
+            <param name="obj">The object that is compared to this object</param>
+            <remarks>An object is equal to this PPPoint if it is also an instance of PPPoint and they have same coordinates</remarks>
+            <returns>True if the objects are equal, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPPoint.GetHashCode">
+            <summary>
+            Overrides the GetHashCode method
+            </summary>
+            <returns>Hash code for this point</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPPoint.op_Equality(PaunPacker.Core.Types.PPPoint,PaunPacker.Core.Types.PPPoint)">
+            <summary>
+            Override of equality operator
+            </summary>
+            <param name="left">The left operand</param>
+            <param name="right">The right operand</param>
+            <returns>True if the operands are equal, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPPoint.op_Inequality(PaunPacker.Core.Types.PPPoint,PaunPacker.Core.Types.PPPoint)">
+            <summary>
+            Override of non-equality operator
+            </summary>
+            <param name="left">The left operand</param>
+            <param name="right">The right operand</param>
+            <returns>True if the operands are not equal, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPPoint.Equals(PaunPacker.Core.Types.PPPoint)">
+            <summary>
+            Strongly typed version of the equals method
+            </summary>
+            <param name="other">Two PPPoints are equal if they have same coordinates</param>
+            <returns>True if the <paramref name="other"/> is equal to this object on which the method was called, false otherwise</returns>
+        </member>
+        <member name="T:PaunPacker.Core.Types.PPRect">
+            <summary>
+            Represents a rectangle with integer coordinates (thus also dimensions) in 2D space with a (possible) reference to a corresponding image
+            </summary>
+            <remarks>
+            A wrapper around <see cref="T:SkiaSharp.SKRect"/> with some additional members
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,PaunPacker.Core.Types.PPImage)">
+            <summary>
+            Constructs a new PPRect from coordinates
+            </summary>
+            <param name="left">X coordinate of the top-left corner of the rectangle</param>
+            <param name="top">Y coordinate of the top-left corner of the rectangle</param>
+            <param name="right">X coordinate of the bottom-right corner of the rectangle</param>
+            <param name="bottom">Y coordinate of the bottom-right corner of the rectangle</param>
+            <param name="image">A corresponding image</param>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.#ctor(PaunPacker.Core.Types.PPImage)">
+            <summary>
+            Constructs a new PPRect from a given image
+            </summary>
+            <remarks>The top-left corner is set to point (0, 0) and it's dimensions are equal to the dimensions of the <paramref name="image"/></remarks>
+            <param name="image">The image from which the rectangle is constructed</param>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.IntersectsWith(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Checkes whether two PPRects intersect
+            </summary>
+            <param name="rect">A rectangle which is checked for intersection</param>
+            <returns>True if the rectangles intersect, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.IntersectsWith(PaunPacker.Core.Types.PPPoint)">
+            <summary>
+            Checkes whether this PPRect intersects (contains) with a given point
+            </summary>
+            <param name="point">A point which is checked for intersection</param>
+            <returns>True if the rectangle intersects with the point, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.Contains(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Checkes whether this PPRect contains a given rectangle
+            </summary>
+            <param name="rect">The rectangle which is checked for containment</param>
+            <returns>True if this rectangle contains the <paramref name="rect"/></returns>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.IsRotated">
+            <summary>
+            Determines if the rectangle is rotated (relative to the original)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Left">
+            <summary>
+            X coordinate of the top-left corner of this rectangle
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Right">
+            <summary>
+            X coordinate of the bottom-right corner of this rectangle
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Top">
+            <summary>
+            Y coordinate of the top-left corner of this rectangle
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Bottom">
+            <summary>
+            Y coordinate of the bottom-right corner of this rectangle
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Width">
+            <summary>
+            Width of the rectangle
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Height">
+            <summary>
+            Height of the rectangle
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.IsEmpty">
+            <summary>
+            Indicates whether the rectangle is empty
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.RotateClockWiseBy90Degrees">
+            <summary>
+            Rotates the rectangle by 90 degrees clock-wise
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Rect">
+            <summary>
+            The underlying SKRectI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Core.Types.PPRect.Image">
+            <summary>
+            The corresponding image
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Core.Types.PPRect.rect">
+            <see cref="P:PaunPacker.Core.Types.PPRect.Rect"/>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.Equals(System.Object)">
+            <summary>
+            Implementation of IEquatable interface
+            </summary>
+            <param name="obj">The object that is compared to this object</param>
+            <remarks>An object is equal to this PPRect if it is also an instance of PPRect and they have same coordinates</remarks>
+            <returns>True if the objects are equal, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.GetHashCode">
+            <summary>
+            Overrides the GetHashCode method
+            </summary>
+            <returns>Hash code for this rectangle</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.op_Equality(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Override of equality operator
+            </summary>
+            <param name="left">The left operand</param>
+            <param name="right">The right operand</param>
+            <returns>True if the operands are equal, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.op_Inequality(PaunPacker.Core.Types.PPRect,PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Override of non-equality operator
+            </summary>
+            <param name="left">The left operand</param>
+            <param name="right">The right operand</param>
+            <returns>True if the operands are not equal, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Core.Types.PPRect.Equals(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Strongly typed version of the equals method
+            </summary>
+            <param name="other">Two PPRects are equal if they have same coordinates</param>
+            <returns>True if the <paramref name="other"/> is equal to this object on which the method was called, false otherwise</returns>
+        </member>
+    </members>
+</doc>

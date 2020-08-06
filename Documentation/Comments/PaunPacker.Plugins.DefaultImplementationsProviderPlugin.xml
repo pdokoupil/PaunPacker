@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.Plugins.DefaultImplementationsProviderPlugin</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.Plugin.DefaultImplementationsPlugin">
+            <summary>
+            Serves as a plugin entry point for a plugin that exports default implementations from PaunPacker
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugin.DefaultImplementationsPlugin.OnInitialized(Prism.Ioc.IContainerProvider)">
+            <summary>
+            Performs initialization and exports the types
+            </summary>
+            <param name="containerProvider">Container provider given by the Prism</param>
+        </member>
+        <member name="M:PaunPacker.Plugin.DefaultImplementationsPlugin.RegisterTypes(Prism.Ioc.IContainerRegistry)">
+            <summary>
+            Implementation of the Prism's Register types
+            </summary>
+            <param name="containerRegistry">The container registry</param>
+            <remarks>Does not do anything</remarks>
+        </member>
+        <member name="P:PaunPacker.Plugin.DefaultImplementationsPlugin.IoC">
+            <summary>
+            The IoC Container used for exports and imports
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugin.DefaultImplementationsPlugin.EventAggregator">
+            <summary>
+            The event aggregator used for communication with host application
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.CroppingTrimmerViewModel">
+            <summary>
+            The view model for a cropping trimmer
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.CroppingTrimmerViewModel.#ctor(Unity.IUnityContainer)">
+            <summary>
+            Constructs the TrimmerViewModel
+            </summary>
+            <remarks>Also performs the registration of Trimmer with a specified Alpha tolerance</remarks>
+            <param name="unityContainer"></param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.CroppingTrimmerViewModel.AlphaTolerance">
+            <summary>
+            The Alpha tolerance
+            Pixels with alpha less than or equal to this treshold will be treated as transparent
+            </summary>
+            <remarks>Alpha tolerance is a number between 0 and 255. Values greater than 255 are treated as 255</remarks>
+        </member>
+        <member name="E:PaunPacker.Plugins.ViewModels.CroppingTrimmerViewModel.PropertyChanged">
+            <summary>
+            The PropertyChangedEvent used to notify the view about data changes
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Plugins.ViewModels.CroppingTrimmerViewModel.alphaTolerance">
+            <see cref="P:PaunPacker.Plugins.ViewModels.CroppingTrimmerViewModel.AlphaTolerance"/>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.ExtruderViewModel">
+            <summary>
+            The view model for Extruder
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.ExtruderViewModel.#ctor(Unity.IUnityContainer)">
+            <summary>
+            Constructs the ExtruderViewModel
+            </summary>
+            <remarks>Also performs the registration of Extruder with a specified Amount</remarks>
+            <param name="unityContainer"></param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.ExtruderViewModel.Amount">
+            <summary>
+            The amount of pixels for extrude
+            </summary>
+        </member>
+        <member name="E:PaunPacker.Plugins.ViewModels.ExtruderViewModel.PropertyChanged">
+            <summary>
+            The PropertyChangedEvent used to notify the view about data changes
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Plugins.ViewModels.ExtruderViewModel.amount">
+            <see cref="P:PaunPacker.Plugins.ViewModels.ExtruderViewModel.Amount"/>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.PaddingAdderViewModel">
+            <summary>
+            The view model for PaddingAdder
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.PaddingAdderViewModel.#ctor(Unity.IUnityContainer)">
+            <summary>
+            Constructs the PaddingAdderViewModel
+            </summary>
+            <remarks>Also performs the registration of PaddingAdder with a specified Amount</remarks>
+            <param name="unityContainer"></param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.PaddingAdderViewModel.Amount">
+            <summary>
+            The amount of pixels for padding
+            </summary>
+        </member>
+        <member name="E:PaunPacker.Plugins.ViewModels.PaddingAdderViewModel.PropertyChanged">
+            <summary>
+            The PropertyChangedEvent used to notify the view about data changes
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Plugins.ViewModels.PaddingAdderViewModel.amount">
+            <see cref="P:PaunPacker.Plugins.ViewModels.PaddingAdderViewModel.Amount"/>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.TrimmerViewModel">
+            <summary>
+            The view model for a trimmer
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.TrimmerViewModel.#ctor(Unity.IUnityContainer)">
+            <summary>
+            Constructs the TrimmerViewModel
+            </summary>
+            <remarks>Also performs the registration of Trimmer with a specified Alpha tolerance</remarks>
+            <param name="unityContainer"></param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.TrimmerViewModel.AlphaTolerance">
+            <summary>
+            The Alpha tolerance
+            Pixels with alpha less than or equal to this treshold will be treated as transparent
+            </summary>
+            <remarks>Alpha tolerance is a number between 0 and 255. Values greater than 255 are treated as 255</remarks>
+        </member>
+        <member name="E:PaunPacker.Plugins.ViewModels.TrimmerViewModel.PropertyChanged">
+            <summary>
+            The PropertyChangedEvent used to notify the view about data changes
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Plugins.ViewModels.TrimmerViewModel.alphaTolerance">
+            <see cref="P:PaunPacker.Plugins.ViewModels.TrimmerViewModel.AlphaTolerance"/>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.CroppingTrimmerView">
+            <summary>
+            Interaction logic for CroppingTrimmerView.xaml
+            </summary>
+            <summary>
+            CroppingTrimmerView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.CroppingTrimmerView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.ExtruderView">
+            <summary>
+            Interaction logic for ExtruderView.xaml
+            </summary>
+            <summary>
+            ExtruderView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.ExtruderView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.PaddingAdderView">
+            <summary>
+            Interaction logic for PaddingAdder.xaml
+            </summary>
+            <summary>
+            PaddingAdderView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.PaddingAdderView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.TrimmerView">
+            <summary>
+            Interaction logic for TrimmerView.xaml
+            </summary>
+            <summary>
+            TrimmerView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.TrimmerView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+    </members>
+</doc>

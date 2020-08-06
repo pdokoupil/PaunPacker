@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="PaunPacker.GUI.Views.LoadedPluginsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="#F0F0F0"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <TextBlock DockPanel.Dock="Top" Margin="3, 3, 3, 3">Loaded plugins:</TextBlock>
+            <ListBox x:Name="PluginsListBox" SelectedItem="{Binding SelectedPlugin, Mode=OneWayToSource}" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding LoadedPlugins}" DisplayMemberPath="Name"/>
+            <Button HorizontalAlignment="Left" Command="{Binding ShowDetails}" IsEnabled="{Binding SelectedItems.Count, ElementName=PluginsListBox}" VerticalAlignment="Bottom" MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3">Show Details</Button>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" Command="{Binding CloseDialogCommand}" IsDefault="True">OK</Button>
+        </DockPanel>
+    </Grid>
+</UserControl>

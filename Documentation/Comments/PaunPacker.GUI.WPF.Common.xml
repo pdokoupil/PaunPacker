@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.GUI.WPF.Common</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.GUI.WPF.Common.Attributes.AvailableToAttribute">
+            <summary>
+            States for which frameworks the type decorated by this attribute should be available
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Attributes.AvailableToAttribute.#ctor(PaunPacker.GUI.WPF.Common.Attributes.FrameworkID[])">
+            <summary>
+            Creates an attribute stating that a decorated type should be available to frameworks given by <paramref name="availableTo"/>
+            </summary>
+            <param name="availableTo">The frameworks</param>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Attributes.AvailableToAttribute.#ctor">
+            <summary>
+            Creates an attribute stating that a decorated type should be available to all the frameworks
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.AvailableToAttribute.AvailableTo">
+            <summary>
+            The frameworks for which the decorated types is available to
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute">
+            <summary>
+            Metadata about a type exported from a plugin
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute.#ctor(System.Type,System.String,System.String,System.String,System.String)">
+            <summary>
+            Constructs a new metadata about a type exported from a plugin
+            </summary>
+            <param name="name">User friendly name of the type</param>
+            <param name="description">Description of the type</param>
+            <param name="author">Author of the type</param>
+            <param name="version">Version of the type</param>
+            <param name="exportedType">The type being exported</param>
+            <remarks>The <paramref name="exportedType"/> is useful when it is not possible to mark the exported type with <see cref="T:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute"/> because it allows to mark only the main plugin with this attribute</remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute.Name">
+            <summary>
+            Name (user-friendly) of the decorated type
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute.Description">
+            <summary>
+            Description of the decorated type
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute.Author">
+            <summary>
+            Author of the decorated type
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute.Version">
+            <summary>
+            Version of the decorated type
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute.ExportedType">
+            <summary>
+            The exported type
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Attributes.FrameworkID">
+            <summary>
+            Identification of a framework
+            </summary>
+            <remarks>A frameworks that are not listed by this enum are meant to be <see cref="F:PaunPacker.GUI.WPF.Common.Attributes.FrameworkID.Custom"/>
+            So when plugin developers are developing for a framework not listed in this enum they should use AvailableTo(FrameworkID.Custom) which is (at the moment) equivalent to AvailableTo()</remarks>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.Attributes.FrameworkID.Unity">
+            <summary>
+            Corresponds to the Unity game engine
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.Attributes.FrameworkID.libGDX">
+            <summary>
+            Corresponds to libGDX
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.Attributes.FrameworkID.Custom">
+            <summary>
+            Corresponds to anything else
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Attributes.PartiallyContainedAttribute">
+            <summary>
+            Attribute stating that a decorated type is partially contained which means that some of it's constructor dependencies are provided
+            from a plugin that contains that type while the other should be provided from the PaunPacker.GUI
+            </summary>
+            <remarks>This attribute should be used only on Minimum bounding box finders and Placement algorithms</remarks>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute">
+            <summary>
+            Metadata about a plugin
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute.#ctor(System.Type,System.String,System.String,System.String,System.String,System.Type[])">
+            <summary>
+            Constructs a new metadata about a plugin
+            </summary>
+            <param name="pluginType">The type of the plugin</param>
+            <param name="name">User friendly name of the plugin</param>
+            <param name="description">Description of the plugin</param>
+            <param name="author">Author of the plugin</param>
+            <param name="version">Version of the plugin</param>
+            <param name="exportedTypes">The types exported from the plugin</param>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute.Name">
+            <summary>
+            The name (user-friendly) of the decorated plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute.Description">
+            <summary>
+            The description of the decorated plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute.Author">
+            <summary>
+            The author of the decorated plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute.Version">
+            <summary>
+            The version of the decorated plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute.ExportedTypes">
+            <summary>
+            The types exported from the decorated plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.PluginMetadataAttribute.PluginType">
+            <summary>
+            The type of the plugin
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Attributes.SelfContainedAttribute">
+            <summary>
+            Attribute stating that a decorated type is self (fully) contained which means that all of it's constructor dependencies are provided
+            from a plugin that contains that type
+            </summary>
+            <remarks>
+            This attribute should be used only on Minimum bounding box finders and Placement algorithms
+            If type has this attribute on it, it is telling that user should not be able to inject Placement/Sorter into it
+            </remarks>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Attributes.TargetFrameworkAttribute">
+            <summary>
+            States that a decorated metadata writer exports a metadata into a format of a given framework
+            </summary>
+            <remarks>
+            Should only decorate the metadata writers
+            This attribute leverages which features should be made available to the user
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Attributes.TargetFrameworkAttribute.#ctor(PaunPacker.GUI.WPF.Common.Attributes.FrameworkID,System.String)">
+            <summary>
+            Creates the attribute stating that a decorated metadata framework targets a framework <paramref name="targetFramework"/> and that the name (displayed in GUI) of this framework is <paramref name="frameworkName"/>
+            </summary>
+            <param name="targetFramework">The ID of the target framework</param>
+            <param name="frameworkName">Specifies the name of the target framework (typically used in conjunction with FrameworkID.Custom)</param>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Attributes.TargetFrameworkAttribute.#ctor">
+            <summary>
+            Creates a metadata writer targetting all the frameworks
+            </summary>
+            <remarks>This is useful when creating a metadata writer that exports to some custom format and that is capable of exporting anything (therefore allowing the user to use arbitrary feature)</remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.TargetFrameworkAttribute.TargetsAllFrameworks">
+            <summary>
+            Indicates whether the decorated metadata writer targets all the frameworks
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.TargetFrameworkAttribute.TargetFrameworkID">
+            <summary>
+            ID of the target framework
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.WPF.Common.Attributes.TargetFrameworkAttribute.FrameworkName">
+            <summary>
+            Name of the target framework
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Events.ModulesLoadedEvent">
+            <summary>
+            Class representing an event that all the modules were loaded
+            </summary>
+            <remarks>Implements the Prism's <see cref="T:Prism.Events.PubSubEvent`1"/></remarks>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.Events.ModulesLoadedPayload">
+            <summary>
+            Class representing a payload of the <see cref="T:PaunPacker.GUI.WPF.Common.Events.ModulesLoadedEvent"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Events.ModulesLoadedPayload.#ctor(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Constructs the payload from <paramref name="loadedTypes"/>
+            </summary>
+            <param name="loadedTypes">The loaded types</param>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.Events.ModulesLoadedPayload.GetLoadedTypes``1">
+            <summary>
+            The types that were loaded and that are representing classes implementing the <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type that the returned types should implement</typeparam>
+            <returns>The types that implement the type <typeparamref name="T"/></returns>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.PluginViewWiring">
+            <summary>
+            This class provides a mechanism to wire the type (exported from a plugin) to it's view
+            By exposing a function that from a <see cref="T:System.Type"/> of an exported type, could return a name of the view
+            under which the view should be registered into IoC
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.WPF.Common.PluginViewWiring.GetViewName(System.Type)">
+            <summary>
+            For a given <paramref name="type"/>, returns the name of it's corresponding view that should be used to register/resolve the view from IoC
+            </summary>
+            <param name="type">The type of the exported type</param>
+            <exception cref="T:System.ArgumentNullException">Is thrown when the <paramref name="type"/> is null</exception>
+            <returns>The name of the view</returns>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.RegionNames">
+            <summary>
+            Declares the names of the regions in the PaunPacker.GUI views and exposes them as constants
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.RegionNames.PlacementAlgorithmsRegion">
+            <summary>
+            The name of the region for placement algorithms
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.RegionNames.ImageSortersRegion">
+            <summary>
+            The name of the region for image sorters used by minimum bounding box finders
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.RegionNames.PlacementImageSortersRegion">
+            <summary>
+            The name of the region for image sorters used by placement algorithms
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.RegionNames.MinimumBoundingBoxFinderRegion">
+            <summary>
+            The name of the region for minimum bounding box finders
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.RegionNames.MetadataWritersRegion">
+            <summary>
+            The name of the region for metadata writers
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.WPF.Common.RegionNames.ImageProcessorsRegion">
+            <summary>
+            The name of the region for image processors
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.WPF.Common.ViewModelBase">
+            <summary>
+            The common base class for all the view models
+            Inherits the <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> interface
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.WPF.Common.ViewModelBase.PropertyChanged">
+            <summary>
+            This event should be used to notify the view corresponding the the view model implementing this interface about changes in view model's data
+            </summary>
+        </member>
+    </members>
+</doc>

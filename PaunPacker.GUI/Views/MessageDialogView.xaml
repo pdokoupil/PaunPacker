@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="PaunPacker.GUI.Views.MessageDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PaunPacker.GUI.Views"
+             mc:Ignorable="d" 
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             MinWidth="400"
+             Background="#F0F0F0"
+             d:DesignHeight="400" d:DesignWidth="800">
+    
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding Message}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" TextWrapping="Wrap" />
+        <Button Grid.Row="1"  Command="{Binding CloseDialogCommand}" Content="OK" MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" HorizontalAlignment="Right" IsDefault="True" />
+    </Grid>
+</UserControl>

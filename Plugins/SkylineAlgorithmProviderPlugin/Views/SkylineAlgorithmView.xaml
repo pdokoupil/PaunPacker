@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="PaunPacker.Plugins.Views.SkylineAlgorithmView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PaunPacker.Plugins.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Background="#a5ff6600">
+    
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/SkylineAlgorithmResources.xaml"/>
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="Rectangle and point picker" Margin="3, 3, 3, 3"/>
+        <ComboBox HorizontalAlignment="Stretch" MinWidth="80" Margin="3, 3, 3, 3" ItemsSource="{Binding SkylineRectAndPointPickerVMs, Mode=OneWay}" SelectedItem="{Binding SelectedRectAndPointPickerVM, Mode=OneWayToSource}" SelectedIndex="0" />
+    </StackPanel>
+    
+</UserControl>

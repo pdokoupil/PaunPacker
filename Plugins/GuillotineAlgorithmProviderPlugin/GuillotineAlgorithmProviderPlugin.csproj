@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin</AssemblyName>
+    <RootNamespace>PaunPacker.Plugins</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>F:\MFF\3 rocnik\bakalarka\NewVersion\PaunPacker\Documentation\Comments\PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>F:\MFF\3 rocnik\bakalarka\NewVersion\PaunPacker\Documentation\Comments\PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\GuillotineAlgorithmResources.xaml" />
+    <None Remove="Views\FreeRectangleExtractorView.xaml" />
+    <None Remove="Views\FreeRectangleMergerView.xaml" />
+    <None Remove="Views\FreeRectanglePostProcessorView.xaml" />
+    <None Remove="Views\FreeRectangleSplitterView.xaml" />
+    <None Remove="Views\GuillotineAlgorithmView.xaml" />
+    <None Remove="Views\RectangleOrientationSelectorView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.3" />
+    <PackageReference Include="Prism.Core" Version="7.2.0.1233-pre" />
+    <PackageReference Include="Unity" Version="5.10.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PaunPacker.Core\PaunPacker.Core.csproj" />
+    <ProjectReference Include="..\..\PaunPacker.GUI.WPF.Common\PaunPacker.GUI.WPF.Common.csproj" />
+  </ItemGroup>
+
+</Project>

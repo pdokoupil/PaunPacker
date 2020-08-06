@@ -1,0 +1,259 @@
+﻿<Window x:Class="PaunPacker.GUI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:pl="clr-namespace:PaunPacker.GUI.WPF.Common.Attributes;assembly=PaunPacker.GUI.WPF.Common"
+        xmlns:ppCommon="clr-namespace:PaunPacker.GUI.WPF.Common;assembly=PaunPacker.GUI.WPF.Common"
+        xmlns:p="clr-namespace:PaunPacker.GUI"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:b="clr-namespace:PaunPacker.GUI.Behaviors"
+        xmlns:vw="clr-namespace:PaunPacker.GUI.Views"
+        xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        x:Name="window"
+        Title="PaunPacker" MinHeight="720" MinWidth="1280">
+
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding LoadFile}" Key="F" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding LoadFolder}" Key="F" Modifiers="Shift"/>
+        <KeyBinding Command="{Binding OpenProject}" Key="O" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding NewProject}" Key="N" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding SaveProject}" Key="S" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding SaveProjectAs}" Key="S" Modifiers="Ctrl+Shift"/>
+    </Window.InputBindings>
+
+    <!--Handles zooming of the texture atlas-->
+    <i:Interaction.Behaviors>
+        <b:MouseWheelBehavior/>
+    </i:Interaction.Behaviors>
+
+    <Grid x:Name="Wrapper" Background="#F0F0F0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Height="40">
+                <MenuItem Header="File" VerticalAlignment="Stretch">
+                    <MenuItem Header="Load file(s)" Command="{Binding LoadFile}" InputGestureText="Ctrl+F"/>
+                    <MenuItem Header="Load folder" Command="{Binding LoadFolder}" InputGestureText="Shift+F"/>
+                    <MenuItem Header="Open project" Command="{Binding OpenProject}" InputGestureText="Ctrl+O"/>
+                    <MenuItem Header="Create a new project" Visibility="{Binding Project, TargetNullValue=Visible, FallbackValue=Collapsed}"
+                              IsEnabled="{Binding Project, TargetNullValue=True, FallbackValue=False}" Command="{Binding NewProject}" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="Save project" Visibility="{Binding Project, TargetNullValue=Collapsed}" 
+                              IsEnabled="{Binding Project, TargetNullValue=False}" Command="{Binding SaveProject}" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="Save project as" Visibility="{Binding Project, TargetNullValue=Collapsed}" 
+                              IsEnabled="{Binding Project, TargetNullValue=False}" Command="{Binding SaveProjectAs}" InputGestureText="Ctrl+Shift+S"/>
+                    <MenuItem Header="Exit" Command="{Binding Exit}" InputGestureText="Alt+F4"/>
+                </MenuItem>
+                <MenuItem Header="Project">
+                    <MenuItem Header="Close" Command="{Binding CloseProject}"/>
+                </MenuItem>
+                <MenuItem Header="Plugins">
+                    <MenuItem Header="Installed Plugins"  Command="{Binding LoadedPluginsNotificationCommand}"/>
+                </MenuItem>
+                <MenuItem Header="Help">
+                    <MenuItem Header="About" Command="{Binding About}"/>
+                </MenuItem>
+            </Menu>
+            <StackPanel></StackPanel>
+        </DockPanel>
+        <Grid x:Name="SubWrapper" Margin="0 40 0 0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3.5*" MinWidth="200"/>
+                <ColumnDefinition Width="14*" MinWidth="450"/>
+                <ColumnDefinition Width="3*" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top" Background="#F0F0F0" IsEnabled="{Binding CurrentJob, Converter={StaticResource InverseNullToBooleanConverter}}">
+                        <!--Double grid so that we can disable the top grid during packing-->
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <DockPanel Grid.ColumnSpan="2" Margin="0, 0, 0, 10">
+                            <TextBlock DockPanel.Dock="Top" Margin="3,3,3,3" HorizontalAlignment="Left">Target Framework</TextBlock>
+                            <ComboBox Margin="3,0,3,0" DockPanel.Dock="Top" SelectedIndex="1" SelectedItem="{Binding Mode=OneWayToSource, Path=SelectedTargetFramework}" ItemsSource="{Binding Source = {StaticResource FrameworkIDEnumData}}" />
+                            <TextBlock DockPanel.Dock="Top" Margin="3,3,3,3" >MetadataWriter</TextBlock>
+                            <ComboBox Margin="3,0,3,0" DockPanel.Dock="Top" ItemsSource="{Binding MetadataWriterVMs}" SelectedItem="{Binding MetadataWriterVM}" HorizontalAlignment="Stretch" IsSynchronizedWithCurrentItem="True" SelectedIndex="0"/>
+
+                            <ContentControl Margin="3,3,3,3" Padding="3,3,3,3" DockPanel.Dock="Top" prism:RegionManager.RegionName="{Binding Source={x:Static ppCommon:RegionNames.MetadataWritersRegion}}" Visibility="{Binding MetadataWriterVM, Converter={StaticResource NullToVisibilityConverter}}"/>
+                            
+                            <TabControl Margin="3, 10, 3, 0" DockPanel.Dock="Top" Grid.ColumnSpan="2" SelectedIndex="{Binding SelectedPackingSettingsMode}">
+                                <TabItem Header="{x:Static p:Resources.BasicModeString}">
+                                    <DockPanel Grid.ColumnSpan="2">
+                                        <RadioButton DockPanel.Dock="Top" GroupName="BoundaryMode" Command="{Binding SelectBoundaryMode}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Content}" Content="{x:Static p:Resources.AutoBoundaryModeString}" IsChecked="True"/>
+                                        <RadioButton DockPanel.Dock="Top" GroupName="BoundaryMode" Command="{Binding SelectBoundaryMode}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Content}"  Name="boundaryModeFixed" VerticalAlignment="Top" Content="{x:Static p:Resources.FixedSizeBoundaryModeString}"/>
+                                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" IsEnabled="{Binding Path=IsChecked, ElementName=boundaryModeFixed}">
+                                            <Label VerticalAlignment="Center">W:</Label>
+                                            <TextBox  VerticalAlignment="Center" MinWidth="75" Text="{Binding FixedWidth, Converter={StaticResource StringToUint16Converter}}"/>
+                                            <Label VerticalAlignment="Center">H:</Label>
+                                            <TextBox  VerticalAlignment="Center" MinWidth="75"  Text="{Binding FixedHeight, Converter={StaticResource StringToUint16Converter}}"/>
+                                        </StackPanel>
+                                        <RadioButton DockPanel.Dock="Top" GroupName="BoundaryMode" Command="{Binding SelectBoundaryMode}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Content}" VerticalAlignment="Bottom" Content="{x:Static p:Resources.PowersOfTwoBoundaryModeString}"/>
+                                    </DockPanel>
+                                </TabItem>
+                                <TabItem Header="{x:Static p:Resources.AdvancedModeString}" HorizontalAlignment="Left" Width="68">
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Top" Margin="3,3,3,3">Minimum boundary box finder</TextBlock>
+                                        <ComboBox DockPanel.Dock="Top" ItemsSource="{Binding MinimumBoundingBoxFinderVMs}" SelectedItem="{Binding MinimumBoundingBoxFinderVM}"/>
+
+                                        <UserControl Margin="3,3,3,3" Padding="3,3,3,3" DockPanel.Dock="Top" prism:RegionManager.RegionName="{Binding Source={x:Static ppCommon:RegionNames.MinimumBoundingBoxFinderRegion}}" Visibility="{Binding MinimumBoundingBoxFinderVM, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                                        <DockPanel Visibility="{Binding SelectedPackerTakesSorter, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock DockPanel.Dock="Top" Margin="3,3,3,3">Finder's Image sorter</TextBlock>
+                                            <ComboBox DockPanel.Dock="Top" ItemsSource="{Binding ImageSorterVMs}" SelectedItem="{Binding ImageSorterVM}" SelectedIndex="0"/>
+                                            <ContentControl Margin="3,3,3,3" Padding="3,3,3,3" DockPanel.Dock="Top" prism:RegionManager.RegionName="{Binding Source={x:Static ppCommon:RegionNames.ImageSortersRegion}}" Visibility="{Binding ImageSorter, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                        </DockPanel>
+
+                                    </DockPanel>
+                                </TabItem>
+                            </TabControl>
+
+                            <!--Common part - for both advanced & basic-->
+                            <DockPanel DockPanel.Dock="Top" Visibility="{Binding SelectedPackerTakesPlacementAlgo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock  DockPanel.Dock="Top" Margin="3,3,3,3">Placement algorithm</TextBlock>
+                                <ComboBox Margin="3,0,3,0" DockPanel.Dock="Top" ItemsSource="{Binding PlacementAlgorithmVMs}" SelectedItem="{Binding PlacementAlgorithmVM, Mode=OneWayToSource}" SelectedIndex="0"/>
+                                <ContentControl Margin="3,3,3,3" Padding="3,3,3,3" DockPanel.Dock="Top" prism:RegionManager.RegionName="{Binding Source={x:Static ppCommon:RegionNames.PlacementAlgorithmsRegion}}" Visibility="{Binding PlacementAlgorithmVM, Converter={StaticResource NullToVisibilityConverter}}"/>
+                            </DockPanel>
+
+                            <DockPanel DockPanel.Dock="Top" Visibility="{Binding SelectedPlacementTakesSorter, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock DockPanel.Dock="Top" Margin="3,3,3,3">Placement's Image sorter</TextBlock>
+                                <ComboBox Margin="3,0,3,0" DockPanel.Dock="Top" ItemsSource="{Binding ImageSorterVMs}" SelectedItem="{Binding PlacementImageSorterVM, Mode=OneWayToSource}" SelectedIndex="0"/>
+                                <ContentControl Margin="3,3,3,3" Padding="3,3,3,3" DockPanel.Dock="Top" prism:RegionManager.RegionName="{Binding Source={x:Static ppCommon:RegionNames.PlacementImageSortersRegion}}" Visibility="{Binding PlacementImageSorter, Converter={StaticResource NullToVisibilityConverter}}"/>
+                            </DockPanel>
+
+                            <Separator/>
+
+                            <Grid DockPanel.Dock="Top">
+                                <StackPanel Orientation="Vertical">
+                                    <Label VerticalAlignment="Top">Atlas path:</Label>
+                                    <TextBox Padding="1,1,1,1" VerticalAlignment="Center" Margin="3,3,3,3" IsReadOnly="True" Background="#F0F0F0" Text="{Binding SaveAtlasPath}"/>
+                                    <Button Grid.Column="1" HorizontalAlignment="Right" MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" VerticalAlignment="Center" Command="{Binding SaveAtlas}">Browse...</Button>
+
+                                    <Label VerticalAlignment="Top">Metadata path:</Label>
+                                    <TextBox Padding="1,1,1,1" VerticalAlignment="Center" Margin="3,3,3,3" IsReadOnly="True" Background="#F0F0F0" Text="{Binding SaveMetadataPath}"></TextBox>
+                                    <Button Grid.Column="1" MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding SaveMetadata}">Browse...</Button>
+
+                                    <Label Grid.ColumnSpan="2" VerticalAlignment="Bottom">Memory reduction settings</Label>
+
+                                    <CheckBox Margin="3,3,3,3" IsChecked="{Binding IsAliasCreationEnabled}" VerticalAlignment="Center" Grid.Column="1">Alias creation</CheckBox>
+                                    <Label VerticalAlignment="Bottom">Color type</Label>
+                                    <ComboBox Margin="3,0,3,0" ItemsSource="{Binding Source={StaticResource ColorTypeEnumData}}" SelectedItem="{Binding SelectedColorType}"  VerticalAlignment="Bottom" Grid.Column="1"></ComboBox>
+                                </StackPanel>
+                            </Grid>
+
+                        </DockPanel>
+
+                    </Grid>
+
+
+                    <Grid DockPanel.Dock="Top" Background="#F0F0F0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <!--<Button Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Click="Button_Click">Generate Atlas</Button>-->
+                        <Grid VerticalAlignment="Bottom" Grid.ColumnSpan="2"> <!--Use canvas to properly shrink back (when we for example select something too long in combobox, it grows but after selecting short item again, it didnt shrink .. (without using canvas here)-->
+                            <ProgressBar Margin="3,3,3,3" Height="30" Name="progressBarGenerate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ProgressBarConditionalStyle}"
+                             Value="{Binding CurrentJob.Progress, Mode=OneWay}"
+                             Minimum="0" Maximum="100"
+                             MaxWidth="200"
+                             IsIndeterminate="{Binding CurrentJob.ReportsProgress, Converter={StaticResource InverseBooleanConverter}}"
+                             Visibility="{Binding CurrentJob, TargetNullValue=Hidden}"/>
+                            <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding Path=Visibility, ElementName=progressBarGenerate}" Style="{StaticResource TextBlockConditionalStyle}"/>
+                        </Grid>
+                        <!--Otherwise (If MaxWidth is not set) when IsIndeterminate="True", progress bar is not shrinking properly-->
+
+                        <Button MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Column="1" Command="{Binding GenerateTextureAtlas}" Content="Generate Atlas" IsEnabled="{Binding CurrentJob, Converter={StaticResource InverseNullToBooleanConverter}}"/>
+                        <Button MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding CancelGenerateAtlas}" IsEnabled="{Binding IsCurrentJobCancellable, Mode=OneWay}" Content="Cancel"/>
+
+                    </Grid>
+                </DockPanel>
+
+            </ScrollViewer>
+
+            <DockPanel Grid.Column="1">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="#a5ff6600">
+                    <Button MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" Style="{StaticResource ToggleShowBordersButton}"/>
+                    <Button MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" Command="{Binding SelectAll}">Select all</Button>
+                    <Button MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" Command="{Binding UnselectAll}">Unselect all</Button>
+                </StackPanel>
+
+                <!--Handles zooming-->
+                <!--ScrollViewer is here because if was in TextureAtlasView, it was not visible (out ot main window viewport if atlas too large), in imageview ddint make sense (reusability)-->
+                <ScrollViewer Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+                    <UserControl Name="textureAtlas" Width="{Binding TextureAtlasVM.Width}" Height="{Binding TextureAtlasVM.Height}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{Binding TextureAtlasVM}">
+                        <UserControl.LayoutTransform>
+                            <ScaleTransform x:Name="scaleTransform" CenterX="0.5" CenterY="0.5"/>
+                        </UserControl.LayoutTransform>
+                    </UserControl>
+                </ScrollViewer>
+            </DockPanel>
+
+            <Grid Grid.Column="2" DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="20"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*" MinHeight="20"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel LastChildFill="True" Margin="3,3,3,3">
+                    <Label DockPanel.Dock="Top" Background="#F0F0F0">Loaded files</Label>
+                    <UserControl DockPanel.Dock="Top" Content="{Binding LoadedImagesTreeVM}" IsEnabled="{Binding CurrentJob, Converter={StaticResource InverseNullToBooleanConverter}}"/>
+                </DockPanel>
+                
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
+
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsEnabled="{Binding CurrentJob, Converter={StaticResource InverseNullToBooleanConverter}}">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Margin="3, 3, 3, 3">Image Processors</TextBlock>
+                        <ComboBox Margin="3,0,3,0" DockPanel.Dock="Top" ItemsSource="{Binding ImageProcessorVMs}" SelectedItem="{Binding ImageProcessorVM, Mode=OneWayToSource}" SelectedIndex="0" HorizontalAlignment="Stretch"/>
+                        <ContentControl Margin="3,3,3,3" Padding="3,3,3,3" DockPanel.Dock="Top" prism:RegionManager.RegionName="{Binding Source={x:Static ppCommon:RegionNames.ImageProcessorsRegion}}" Visibility="{Binding ImageProcessorVM, Converter={StaticResource NullToVisibilityConverter}}"/>
+                        <Button MinWidth="80" Margin="3,3,3,3" Padding="3,3,3,3" Command="{Binding ApplyImageProcessor}" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Center">Apply on selected</Button>
+                    </DockPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" 
+              Grid.Row="1" 
+              HorizontalAlignment="Left" 
+              VerticalAlignment="Stretch"
+              Background="Gray" 
+              ShowsPreview="True"
+              Width="1"/>
+            <GridSplitter Grid.Column="2" 
+              Grid.Row="1" 
+              HorizontalAlignment="Left" 
+              VerticalAlignment="Stretch"
+              Background="Gray" 
+              ShowsPreview="True"
+              Width="1"/>
+        </Grid>
+
+    </Grid>
+
+</Window>

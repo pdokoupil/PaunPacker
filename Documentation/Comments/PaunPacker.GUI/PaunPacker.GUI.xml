@@ -1,0 +1,2110 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.GUI</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.GUI.App">
+            <summary>
+            This class represents the application
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.App.#ctor">
+            <summary>
+            Constructs the App
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.App.CreateShell">
+            <summary>
+            Implementation of PrismApplication's CreateShell method
+            Creates a MainWindow it's View model and sets the DataContext to the created view model
+            </summary>
+            <returns>The main window</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.App.MainWindowVM_ShouldClose">
+            <summary>
+            Event handler for the Main window's ShouldClose event, closes the MainWindow
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.App.RegisterTypes(Prism.Ioc.IContainerRegistry)">
+            <summary>
+            Implementation of PrismApplication's RegisterTypes method
+            </summary>
+            <param name="containerRegistry">The container registr</param>
+        </member>
+        <member name="M:PaunPacker.GUI.App.CreateModuleCatalog">
+            <summary>
+            Creates the module catalog from and loads the plugins from a plugin folder
+            It also loads the plugins using the MEF
+            </summary>
+            <remarks>This is also somehow a workaround because Prism's DirectoryModule is not supported on .NET Core
+            so the plugins from a folder has to be loaded manually</remarks>
+            <returns>The module catalog</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.App.FilterUnityExportedTypesByTypeAndAttribute``1(Unity.IUnityContainer,System.Type)">
+            <summary>
+            Returns types from a given <paramref name="unityContainer"/> that are implementing the <typeparamref name="T"/> and (optinally) that
+            are decorated with an attribute of the <paramref name="attributeType"/>
+            </summary>
+            <typeparam name="T">The type of the base class/interface</typeparam>
+            <param name="unityContainer">The container where the types are searched for</param>
+            <param name="attributeType">The type of the attribute that should be present</param>
+            <returns>The types satisfying all the previously mentioned conditions</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.App.CreateExportedTypeViewModel(System.Type,System.Collections.Generic.Dictionary{System.String,PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute})">
+            <summary>
+            For a given exported type <paramref name="exportedType"/> creates a <see cref="T:PaunPacker.GUI.ViewModels.ExportedTypeViewModel"/>
+            </summary>
+            <param name="exportedType">The exported type</param>
+            <param name="typeNameToAttributeMapping">Maps the Type's FullNames to <see cref="T:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute"/></param>
+            <returns>The <see cref="T:PaunPacker.GUI.ViewModels.ExportedTypeViewModel"/> for a given exported type <paramref name="exportedType"/></returns>
+        </member>
+        <member name="M:PaunPacker.GUI.App.InitializeModules">
+            <summary>
+            Initializes the modules, imports all the types that are exported from the plugins and passes them to the <see cref="T:PaunPacker.GUI.ViewModels.MainWindowViewModel"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.App.Dispose(System.Boolean)">
+            <summary>
+            Implementation of the <see cref="T:System.IDisposable"/>
+            </summary>
+            <param name="disposing">Indicates whether this object is already being disposed in order to prevent recursive disposal</param>
+        </member>
+        <member name="T:PaunPacker.GUI.Behaviors.MouseClickBehavior">
+            <summary>
+            Implementation of a <see cref="T:System.Windows.Interactivity.Behavior`1" /> for <see cref="T:System.Windows.Controls.UserControl"/>
+            Used to handle MouseDown event on <see cref="T:System.Windows.Controls.UserControl"/> without adding code to the code-behind
+            </summary>
+            <remarks>Used by the TextureAtlasView to handle clicks on the individual rectangles within the texture atlas</remarks>
+        </member>
+        <member name="F:PaunPacker.GUI.Behaviors.MouseClickBehavior.MouseClickXProperty">
+            <summary>
+            Define the dependency property
+            </summary>
+            <remarks>Default value to -1, -1 to make sure that upper left rect is not selected</remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.Behaviors.MouseClickBehavior.MouseClickPosition">
+            <summary>
+            The position of mouse click accessible from View's XAML
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Behaviors.MouseWheelBehavior">
+            <summary>
+            Implementation of a <see cref="T:System.Windows.Interactivity.Behavior`1" /> for <see cref="T:PaunPacker.GUI.Views.MainWindow"/>
+            Used to handle MouseWheel event on <see cref="T:PaunPacker.GUI.Views.MainWindow"/> without adding code to the code-behind
+            </summary>
+            <remarks>Used for scrolling/zooming the texture atlas</remarks>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.IconToImageSourceConverter">
+            <summary>
+            Convertor from <see cref="T:System.Drawing.Icon"/> to <see cref="T:System.Windows.Media.Imaging.BitmapSource"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.IconToImageSourceConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts <see cref="T:System.Drawing.Icon"/> to <see cref="T:System.Windows.Media.Imaging.BitmapSource"/>
+            </summary>
+            <param name="value">The value to be converted</param>
+            <exception cref="T:System.InvalidCastException">Is thrown when <paramref name="value"/> cannot be casted to the <see cref="T:System.Windows.Media.Imaging.BitmapSource"/></exception>
+            <returns>The <see cref="T:System.Windows.Media.Imaging.BitmapSource"/></returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.InverseBooleanConverter">
+            <summary>
+            Converter from boolean to its inverse (negation)
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.InverseBooleanConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts boolean to its negation
+            </summary>
+            <param name="value">The value to be converted</param>
+            <exception cref="T:System.InvalidCastException">Is thrown when the <paramref name="value"/> is not bool</exception>
+            <returns>Negation of the <paramref name="value"/></returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.InverseNullToBooleanConverter">
+            <summary>
+            Converter from null to boolean
+            </summary>
+            <remarks>Non-null value is converted to false and null value to true</remarks>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.InverseNullToBooleanConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a <paramref name="value"/> to boolean
+            </summary>
+            <param name="value">The value to be converted</param>
+            <returns>True if the <paramref name="value"/> is null, false otherwise</returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.LeftMarginConverter">
+            <summary>
+            Converter for adding margin to tree view items based on their depth within the tree view
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.LeftMarginConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a Depth of a node inside a TreeView to left margin of the node (TreeViewItem)
+            </summary>
+            <param name="value">The value to be converted</param>
+            <returns>The appropriate margin, 0 if the value is not <see cref="T:System.Windows.Controls.TreeViewItem"/> or it's DataContext is not <see cref="T:PaunPacker.GUI.ViewModels.NodeVM"/></returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.LeftMarginConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Not supported
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Converters.LeftMarginConverter.Length">
+            <summary>
+            Length of the margin per level
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.NullToBooleanConverter">
+            <summary>
+            Converter for converting (reference type) value to boolean
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.NullToBooleanConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a null to boolean
+            </summary>
+            <param name="value">The value to be converted</param>
+            <returns>True if <paramref name="value"/> is not null, false otherwise</returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.NullToVisibilityConverter">
+            <summary>
+            Converter from null to <see cref="T:System.Windows.Visibility"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.NullToVisibilityConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to the <see cref="T:System.Windows.Visibility"/>
+            </summary>
+            <param name="value">The value to be converted</param>
+            <returns><see cref="F:System.Windows.Visibility.Collapsed"/> if the <paramref name="value"/> is null, <see cref="F:System.Windows.Visibility.Visible"/> otherwise</returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.PPImageConverter">
+            <summary>
+            Converter from <see cref="T:PaunPacker.Core.Types.PPImage"/> to <see cref="T:System.Windows.Controls.Image"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.PPImageConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to the <see cref="T:System.Windows.Controls.Image"/>
+            </summary>
+            <param name="value">The value to be converted</param>
+            <exception cref="T:System.ArgumentException">Is thrown when the <paramref name="value"/> is not <see cref="T:PaunPacker.Core.Types.PPImage"/></exception>
+            <returns>The resulting <see cref="T:System.Windows.Controls.Image"/></returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.PPImageConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to the <see cref="T:PaunPacker.Core.Types.PPImage"/>
+            </summary>
+            <param name="value">The value to be converted</param>
+            <exception cref="T:System.ArgumentException">Is thrown when <paramref name="value"/> is not <see cref="T:System.Windows.Controls.Image"/> or it's source is not <see cref="T:System.Windows.Media.Imaging.BitmapSource"/></exception>
+            <returns>The resulting <see cref="T:PaunPacker.Core.Types.PPImage"/></returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.StringToUint16Converter">
+            <summary>
+            Converter from <see cref="T:System.String"/> to <see cref="T:System.UInt16"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.StringToUint16Converter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to <see cref="T:System.UInt16"/>
+            </summary>
+            <param name="value">The value to be converted</param>
+            <exception cref="T:System.InvalidCastException">Is thrown when the <see cref="T:System.UInt16"/> cannot be parsed from the <paramref name="value"/></exception>
+            <returns>The <see cref="T:System.UInt16"/> result</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.StringToUint16Converter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to string by simply calling it's .ToString() method
+            </summary>
+            <param name="value">The value to be converted to the string</param>
+            <returns>The string representation of <paramref name="value"/></returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Converters.TypeToPluginInfoConverter">
+            <summary>
+            Converter from a <see cref="T:System.Type"/> to the <see cref="T:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute"/>
+            Is used when displaying Types in MainWindowView
+            Checks whether the Type is decorated with ExportedTypeMetadataAttribute and if yes, it extracts the name from it
+            Otherwise string representation (.ToString() is returned
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Converters.TypeToPluginInfoConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Extracts (converts to) a name from the <see cref="T:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute"/> that decorates the <see cref="T:System.Type"/> of the <paramref name="value"/>
+            </summary>
+            <param name="value">The value to be converted</param>
+            <returns>The name of the exported metadata attribute if the <see cref="T:System.Type"/> of <paramref name="value"/> is decorated with the <see cref="T:PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute"/></returns>
+        </member>
+        <member name="T:PaunPacker.GUI.Dialogs.DialogNames">
+            <summary>
+            Contains the string names of the dialogs
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.DialogNames.MessageDialog">
+            <summary>
+            The name of the MessageDialog
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.DialogNames.LoadedPluginsDialog">
+            <summary>
+            The name of the LoadedPluginsDialog
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.DialogNames.PluginDetailsDialog">
+            <summary>
+            The name of the PluginDetailsDialog
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Dialogs.DialogViewModelBase">
+            <summary>
+            The base class for view models of dialogs
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.DialogViewModelBase.iconSource">
+            <see cref="P:PaunPacker.GUI.Dialogs.DialogViewModelBase.IconSource"/>
+        </member>
+        <member name="P:PaunPacker.GUI.Dialogs.DialogViewModelBase.IconSource">
+            <summary>
+            Path to a dialog window icon
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.DialogViewModelBase.title">
+            <see cref="P:PaunPacker.GUI.Dialogs.DialogViewModelBase.Title"/>
+        </member>
+        <member name="P:PaunPacker.GUI.Dialogs.DialogViewModelBase.Title">
+            <summary>
+            Title of the dialog window
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.Dialogs.DialogViewModelBase.RequestClose">
+            <summary>
+            Event representing a request to close the dialog
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Dialogs.DialogViewModelBase.RaiseRequestClose(Prism.Services.Dialogs.IDialogResult)">
+            <summary>
+            Raises the <see cref="E:PaunPacker.GUI.Dialogs.DialogViewModelBase.RequestClose"/> with a dialog result <paramref name="dialogResult"/>
+            </summary>
+            <param name="dialogResult">The dialog result</param>
+        </member>
+        <member name="M:PaunPacker.GUI.Dialogs.DialogViewModelBase.CanCloseDialog">
+            <summary>
+            Determines whether the dialog could be closed
+            </summary>
+            <returns>True if the dialog can be closed, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Dialogs.DialogViewModelBase.OnDialogClosed">
+            <summary>
+            Callback that is called when the dialog is closed
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Dialogs.DialogViewModelBase.OnDialogOpened(Prism.Services.Dialogs.IDialogParameters)">
+            <summary>
+            Callback that is called when the dialog is opened
+            </summary>
+            <param name="parameters">Parameters that were given to the dialog</param>
+        </member>
+        <member name="T:PaunPacker.GUI.Dialogs.LoadedPluginsDialogParameterNames">
+            <summary>
+            Specifies a names of parameters for <see cref="T:PaunPacker.GUI.Views.LoadedPluginsView"/>
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.LoadedPluginsDialogParameterNames.Title">
+            <summary>
+            Parameter with a message title
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.LoadedPluginsDialogParameterNames.LoadedPlugins">
+            <summary>
+            Parameter with loaded plugins
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Dialogs.MessageDialogParameterNames">
+            <summary>
+            Specifies a names of parameters for <see cref="T:PaunPacker.GUI.Views.MessageDialogView"/>
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.MessageDialogParameterNames.Title">
+            <summary>
+            Parameter with a message title
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.Dialogs.MessageDialogParameterNames.Message">
+            <summary>
+            Parameter with a message content
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Events.RectanglesSelectedEvent">
+            <summary>
+            This class represents an event that a selection of rectangles (images) within the texture atlas has changed
+            </summary>
+            <remarks>This event is raised by the TextureAtlasViewModel and processed by the MainWindowViewModel</remarks>
+        </member>
+        <member name="T:PaunPacker.GUI.Events.RectanglesSelectedPayload">
+            <summary>
+            The payload for the <see cref="T:PaunPacker.GUI.Events.RectanglesSelectedEvent"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Events.RectanglesSelectedPayload.#ctor(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Constructs new payload with rectangles (images) that are currently selected
+            </summary>
+            <param name="selectedRectangles">The rectangles currently being selected</param>
+        </member>
+        <member name="P:PaunPacker.GUI.Events.RectanglesSelectedPayload.SelectedRectangles">
+            <summary>
+            The rectangles that are currently selected
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Events.UnloadImagesEvent">
+            <summary>
+            Class representing an event that certain images should be unloaded from the application
+            </summary>
+            <remarks>This event is raised by the LoadedImagesTreeViewModel and processed by the AllRectanglesViewModel</remarks>
+        </member>
+        <member name="T:PaunPacker.GUI.Events.UnloadImagesPayload">
+            <summary>
+            This class represents a payload for the <see cref="T:PaunPacker.GUI.Events.UnloadImagesEvent"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Events.UnloadImagesPayload.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Constructs new payload from a paths of images that should be unloaded
+            </summary>
+            <param name="imagePaths">Paths of images that should be unloaded</param>
+        </member>
+        <member name="P:PaunPacker.GUI.Events.UnloadImagesPayload.ImagePaths">
+            <summary>
+            Paths of images that should be unloaded
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Job">
+            <summary>
+            Represents a Job in the GUI (some action, for example, texture atlas generation, image processing, etc.)
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Job.#ctor(System.String,System.Boolean)">
+            <summary>
+            Constructs a job with a given name
+            </summary>
+            <remarks>The job name is shown in the progress bar</remarks>
+            <param name="jobName">The name of the job</param>
+            <param name="isCancellable">Whether the specified job is cancellable or not</param>
+        </member>
+        <member name="M:PaunPacker.GUI.Job.StartJobAsync``1(System.Func{``0},PaunPacker.Core.IProgressReporter)">
+            <summary>
+            Starts a new job on a worker <paramref name="worker"/>
+            </summary>
+            <typeparam name="T">The result type of the job</typeparam>
+            <param name="job">Delegate which represents the job</param>
+            <param name="worker">Worker that does the job</param>
+            <returns>The task represeting result of the worker from performing the job</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Job.StartJobAsync(System.Action,PaunPacker.Core.IProgressReporter)">
+            <summary>
+            Starts a new job on a worker <paramref name="worker"/>
+            </summary>
+            <param name="job">Delegate which represents the job</param>
+            <param name="worker">Worker that does the job</param>
+            <returns>The task representing a completion of the job</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Job.StartJobAsync``1(System.Func{``0})">
+            <summary>
+            Starts a new job
+            </summary>
+            <typeparam name="T">The result type of the job</typeparam>
+            <param name="job">Delegate which represents the job</param>
+            <returns>The task represting a result of the job</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Job.StartJobAsync(System.Action)">
+            <summary>
+            Starts a new job
+            </summary>
+            <param name="job">Delegate which represents the job</param>
+            <returns>The task represeting a completion of the job</returns>
+        </member>
+        <member name="E:PaunPacker.GUI.Job.PropertyChanged">
+            <summary>
+            Notify the GUI about property changes
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Job.Progress">
+            <summary>
+            Progress of the worker, 0 if the Job was started without specifying the worker
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Job.IsCancellable">
+            <summary>
+            Whether this job is cancellable or not
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Job.ReportsProgress">
+            <summary>
+            Whether the specified worker reports progress, if the worker was not specified then this value is always false
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Job.JobName">
+            <summary>
+            The name of the job
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Job.Worker_ProgressChange(System.Object,System.Int32)">
+            <summary>
+            Handler for worker's ProgressChange event
+            </summary>
+            <param name="sender">The worker whose progress changed</param>
+            <param name="newProgress">New progress of the worker</param>
+        </member>
+        <member name="F:PaunPacker.GUI.Job.reportsProgress">
+            <see cref="P:PaunPacker.GUI.Job.ReportsProgress"/>
+        </member>
+        <member name="F:PaunPacker.GUI.Job.isCancellable">
+            <see cref="P:PaunPacker.GUI.Job.IsCancellable"/>
+        </member>
+        <member name="F:PaunPacker.GUI.Job.progress">
+            <see cref="P:PaunPacker.GUI.Job.Progress"/>
+        </member>
+        <member name="F:PaunPacker.GUI.Job.jobName">
+            <see cref="P:PaunPacker.GUI.Job.JobName"/>
+        </member>
+        <member name="T:PaunPacker.GUI.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.AdvancedModeString">
+            <summary>
+              Looks up a localized string similar to Advanced.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.AutoBoundaryModeString">
+            <summary>
+              Looks up a localized string similar to Auto.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.BasicModeString">
+            <summary>
+              Looks up a localized string similar to Basic.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.FixedSizeBoundaryModeString">
+            <summary>
+              Looks up a localized string similar to FixedSize.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.PluginFolder">
+            <summary>
+              Looks up a localized string similar to plugins/.
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.Resources.PowersOfTwoBoundaryModeString">
+            <summary>
+              Looks up a localized string similar to Powers of two.
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Services.OpenFileExplorer">
+            <summary>
+            Service used to open file explorer and select a given path (if the path is directory, the file
+            explorer lists the contents of this folder otherwise, if it is a file, the file is selected)
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.OpenFileExplorer.ShowFileExplorer(System.String)">
+            <summary>
+            Shows the file explorer and selects the <paramref name="path"/>
+            </summary>
+            <param name="path">A path of file / directory that should be selected</param>
+        </member>
+        <member name="T:PaunPacker.GUI.Services.OpenFileService">
+            <summary>
+            A service that is used to obtain path of files that user has selected and wants it to open
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.OpenFileService.#ctor(System.String)">
+            <summary>
+            Constructs a service with a given file extension filter
+            </summary>
+            <param name="filter">Filter for file extensions that the user is able to select</param>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.OpenFileService.GetFiles">
+            <summary>
+            Returns the paths of files that the user has selected
+            </summary>
+            <remarks>Allows to select multiple files</remarks>
+            <returns>Paths of files that the user wants to open</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.OpenFileService.GetFile">
+            <summary>
+            Returns the path of file that the user has selected
+            </summary>
+            <remarks>Allows to select only a single file</remarks>
+            <returns>Path of files that the user wants to open</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.OpenFileService.Dispose">
+            <summary>
+            Implementation of <see cref="T:System.IDisposable"/> interface
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Services.OpenFolderService">
+            <summary>
+            A service that is used to obtain path of a directory that user has selected and wants it to open
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.OpenFolderService.GetFolder">
+            <summary>
+            Returns the path of directory that the user has selected
+            </summary>
+            <remarks>Allows to select only a single directory</remarks>
+            <returns>Paths of directory that the user wants to open</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.OpenFolderService.Dispose">
+            <summary>
+            Implementation of <see cref="T:System.IDisposable"/> interface
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Services.SaveFileService">
+            <summary>
+            A service that is used to obtain path to save the file at location specified by the user
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.SaveFileService.#ctor(System.String)">
+            <summary>
+            Constructs a service with a given file extension filter
+            </summary>
+            <param name="filter">The file extension filter</param>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.SaveFileService.GetFile">
+            <summary>
+            Returns the path where the file should be saved
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.GUI.Services.SaveFileService.Dispose">
+            <summary>
+            Implementation of <see cref="T:System.IDisposable"/> interface
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.STAThreadTaskScheduler">
+            <summary>
+            Task scheduler which executes task in the STAThread for the Main window
+            The tasks are executed (intionally) one by one
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.STAThreadTaskScheduler.Scheduler">
+            <summary>
+            Returns an instance of the scheduler
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.STAThreadTaskScheduler.CurrentTask">
+            <summary>
+            The currently executing task
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.STAThreadTaskScheduler.TaskCount">
+            <summary>
+            Number of scheduled tasks
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.STAThreadTaskScheduler.GetScheduledTasks">
+            <summary>
+            Returns the scheduled tasks
+            </summary>
+            <returns>The scheduled tasks</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.STAThreadTaskScheduler.QueueTask(System.Threading.Tasks.Task)">
+            <summary>
+            Enqueues a new task
+            </summary>
+            <param name="task">The new task to be scheduled</param>
+        </member>
+        <member name="M:PaunPacker.GUI.STAThreadTaskScheduler.TryExecuteTaskInline(System.Threading.Tasks.Task,System.Boolean)">
+            <inheritdoc />
+            <remarks>Is not supported, therefore it always returns false</remarks>
+        </member>
+        <member name="M:PaunPacker.GUI.STAThreadTaskScheduler.#ctor">
+            <summary>
+            Constructs a new scheduler
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.STAThreadTaskScheduler.Work">
+            <summary>
+            Working method of the background worker thread
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.STAThreadTaskScheduler.scheduledTasks">
+            <summary>
+            Scheduled tasks
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.STAThreadTaskScheduler.workerThread">
+            <summary>
+            The worker thread responsible for task execution
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.AllRectanglesViewModel">
+            <summary>
+            ViewModel managing all the loaded rectangles (images)
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.#ctor(System.Collections.Generic.IEnumerable{PaunPacker.GUI.ViewModels.RectangleViewModel})">
+            <summary>
+            Constructs the view model from the loaded rectangles
+            </summary>
+            <param name="rects">The rectangles</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.AllRectangles">
+            <summary>
+            ViewModels of the loaded rectangles
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.Rectangles">
+            <summary>
+            The loaded rectangles
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.UpdateRectangles(System.Collections.Generic.IEnumerable{PaunPacker.GUI.ViewModels.RectangleViewModel})">
+            <summary>
+            Checks for occurences of rectangles from <paramref name="rectanglesToUpdate"/> within <see cref="P:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.AllRectangles"/> and for each occurence
+            The occurence in <see cref="P:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.AllRectangles"/> is replaced by the occurence in <paramref name="rectanglesToUpdate"/>
+            </summary>
+            <param name="rectanglesToUpdate"></param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.RectanglesByHash">
+            <summary>
+            Contains the same rectangles as the <see cref="P:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.Rectangles"/> but grupped by the hash of the image that they correspond to
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.PropertyChanged">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.rectangles">
+            <see cref="P:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.Rectangles"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.AllRectanglesViewModel.eventAggregator">
+            <summary>
+            The event aggregator
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.ExportedTypeViewModel">
+            <summary>
+            View model for an exported type
+            </summary>
+            <remarks>
+            Shown in Combo boxes (in the settings)
+            </remarks>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.#ctor(System.Type,PaunPacker.GUI.WPF.Common.Attributes.ExportedTypeMetadataAttribute)">
+            <summary>
+            Constructs a new View model from an exported type and metadata about that exported type
+            </summary>
+            <param name="exportedType">The exported type</param>
+            <param name="metadata">Metadata about the exported type</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.Name">
+            <summary>
+            The name of the exported type
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.NameVersion">
+            <summary>
+            String containing name and the version of the exported type
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.Metadata">
+            <summary>
+            The metadata about the exported type
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.ExportedType">
+            <summary>
+            The exported type
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.Equals(System.Object)">
+            <summary>
+            Overrides the equals method
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns>True if they equals, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.GetHashCode">
+            <summary>
+            Overrides the GetHashCode method
+            </summary>
+            <returns>The hash code</returns>
+        </member>
+        <member name="E:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.PropertyChanged">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.metadata">
+            <summary>
+            The metadata about the exported type
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.ExportedTypeViewModel.exportedType">
+            <summary>
+            The exported type
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.ImageViewModel">
+            <summary>
+            ViewModel corresponding to a view for a single PPImage
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.ImageViewModel.#ctor(PaunPacker.Core.Types.PPImage)">
+            <summary>
+            Constructs the ViewModel from a <paramref name="image"/>
+            </summary>
+            <param name="image">Image for which the ViewModel is constructed</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.ImageViewModel.Image">
+            <summary>
+            The image represented by this ViewModel
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel">
+            <summary>
+            ViewModel corresponding to a View which shows all the loaded images in the tree
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.#ctor(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Constructs a View model from a rectangles (images) that were loaded
+            </summary>
+            <param name="rects">The loaded rects</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.FSEntries">
+            <summary>
+            File system entries (files / directories)
+            <remarks>Used to build the tree</remarks>
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.Unload">
+            <summary>
+            The command to handle the request to unload selected images
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.NodeRightClick">
+            <summary>
+            The command to handle the righ-click on item in the treeview
+            </summary>
+            <remarks>
+            Used to select node in tree view on righ-click (before the context menu is shown)
+            Only for esthetical reasons
+            </remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.OpenInFileExplorer">
+            <summary>
+            The command to handle the request to open a selected file/folder in file explorer
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.PropertyChanged">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.CreateFSEntries(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Build the root structure (forrest) with file system entries as nodes
+            </summary>
+            <param name="rects">Loaded rectangles (images)</param>
+            <returns>Collection of roots of the trees</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.LoadedImagesTreeViewModel.RemoveNode(System.Collections.ObjectModel.ObservableCollection{PaunPacker.GUI.ViewModels.NodeVM},PaunPacker.GUI.ViewModels.NodeVM)">
+            <summary>
+            Removes the node from the tree (forrest)
+            </summary>
+            <param name="roots">The roots of the tree</param>
+            <param name="toRemove">The node to remove</param>
+            <returns>True if the node was found and removed, false otherwise</returns>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.NodeVM">
+            <summary>
+            The ViewModel of a single node within the FSEntries tree
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.NodeVM.Name">
+            <summary>
+            Name of the FSEntry
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.NodeVM.Thumbnail">
+            <summary>
+            Thumbnail of the FSEntry
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.NodeVM.Path">
+            <summary>
+            Path of the FSEntry
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.NodeVM.Depth">
+            <summary>
+            Depth (within the tree) of the FSEntry
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.NodeVM.IsDirectory">
+            <summary>
+            Determines whether the node is directory or not (file)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.NodeVM.Children">
+            <summary>
+            Children of the FSEntry
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.NodeVM.RemoveChildren(PaunPacker.GUI.ViewModels.NodeVM)">
+            <summary>
+            Removes the <paramref name="children"/>
+            </summary>
+            <param name="children">The children to be removed</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.NodeVM.IsSelected">
+            <summary>
+            Determines whether this node is selected in the TreeView
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.ViewModels.NodeVM.PropertyChanged">
+            <inheritdoc />
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.NodeVM.isSelected">
+            <see cref="P:PaunPacker.GUI.ViewModels.NodeVM.IsSelected"/>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel">
+            <summary>
+            The view model for the dialog that shows loaded plugins
+            </summary>
+            <remarks>Uses prism's View Model locator to get instantiated</remarks>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.#ctor(Prism.Services.Dialogs.IDialogService)">
+            <summary>
+            Constructs a view model passing in the dialog service
+            </summary>
+            <param name="dialogService">The dialog service</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.OnDialogOpened(Prism.Services.Dialogs.IDialogParameters)">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.CloseDialogCommand">
+            <summary>
+            Command that is executed when the dialog is closed
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.CloseDialog">
+            <summary>
+            Requests a close of the dialog with a "true" DialogResult
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.ShowDetails">
+            <summary>
+            Command handling the click event on "ShowDetails" button
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.SelectedPlugin">
+            <summary>
+            The plugin that is selected by the user (in the listview)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.LoadedPlugins">
+            <summary>
+            View models of all the loaded plugins
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.LoadedPluginsViewModel.dialogService">
+            <summary>
+            The dialog service
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.MainWindowViewModel">
+            <summary>
+            View model for a main window
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.#ctor(Unity.IUnityContainer)">
+            <summary>
+            Constructs the view model
+            Initializes the commands and other members
+            </summary>
+            <param name="unityContainer">Unity IoC container</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.ShowError(System.String,System.String)">
+            <summary>
+            Shows error notification
+            </summary>
+            <param name="message">Message to be shown</param>
+            <param name="title">Title of the notification</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.ShowWarning(System.String,System.String)">
+            <summary>
+            Shows warning notification
+            </summary>
+            <param name="message">Message to be shown</param>
+            <param name="title">Title of the notification</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.ShowNotification(System.String,System.String)">
+            <summary>
+            Shows a notification
+            </summary>
+            <param name="message">Message to be shown</param>
+            <param name="title">Title of the notification</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.LoadedPluginsNotificationCommand">
+            <summary>
+            Shows a notification dialog displaying the loaded plugins
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.About">
+            <summary>
+            Shows a Dialog with information about PaunPacker
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.LoadedPlugins">
+            <summary>
+            Types of the loaded plugins
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.Initialize">
+            <summary>
+            Initializes the default values for the <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedBoundaryModeString"/>, <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPackingSettingsMode"/>, <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MetadataWriterVM"/> and <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedColorType"/>
+            </summary>
+            <remarks>Should be called from <see cref="T:PaunPacker.GUI.App"/> after modules are initialized</remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.LoadFile">
+            <summary>
+            Command handling a file load
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.GenerateTextureAtlas">
+            <summary>
+            Command handling a texture atlas generation
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.NewProject">
+            <summary>
+            Command handling a new project creation
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.OpenProject">
+            <summary>
+            Command handling an openning of a project
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.CloseProject">
+            <summary>
+            Command handling a closing of a project
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveProjectAs">
+            <summary>
+            Command handling a project SaveAs
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveProject">
+            <summary>
+            Command handling a project Save
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.Exit">
+            <summary>
+            Command handling an exit of the application
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.Project">
+            <summary>
+            The current project
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.LoadFolder">
+            <summary>
+            Command handling a load of a folder
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveMetadata">
+            <summary>
+            Command handling metadata saving
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveAtlas">
+            <summary>
+            Command handling texture atlas saving
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.CancelGenerateAtlas">
+            <summary>
+            Command handling a cancellation of a texture atlas generation
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectBoundaryMode">
+            <summary>
+            Command handling a change in selected boundary mode
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ShowBorders">
+            <summary>
+            Command handling a show of the borders
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectAll">
+            <summary>
+            Command handling Select all rectangles action
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.UnselectAll">
+            <summary>
+            Command handling Unselect all rectangles action
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.UnshowBorders">
+            <summary>
+            Command handling Unshow borders action
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ApplyImageProcessor">
+            <summary>
+            Command handling an application of a selected image processor
+            </summary>
+            <remarks>
+            The images are processed in parallel by a single selected image processor
+            That is the reason why the image processors does not report progress
+            If the images were process sequentially then progress report would be possible
+            </remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.TextureAtlasVM">
+            <summary>
+            The view model of a texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.AllRectsVM">
+            <summary>
+            The view model of all the rectangles
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.LoadedImagesTreeVM">
+            <summary>
+            The view model for a tree view with all the loaded images
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveAtlasPath">
+            <summary>
+            The path where the texture atlas should be saved
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveMetadataPath">
+            <summary>
+            The path where the metadata should be saved
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.CurrentJob">
+            <summary>
+            The currently executing Job (texture atlas generation, image processin, etc.)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.IsJobCancelling">
+            <summary>
+            Determines whether the current job is being cancelled (i.e. that the cancellation was requested)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.IsCurrentJobCancellable">
+            <summary>
+            Whether the current job is cancellable or not
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ModulesInitialized">
+            <summary>
+            Indicates whether the modules were initialized
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.IsAliasCreationEnabled">
+            <summary>
+            Determines if the alias creation is enabled
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.PlacementAlgorithmVM">
+            <summary>
+            Type of the selected Placement Algorithm
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MinimumBoundingBoxFinder">
+            <summary>
+            Selected MinimumBoundingBoxFinder
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MinimumBoundingBoxFinderVM">
+            <summary>
+            Type of the selected MinimumBoundingBoxFinder
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageSorterVM">
+            <summary>
+            Selected Image Sorter (for a MinimumBoundingBoxFinder)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.PlacementImageSorterVM">
+            <summary>
+            Selected Image Sorter (for a Placement Algorithm)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedColorType">
+            <summary>
+            Selected ColorType
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPackerTakesPlacementAlgo">
+            <summary>
+            Indicates whether the Selected Minimum Bounding box finder takes a placement algorithm (depends on / could be parametrized by)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPackerTakesSorter">
+            <summary>
+            Indicates whether the Selected Minimum Bounding box finder takes an Image Sorter (depends on / could be parametrized by)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPlacementTakesSorter">
+            <summary>
+            Indicates whether the Selected Placement Algorithm takes an Image Sorter (depends on / could be parametrized by)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPackingSettingsMode">
+            <summary>
+            Index (within the Tab Control) of the selected Packing Mode (Basic / Advanced)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.PlacementAlgorithmVMs">
+            <summary>
+            All the types of the placement algorithms that were loaded (imported) from the plugins
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MinimumBoundingBoxFinderVMs">
+            <summary>
+            All the types of the minimum bounding box finders that were loaded (imported) from the plugins
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageSorterVMs">
+            <summary>
+            All the instances of the image sorters that were imported from the plugins
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageProcessors">
+            <summary>
+            All the instances of the image processors that were imported from the plugins
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MetadataWriterVMs">
+            <summary>
+            All the types of the metadata writers that were imported from the plugins
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MetadataWriter">
+            <summary>
+            The selected metadata writer
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MetadataWriterVM">
+            <summary>
+            Type of the selected metadata writer
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageProcessorVMs">
+            <summary>
+            All the types of image processors that were imported from plugins
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageProcessor">
+            <summary>
+            The selected image processor
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageProcessorVM">
+            <summary>
+            Type of the selected image processor
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.FixedWidth">
+            <summary>
+            Fixed with of the texture atlas
+            </summary>
+            <remarks>Used when using the fixed size boundary mode</remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.FixedHeight">
+            <summary>
+            Fixed height of the texture atlas
+            </summary>
+            <remarks>Used when using the fixed size boundary mode</remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedBoundaryModeString">
+            <summary>
+            String corresponding to a selected boundary mode
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedTargetFramework">
+            <summary>
+            ID of the selected target framework
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.ConstructorTakesExactlyGivenParameters(System.Type,System.Type[])">
+            <summary>
+            Checks whether any constructor of <paramref name="inspectedType"/> takes exactly arguments of types <paramref name="parameterTypes"/>
+            </summary>
+            <param name="inspectedType">Type whose constructors are inspected</param>
+            <param name="parameterTypes">Types of the arguments</param>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.ConstructorContainsGivenParameters(System.Type,System.Type[])">
+            <summary>
+            Checks whether any constructor of <paramref name="inspectedType"/> takes (may take also some other) arguments of types <paramref name="parameterTypes"/>
+            </summary>
+            <param name="inspectedType">Type whose constructors are inspected</param>
+            <param name="parameterTypes">Types of the arguments</param>
+            <returns></returns>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.IoC">
+            <summary>
+            The Unity container
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.ResolveTypeAs``1(Unity.IUnityContainer,System.Type)">
+            <summary>
+            Tries to resolve a type <paramref name="type"/> as a type <typeparamref name="T"/> from a given unity container <paramref name="container"/>
+            </summary>
+            <typeparam name="T">Type resulting from the resolution</typeparam>
+            <param name="container">Container which is used for resolution</param>
+            <param name="type">Type to be resolved</param>
+            <remarks>The method tries to resolve <paramref name="type"/> from the unity container <paramref name="container"/> and casts it to the <typeparamref name="T"/></remarks>
+            <returns>The resolved instance</returns>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.ShowView(System.String,System.Object)">
+            <summary>
+            Shows a given view in a region given by the <paramref name="regionName"/>
+            </summary>
+            <param name="regionName">The name of the region containing the view</param>
+            <param name="view">The view</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.HideView(System.String,System.Object)">
+            <summary>
+            Hides a given view in a region given by the <paramref name="regionName"/>
+            </summary>
+            <param name="regionName">The name of the region containing the view</param>
+            <param name="view">The view</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.FindCorrespondingView(System.String,System.Type)">
+            <summary>
+            For a type <paramref name="t"/> it finds a corresponding view in a region given by the <paramref name="regionName"/>
+            </summary>
+            <param name="regionName"></param>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MainWindowViewModel.Dispose">
+            <summary>
+            Implementation of the IDisposable interface
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.ViewModels.MainWindowViewModel.ShouldClose">
+            <summary>
+            Event signaling that the main window should be closed
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.ViewModels.MainWindowViewModel.PropertyChanged">
+            <summary>
+            Event for the <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> interface
+            Notifies the View that some data in this view model was changed
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.project">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.Project"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.textureAtlasVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.TextureAtlasVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.allRectsVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.AllRectsVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.loadedImagesTreeVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.LoadedImagesTreeVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.saveAtlasPath">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveAtlasPath"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.saveMetadataPath">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SaveMetadataPath"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.currentJob">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.CurrentJob"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.cancellationTokenSource">
+            <summary>
+            The cancellation token source used by the tasks
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.selectedPackingSettingsMode">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPackingSettingsMode"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.fixedWidth">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.FixedWidth"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.fixedHeight">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.FixedHeight"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.selectedPackerTakesPlacementAlgo">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPackerTakesPlacementAlgo"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.selectedPackerTakesSorter">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPackerTakesSorter"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.selectedPlacementTakesSorter">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedPlacementTakesSorter"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.selectedBoundaryModeString">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedBoundaryModeString"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.isAliasCreationEnabled">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.IsAliasCreationEnabled"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.isJobCancelling">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.IsJobCancelling"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.isCurrentJobCancellable">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.IsCurrentJobCancellable"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.minimumBoundingBoxFinder">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MinimumBoundingBoxFinder"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.metadataWriter">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MetadataWriter"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.imageProcessor">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageProcessor"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.selectedTargetFramework">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedTargetFramework"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.regionManager">
+            <summary>
+            The region manager used for region manipulation
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.imageSorterVMs">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageSorterVMs"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.metadataWriterVMs">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MetadataWriterVMs"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.minimumBoundingBoxFinderVMs">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MinimumBoundingBoxFinderVMs"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.placementAlgorithmVMs">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.PlacementAlgorithmVMs"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.imageProcessorVMs">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageProcessorVMs"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.placementAlgorithmVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.PlacementAlgorithmVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.minimumBoundingBoxFinderVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MinimumBoundingBoxFinderVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.metadataWriterVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.MetadataWriterVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.imageProcessorVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageProcessorVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.imageSorterVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.ImageSorterVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.placementImageSorterVM">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.PlacementImageSorterVM"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.selectedColorType">
+            <see cref="P:PaunPacker.GUI.ViewModels.MainWindowViewModel.SelectedColorType"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.eventAggregator">
+            <summary>
+            The event aggregator used for communication between view models
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MainWindowViewModel.dialogService">
+            <summary>
+            The dialog service
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.MessageDialogViewModel">
+            <summary>
+            The view model for the dialog that shows a message
+            </summary>
+            <remarks>Uses prism's View Model locator to get instantiated</remarks>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MessageDialogViewModel.#ctor">
+            <summary>
+            Constructs the view model
+            </summary>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.MessageDialogViewModel.message">
+            <see cref="P:PaunPacker.GUI.ViewModels.MessageDialogViewModel.Message"/>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MessageDialogViewModel.Message">
+            <summary>
+            The message shown in the dialog
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.MessageDialogViewModel.CloseDialogCommand">
+            <summary>
+            Command that is executed when the dialog is closed
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MessageDialogViewModel.CloseDialog">
+            <summary>
+            Requests a close of the dialog with a "true" DialogResult
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.MessageDialogViewModel.OnDialogOpened(Prism.Services.Dialogs.IDialogParameters)">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.PluginViewModel">
+            <summary>
+            ViewModel for a View that shows information about a plugin
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.PluginViewModel.#ctor(System.Type)">
+            <summary>
+            Constructs the view model from the <see cref="T:System.Type"/> of the plugin
+            </summary>
+            <param name="pluginType">The type of the plugin</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.PluginViewModel.GetDecoratingAttributes``1(System.Type)">
+            <summary>
+            Returns all the attributes of type <typeparamref name="T"/> that are decorating the type <paramref name="type"/>
+            </summary>
+            <typeparam name="T">Type of the attribute</typeparam>
+            <param name="type">Type instance</param>
+            <returns>All the attributes of type <typeparamref name="T"/> that are decorating the type <paramref name="type"/></returns>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.PluginViewModel.#ctor">
+            <summary>
+            Constructs the view model
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.PluginViewModel.Name">
+            <summary>
+            The name of the plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.PluginViewModel.Description">
+            <summary>
+            The description of the plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.PluginViewModel.Author">
+            <summary>
+            The author of the plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.PluginViewModel.Version">
+            <summary>
+            The version of the plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.PluginViewModel.PluginType">
+            <summary>
+            The type of the plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.PluginViewModel.ExportedTypes">
+            <summary>
+            The types that are exported from the plugin
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.PluginViewModel.ExportedTypesMetadata">
+            <summary>
+            Metadata about the types that the plugin exports
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.PluginViewModel.OnDialogOpened(Prism.Services.Dialogs.IDialogParameters)">
+            <summary>
+            Handles the openning of the dialog
+            </summary>
+            <param name="parameters"></param>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.PluginViewModel.name">
+            <see cref="P:PaunPacker.GUI.ViewModels.PluginViewModel.Name"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.PluginViewModel.description">
+            <see cref="P:PaunPacker.GUI.ViewModels.PluginViewModel.Description"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.PluginViewModel.author">
+            <see cref="P:PaunPacker.GUI.ViewModels.PluginViewModel.Author"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.PluginViewModel.version">
+            <see cref="P:PaunPacker.GUI.ViewModels.PluginViewModel.Version"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.PluginViewModel.pluginType">
+            <see cref="P:PaunPacker.GUI.ViewModels.PluginViewModel.PluginType"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.PluginViewModel.exportedTypes">
+            <see cref="P:PaunPacker.GUI.ViewModels.PluginViewModel.ExportedTypes"/>
+        </member>
+        <member name="F:PaunPacker.GUI.ViewModels.PluginViewModel.exportedTypesMetadata">
+            <see cref="P:PaunPacker.GUI.ViewModels.PluginViewModel.ExportedTypesMetadata"/>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.RectangleViewModel">
+            <summary>
+            ViewModel corresponding to a single rectangle
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.RectangleViewModel.#ctor(PaunPacker.Core.Types.PPRect)">
+            <summary>
+            Creates a ViewModel for a given <paramref name="rect"/>
+            </summary>
+            <param name="rect">The rectangle for which the view model should be created</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.RectangleViewModel.ImageRepresentation">
+            <summary>
+            Image representation of the rectangle
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.RectangleViewModel.Rectangle">
+            <summary>
+            The rectangle represented by this view model
+            <remarks>This is direct exposure of the model (in terms of MVVM)</remarks>
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.ViewModels.TextureAtlasViewModel">
+            <summary>
+            ViewModel for a texture atlas
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.#ctor(PaunPacker.Core.Atlas.TextureAtlas,SkiaSharp.SKColorType)">
+            <summary>
+            Constructs the view model for a given <paramref name="textureAtlas"/> with a given <paramref name="colorType"/>
+            </summary>
+            <param name="textureAtlas">The texture atlas for which the view model should be created</param>
+            <param name="colorType">The color type to be used</param>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.TextureAtlasBitmap">
+            <summary>
+            The bitmap of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.MetaData">
+            <summary>
+            Metadata from the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.MouseClickPosition">
+            <summary>
+            Position of the mouse click
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.SelectedRectangle">
+            <summary>
+            The rectangle that the user has selected (via the TextureAtlasView)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.SelectedRectangles">
+            <summary>
+            All the selected rectangles
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.SelectAllRectangles">
+            <summary>
+            Selects all the rectangles in the texture atlas
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.UnselectAllRectangles">
+            <summary>
+            Unselects all the rectangles in the texture atlas
+            </summary>
+        </member>
+        <member name="E:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.PropertyChanged">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.FindSelectedRectangle(PaunPacker.Core.Types.PPPoint)">
+            <summary>
+            Finds a selected rectangle based on the coordinates of the mouse click
+            </summary>
+            <param name="clickPos">The position of the mouse click</param>
+            <returns>The rectangle at the given position, null if there is no rectangle at the given position</returns>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.Width">
+            <summary>
+            Width of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.Height">
+            <summary>
+            Height of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.ImageSource">
+            <summary>
+            Image representation of the texture atlas
+            </summary>
+        </member>
+        <member name="P:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.AreBordersShown">
+            <summary>
+            Represents a state whether the borders of the rectangles within the texture atlas are shown or not
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.Draw">
+            <summary>
+            Draws the thin layer above the texture atlas
+            This layer is used to draw borders around the selected rectangles
+            And to highlight the selected rectangles
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.DrawSelected(SkiaSharp.SKCanvas,SkiaSharp.SKPaint)">
+            <summary>
+            Highlights the selected rectangles
+            </summary>
+            <param name="canvas">The canvas where the borders should be drawn</param>
+            <param name="paint">The pain to be used</param>
+        </member>
+        <member name="M:PaunPacker.GUI.ViewModels.TextureAtlasViewModel.DrawBorders(SkiaSharp.SKCanvas,SkiaSharp.SKPaint)">
+            <summary>
+            Draws borders around the selected rectangles
+            </summary>
+            <param name="canvas">The canvas where the borders should be drawn</param>
+            <param name="paint">The pain to be used</param>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.CreateProjectWindow">
+            <summary>
+            Interaction logic for CreateProjectWindow.xaml
+            </summary>
+            <summary>
+            CreateProjectWindow
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.CreateProjectWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.ExportedTypeView">
+            <summary>
+            Interaction logic for ExportedTypeView.xaml
+            </summary>
+            <summary>
+            ExportedTypeView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.ExportedTypeView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.ImageView">
+            <summary>
+            Interaction logic for ImageView.xaml
+            </summary>
+            <summary>
+            ImageView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.ImageView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.LoadedImagesTreeView">
+            <summary>
+            Interaction logic for AllRectanglesThumbnailView.xaml
+            </summary>
+            <summary>
+            LoadedImagesTreeView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.LoadedImagesTreeView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.LoadedPluginsView">
+            <summary>
+            Interaction logic for LoadedPluginsView.xaml
+            </summary>
+            <summary>
+            LoadedPluginsView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.LoadedPluginsView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.MainWindow">
+            <summary>
+            Interaction logic for MainWindow.xaml
+            </summary>
+            <summary>
+            MainWindow
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.MainWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.MessageDialogView">
+            <summary>
+            Interaction logic for ErrorMessageDialog.xaml
+            </summary>
+            <summary>
+            MessageDialogView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.MessageDialogView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.PluginView">
+            <summary>
+            Interaction logic for PluginView.xaml
+            </summary>
+            <summary>
+            PluginView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.PluginView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.RectangleView">
+            <summary>
+            Interaction logic for RectangleView.xaml
+            </summary>
+            <summary>
+            RectangleView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.RectangleView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Views.TextureAtlasView">
+            <summary>
+            Interaction logic for TextureAtlasView.xaml
+            </summary>
+            <summary>
+            TextureAtlasView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.GUI.Views.TextureAtlasView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Workarounds.PrismApplication">
+            <summary>
+            Workaround that was needed in order to avoid usage of Prism.Unity NuGet package (.NET Core compliance and version of Unity container used by that package)
+            </summary>
+            <remarks>From the Prism.Unity package, only this class was needed so it was taken and partially modified from the: https://github.com/PrismLibrary/Prism/blob/master/Source/Wpf/Prism.Unity.Wpf/PrismApplication.cs
+            The documentation of this class can be found in Prism's documentation
+            </remarks>
+        </member>
+        <member name="P:PaunPacker.GUI.Workarounds.PrismApplication.UnityContainer">
+            <summary>
+            The unity container that should be used
+            </summary>
+        </member>
+        <member name="T:PaunPacker.GUI.Workarounds.SkiaSharpExtensions">
+            <summary>Provides a functionality for conversions between <see cref="T:System.Windows.Media.Imaging.WriteableBitmap"/> and <see cref="T:SkiaSharp.SKBitmap"/></summary>
+            <remarks>
+            This workaround was needed in order to remove the dependency on SkiaSharp.Views NuGet package that is platform specific and .NET Framework dependent
+            Because the only functionality needed from this package is the functionality for conversions between <see cref="T:System.Windows.Media.Imaging.WriteableBitmap"/> and <see cref="T:SkiaSharp.SKBitmap"/>
+            It was decided to take these parts from the SkiaSharp's GitHub repository: https://github.com/mono/SkiaSharp/blob/master/source/SkiaSharp.Views/SkiaSharp.Views.WPF/WPFExtensions.cs
+            The documentation to these methods could be found in the SkiaSharp's documentation
+            </remarks>
+        </member>
+        <member name="T:PaunPacker.GUI.Workarounds.UnityContainerExtension">
+            <summary>
+            The implementation of IContainerExtension for Unity container
+            </summary>
+            <remarks>This workaround was needed because the Unity container provided by the Prism.Unity does not offer sufficient functionality
+            because several extension methods are missing (those from the Unity.Abstractions probably)
+            The code in this class was taken from (and partially modified): https://github.com/PrismLibrary/Prism/blob/master/Source/Xamarin/Prism.Unity.Forms/UnityContainerExtension.cs
+            Documentation for these methods could be found in Prism's documentation
+            </remarks>
+        </member>
+        <member name="T:PaunPacker.BitmapManager">
+            <summary>
+            Provides a functionality for loading and saving bitmaps
+            </summary>
+        </member>
+        <member name="M:PaunPacker.BitmapManager.LoadBitmap(System.String)">
+            <summary>
+            Loads the bitmap from a file given by <paramref name="path"/>
+            </summary>
+            <param name="path">Path of the bitmap file</param>
+            <returns>The loaded image</returns>
+        </member>
+        <member name="M:PaunPacker.BitmapManager.SaveBitmap(PaunPacker.Core.Types.PPImage,System.String,SkiaSharp.SKEncodedImageFormat,System.Boolean)">
+            <summary>
+            Saves an image at a given path using a format given by <paramref name="format"/>
+            </summary>
+            <param name="image">The image to be saved</param>
+            <param name="path">The path where the image should be saved</param>
+            <param name="format">Format of the image</param>
+            <param name="overwrite">Determines whether the file should be overriden if it already exists</param>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.BitmapManager.LoadDir(System.String)">
+            <summary>
+            Recursively loads all the images starting in a directory at a given path
+            </summary>
+            <param name="path">Path of a root directory</param>
+            <returns>All the loaded images</returns>
+        </member>
+        <member name="T:PaunPacker.Common.FileFilters">
+            <summary>
+            This class exposes file filters in a format used by the <see cref="T:System.Windows.Forms.OpenFileDialog"/> / <see cref="T:System.Windows.Forms.SaveFileDialog"/>
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Common.FileFilters.SupportedImageFormatExtensions">
+            <summary>
+            An array containing all the supported file extensions
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Common.FileFilters.ProjectExtensionFilter">
+            <summary>
+            File filter for filtering PaunPacker project files
+            <remarks>PaunPacker project file has extension .ppproj</remarks>
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Common.FileFilters.ImageExtensionFilter">
+            <summary>
+            File filter for filtering images (in supported formats)
+            <remarks>Supported formats (based on extension) are: .png, .jpg, .jpeg, .bmp, .gif, .ico</remarks>
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Common.FileFilters.MetadataExtensionFilter">
+            <summary>
+            File filter for filtering texture atlas' metadata files
+            <remarks>Supported metadata formats (based on extension) are file has extension ....... ???</remarks>
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Common.FileFilters.AtlasExtensionFilter">
+            <summary>
+            File filter for filtering texture atlas files
+            <remarks>Supported texture atlas format is png, because it does not make sense to export into different format (almost always we need transparency)</remarks>
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Common.IOUtilities">
+            <summary>
+            Class containing utility functions for IO manipulation
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Common.IOUtilities.GetAllFilesRecursively(System.String)">
+            <summary>
+            Returns all the <see cref="T:System.IO.FileInfo"/>s (recursively) starting from a root directory specified by <paramref name="rootFolderPath"/>
+            </summary>
+            <param name="rootFolderPath">The directory where the recursive search should start</param>
+            <returns>All the files that were found</returns>
+        </member>
+        <member name="T:PaunPacker.Common.UIConstants">
+            <summary>
+            This class uses some utility contants that are used internally by the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Common.UIConstants.BASIC_MODE_INDEX">
+            <summary>
+            Constant representing the index of Basic mode (the mode selected in the main window) within the tab control
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Common.UIConstants.ADVANCED_MODE_INDEX">
+            <summary>
+            Constant representing the index of Advanced mode (the mode selected in the main window) within the tab control
+            </summary>
+        </member>
+        <member name="T:PaunPacker.FileLoader">
+            <summary>
+            Handles loading of image files
+            </summary>
+        </member>
+        <member name="M:PaunPacker.FileLoader.Load(System.String)">
+            <summary>
+            Loads an image at a given path
+            </summary>
+            <param name="path">Path of the image to be loaded</param>
+            <returns>The loaded image</returns>
+        </member>
+        <member name="M:PaunPacker.FileLoader.FastLoad(System.String)">
+            <summary>
+            Loads an image at a given path
+            </summary>
+            <remarks>Does not check for the existence of the image</remarks>
+            <param name="path">Path of the image to be loaded</param>
+            <returns>The loaded image</returns>
+        </member>
+        <member name="T:PaunPacker.Project">
+            <summary>
+            Represents a PaunPacker project
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Project.Path">
+            <summary>
+            Path of the project (project is contained within a directory)
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Project.Name">
+            <summary>
+            Name of the project
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Project.OpenedImages">
+            <summary>
+            Images that are opened in the project
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Project.TextureAtlas">
+            <summary>
+            Texture atlas yielded by the project
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Project.GetSchema">
+            <summary>
+            Implements the GetSchema method
+            </summary>
+            <returns>Null</returns>
+        </member>
+        <member name="M:PaunPacker.Project.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Deserializes the project by reading it from XML (via <paramref name="reader"/>)
+            </summary>
+            <param name="reader">XmlReader from which the project should be read</param>
+        </member>
+        <member name="M:PaunPacker.Project.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Serializes the project into XML
+            </summary>
+            <param name="writer">XmlWriter that should be used for serialization</param>
+        </member>
+        <member name="T:PaunPacker.ProjectManager">
+            <summary>
+            Performs manipulation with projects
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.CreateProject(System.String,System.String)">
+            <summary>
+            Creates an empty project with a given project name and at a given path
+            </summary>
+            <param name="projectName">The name of the project</param>
+            <param name="path">The path of the project</param>
+            <returns>The created project</returns>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.SaveProject(PaunPacker.Project,System.String)">
+            <summary>
+            Saves the given project at a given path
+            </summary>
+            <param name="p">Project to be saved</param>
+            <param name="newPath">Path where the project should be saved</param>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.LoadProject(System.String,System.String@)">
+            <summary>
+            Loads a project from a project file at a given path
+            </summary>
+            <param name="path">Path of the project file</param>
+            <param name="errorMessage">Contains the error message describing the error which occured during the project file load. If there was no error, the <paramref name="errorMessage"/> is null</param>
+            <remarks>Either the returned value is null and <paramref name="errorMessage"/> is not null or vice versa</remarks>
+            <returns>The loaded project, null if the project file is corrupted</returns>
+        </member>
+        <member name="T:PaunPacker.ProjectManager.ProjectLoader">
+            <summary>
+            Loads the projects
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.ProjectLoader.#ctor">
+            <summary>
+            Constructs a ProjectLoader
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.ProjectLoader.Serializer_UnknownNode(System.Object,System.Xml.Serialization.XmlNodeEventArgs)">
+            <summary>
+            Handles the UnknownNode event
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.ProjectLoader.Serializer_UnknownAttribute(System.Object,System.Xml.Serialization.XmlAttributeEventArgs)">
+            <summary>
+            Handles the UnknownAttribute event
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.ProjectLoader.Serializer_UnknownElement(System.Object,System.Xml.Serialization.XmlElementEventArgs)">
+            <summary>
+            Handles the UnknownElement event
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.ProjectLoader.Load(System.String,System.String@)">
+            <summary>
+            Loads a project from a project file at a given path
+            </summary>
+            <param name="path">The path of the project file</param>
+            <param name="errorMessage">Contains the error message describing the error which occured during the project file load. If there was no error, the <paramref name="errorMessage"/> is null</param>
+            <remarks>Either the returned value is null and <paramref name="errorMessage"/> is not null or vice versa</remarks>
+            <returns>The loaded project, null if the project file is corrupted</returns>
+        </member>
+        <member name="T:PaunPacker.ProjectManager.ProjectWriter">
+            <summary>
+            Saves the projects
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.ProjectWriter.#ctor">
+            <summary>
+            Constructs the ProjectWriter
+            </summary>
+        </member>
+        <member name="M:PaunPacker.ProjectManager.ProjectWriter.Write(PaunPacker.Project,System.String)">
+            <summary>
+            Saves the project <paramref name="p"/> at a given path
+            </summary>
+            <param name="p">The project to be saved</param>
+            <param name="path">The path where the project should be saved</param>
+        </member>
+        <member name="T:PaunPacker.RelayCommand">
+            <summary>
+            Implementation of ICommand
+            </summary>
+            <remarks>Based on https://msdn.microsoft.com/en-us/magazine/dd419663.aspx</remarks>
+        </member>
+        <member name="M:PaunPacker.RelayCommand.#ctor(System.Action{System.Object},System.Predicate{System.Object})">
+            <summary>
+            Constructs the relay command
+            </summary>
+            <param name="execute">The body of the command</param>
+            <param name="canExecute">Predicate determining whether the command could be executed</param>
+        </member>
+        <member name="E:PaunPacker.RelayCommand.CanExecuteChanged">
+            <summary>
+            Event that is raised when the state of "can execute" has changed
+            </summary>
+        </member>
+        <member name="M:PaunPacker.RelayCommand.CanExecute(System.Object)">
+            <summary>
+            Checkes whether a command could be executed (for a given parameter)
+            </summary>
+            <returns>True if the command can be executed, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.RelayCommand.Execute(System.Object)">
+            <summary>
+            Executes the command
+            </summary>
+            <param name="parameter">The parameter that should be passed to the command</param>
+        </member>
+    </members>
+</doc>

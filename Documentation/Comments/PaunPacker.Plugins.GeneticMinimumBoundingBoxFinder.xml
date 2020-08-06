@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder">
+            <summary>
+            Packing algorithm based on genetic algorithm
+            See <a href="http://www.cs.nott.ac.uk/~pszgxk/aim/2009/reading/ga_representation_2.pdf">On genetic algorithms for the packing of polygons</a> for some of the implementation (algorithm) details.
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.PackingPattern">
+            <summary>
+            Encoding of the Pattern. The Packing Pattern is encoded as an permutation of the input images + width of the packing and + information about rotation of the images
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual">
+            <summary>
+            Class representing an individual (in Genetic algorithms terminology)
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual.pattern">
+            <summary>
+            The pattern corresponding to the individual
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual.fitness">
+            <summary>
+            The fitness value of the individual
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual.Clone">
+            <summary>
+            Creates a deep clone of the Individual
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Constructs a new <see cref="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder"/> with a given number of maximum iterations and population size
+            </summary>
+            <param name="maxIterations">Number of iteratios, has to be at least 0</param>
+            <param name="populationSize">Population size has to be at least 2</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">Is thrown when <paramref name="maxIterations"/> is less than 0 or <paramref name="populationSize"/> is less than two</exception>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Decode(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.PackingPattern@,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Decodes the PackingPattern i.e. constructs the resulting Packing.
+            </summary>
+            <param name="packing">The PackingPattern to be decoded</param>
+            <param name="rects">Corresponding rects</param>
+            <returns>Resulting Packing</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Permute(System.Int32[],System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Applies given permutation to the given <paramref name="rects"/>
+            </summary>
+            <param name="permutation">Permutation that determines the order of rects</param>
+            <param name="rects">rects to be permuted</param>
+            <returns>Permutes <paramref name="rects"/> with respect to <paramref name="permutation"/></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Rotate(System.Boolean[],System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Performs rotation of the given <paramref name="rects"/>, based on the given array <paramref name="isRotated"/>
+            </summary>
+            <param name="isRotated">Element at i-th index represents whether i-th image is rotated (by 90 degrees)</param>
+            <param name="rects">Corresponding rects</param>
+            <returns>Rotated <paramref name="rects"/></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.PackingAreaFitnessFunction(PaunPacker.Core.Packing.PackingResult)">
+            <summary>
+            Calculates the packing area fitness function
+            </summary>
+            <param name="result">The <see cref="T:PaunPacker.Core.Packing.PackingResult"/> for which the packing area fitness will be calculated</param>
+            <returns>The packing area fitness function</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.PackingTrimLossFitnessFunction(PaunPacker.Core.Packing.PackingResult)">
+            <summary>
+            Calculates the packing trim loss fitness function
+            </summary>
+            <param name="result">The <see cref="T:PaunPacker.Core.Packing.PackingResult"/> for which the trim loss fitness will be calculated</param>
+            <returns>The packing trim loss fitness function</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.TrimLossValue(PaunPacker.Core.Packing.PackingResult)">
+            <summary>
+            Calculates a trim loss value for a given <paramref name="result"/>
+            </summary>
+            <param name="result">The <see cref="T:PaunPacker.Core.Packing.PackingResult"/> for which the trimm loss will be calculated</param>
+            <returns>The trim loss value</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.LiesInLeftInclusiveInterval(System.Double,System.Double,System.Double)">
+            <summary>
+            Checks whether a value <paramref name="valueToTest"/> lies in the interval [<paramref name="intervalStart"/>, <paramref name="intervalEnd"/>)
+            </summary>
+            <param name="valueToTest">The value to be tested</param>
+            <param name="intervalStart">Inclusive start of the interval</param>
+            <param name="intervalEnd">Exclusive end of the interval</param>
+            <returns>True if it lies in the interval, false otherwise</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.SelectIndividual(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual[])">
+            <summary>
+            Selects individual from population with respect to some probability
+            </summary>
+            <param name="population">Population to select from</param>
+            <returns>Selected individual</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Crossover(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual,PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual)">
+            <summary>
+            Performs crossover of two individuals
+            </summary>
+            <param name="first">First individual</param>
+            <param name="second">Second individual</param>
+            <returns>New individual that is "children" of <paramref name="first"/> and <paramref name="second"/></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Mutate(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual)">
+            <summary>
+            Applies rotate-mutation operator to the given individual
+            </summary>
+            <param name="individual">Individual to be mutated</param>
+            <returns>Mutated <paramref name="individual"/></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.MutateNormal(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual)">
+            <summary>
+            Applies general mutation operator to the given individual
+            </summary>
+            <param name="individual">Individual to be mutated</param>
+            <returns>Mutated <paramref name="individual"/></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.RandomlyInvertPartOfPermutation(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual)">
+            <summary>
+            Mutates Individual by inverting some random, continuous part of its permutation
+            </summary>
+            <param name="individual"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.EvaluateIndividualKnownWidth(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Calculates (fill's in individual's fitness attribute) fitness value for a given individual and corresponding rects.
+            Fitness function is calculated with respect to the <paramref name="rects"/> and fixed width of the packing
+            </summary>
+            <param name="individual">Given individual</param>
+            <param name="rects">Rects with respect which we will calculate fitness value</param>
+            <returns>Individual with filled fitness attribute</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.EvaluateIndividual(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual,System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect})">
+            <summary>
+            Calculates (fill's in individual's fitness attribute) fitness value for a given individual and corresponding rects.
+            Fitness function is calculated with respect to the <paramref name="rects"/> and uknown width of the packing
+            </summary>
+            <param name="individual">Given individual</param>
+            <param name="rects">Rects with respect which we will calculate fitness value</param>
+            <returns>Individual with filled fitness attribute</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.GetInitialPopulation(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Int32)">
+            <summary>
+            Calculates the initial population
+            </summary>
+            <param name="images">Images to be packed</param>
+            <param name="numOfImages">Number of images (to prevent IEnumerable's Count() recalculation)</param>
+            <returns>The initial population</returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.GetIndexOfWostIndividual(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual[])">
+            <summary>
+            Returns the index of the worst (measured by fitness value) individual from a given <paramref name="population"/>
+            </summary>
+            <param name="population">The population to choose from</param>
+            <returns>The index of the worst individual in <paramref name="population"/></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.GetIndexOfBestIndividual(PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Individual[])">
+            <summary>
+            Returns the index of the best (measured by fitness value) individual from a given <paramref name="population"/>
+            </summary>
+            <param name="population">The population to choose from</param>
+            <returns>The index of the best individual in <paramref name="population"/></returns>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.FindMinimumBoundingBox(System.Collections.Generic.IEnumerable{PaunPacker.Core.Types.PPRect},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.PopulationSize">
+            <summary>
+            The size of the population
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.MaxIterations">
+            <summary>
+            The number of iterations
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.ProgressChange">
+            <inheritdoc />
+        </member>
+        <member name="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinderPlugin">
+            <summary>
+            Plugin entrypoint that exports the <see cref="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder"/>
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinderPlugin.OnInitialized(Prism.Ioc.IContainerProvider)">
+            <summary>
+            Creates the view and the view model
+            The view is then registered so that the PaunPacker.GUI could load it later
+            </summary>
+            <remarks>Implementation of the Prism's <see cref="T:Prism.Modularity.IModule"/> interface</remarks>
+            <param name="containerProvider">Container provider given by the Prism</param>
+        </member>
+        <member name="M:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinderPlugin.RegisterTypes(Prism.Ioc.IContainerRegistry)">
+            <summary>
+            Does not do anything
+            Needed only to implement the interface
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel">
+            <summary>
+            View model wired to the <see cref="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinderPlugin"/>'s view 
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.#ctor(Unity.IUnityContainer)">
+            <summary> 
+            Constructs the view model and registers The <see cref="T:PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder"/> into the <paramref name="ioc"/>
+            </summary>
+            <param name="ioc">The unity container</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.PopulationSize">
+            <summary>
+            The population bound to the text box field within the GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.MaxIterations">
+            <summary>
+            The population bound to the text box field within the GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.IoC">
+            <summary>
+            The Unity container that was obtained (initially) from the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="E:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.PropertyChanged">
+            <summary>
+            The PropertyChangedEvent used to notify the view about data changes
+            </summary>
+        </member>
+        <member name="F:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.populationSize">
+            <see cref="P:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.PopulationSize"/>
+        </member>
+        <member name="F:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.maxIterations">
+            <see cref="P:PaunPacker.Plugins.ViewModels.GeneticMinimumBoundingBoxFinderViewModel.MaxIterations"/>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.GeneticMinimumBoundingBoxFinderView">
+            <summary>
+            Interaction logic for GeneticMinimumBoundingBoxFinderView.xaml
+            </summary>
+            <summary>
+            GeneticMinimumBoundingBoxFinderView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.GeneticMinimumBoundingBoxFinderView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+    </members>
+</doc>

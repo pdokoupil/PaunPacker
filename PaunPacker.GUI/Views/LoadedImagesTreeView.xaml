@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="PaunPacker.GUI.Views.LoadedImagesTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:PaunPacker.GUI.ViewModels"
+             xmlns:vc="clr-namespace:PaunPacker.GUI.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d"
+             Name="TreeViewControl"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/LoadedImagesTreeResources.xaml"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <!--Build a tree view that will represent a directory structure of the images that are loaded-->
+        <TreeView ItemsSource="{Binding FSEntries}" Name="root" >
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type vm:NodeVM}" ItemsSource="{Binding Children}">
+                    <StackPanel Name="panel" Tag="{Binding DataContext, ElementName=root}" Orientation="Horizontal">
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <!--https://social.msdn.microsoft.com/Forums/vstudio/en-US/b3ef2d55-1c4d-4783-8ec4-d7ce0bb57ee9/hierarchical-datatemplate-binding-to-datatype-not-datacontext?forum=wpf-->
+                                <!--based on https://social.msdn.microsoft.com/Forums/vstudio/en-US/526ab350-8788-4bc6-a98a-1e4dee6ad33a/mvvm-how-to-bind-to-datacontext-from-contextmenu-within-datatemplate?forum=wpf-->
+                                <MenuItem Header="Unload"
+                                    Command="{Binding PlacementTarget.Tag.Unload, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                    CommandParameter="{Binding}"/>
+                                <MenuItem Header="Open in File Explorer"
+                                    Command="{Binding PlacementTarget.Tag.OpenInFileExplorer, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                    CommandParameter="{Binding}"/>
+
+                                <Separator />
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
+
+                        <Grid Width="16" Height="16">
+                            <Viewbox StretchDirection="Both" Stretch="Uniform">
+                                <!--16x16 icon, Without viewbox + canvas (just setting UserControl width/height) it would take upper left corner of size WxH ..-->
+                                <UserControl Content="{Binding Thumbnail}" Margin="0,1,8,1"/>
+                            </Viewbox>
+                        </Grid>
+
+                        <TextBlock Text="{Binding Name}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ElementName=TreeViewControl, Path=DataContext.NodeRightClick}" CommandParameter="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBlock>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#a5ff6600" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#40FF6600" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+            </TreeView.Resources>
+        </TreeView>
+    </Grid>
+</UserControl>

@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.Plugins.SkylineAlgorithmProviderPlugin</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.Plugins.SkylineAlgorithmProviderPlugin">
+            <summary>
+            Main entry point of the plugin.
+            This plugin exports the <see cref="T:PaunPacker.Core.Packing.Placement.Skyline.SkylineAlgorithm"/> and provides a GUI for it
+            This GUI was seperated from PaunPacker.Core and PaunPacker.GUI to separate Plugin
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.SkylineAlgorithmProviderPlugin.OnInitialized(Prism.Ioc.IContainerProvider)">
+            <summary>
+            Creates the view and the view model
+            The view is then registered so that the PaunPacker.GUI could load it later
+            </summary>
+            <remarks>Implementation of the Prism's <see cref="T:Prism.Modularity.IModule"/> interface</remarks>
+            <param name="containerProvider">Container provider given by the Prism</param>
+        </member>
+        <member name="M:PaunPacker.Plugins.SkylineAlgorithmProviderPlugin.OnModulesLoaded(PaunPacker.GUI.WPF.Common.Events.ModulesLoadedPayload)">
+            <summary>
+            Event handler of the <see cref="T:PaunPacker.GUI.WPF.Common.Events.ModulesLoadedEvent"/>
+            Gets all the <see cref="T:PaunPacker.Core.Packing.Placement.Skyline.ISkylineRectAndPointPicker"/> that were loaded by the PaunPacker.GUI and passes them
+            to the <see cref="T:PaunPacker.Plugins.ViewModels.SkylineAlgorithmViewModel"/> so that the user could select it via the view of this plugin
+            </summary>
+            <param name="payload">The payload of the event</param>
+        </member>
+        <member name="M:PaunPacker.Plugins.SkylineAlgorithmProviderPlugin.RegisterTypes(Prism.Ioc.IContainerRegistry)">
+            <summary>
+            Does not do anything
+            Needed only to implement the interface
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.RectAndPointPickerViewModel">
+            <summary>
+            Represents a view model for RectAndPointPicker
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.RectAndPointPickerViewModel.#ctor(System.Type)">
+            <summary>
+            Constructs new RectAndPointPickerViewModel from a RectAndPointPicker of type <paramref name="type"/>
+            </summary>
+            <param name="type">The type of the RectAndPointPicker</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.RectAndPointPickerViewModel.RectAndPointPickerType">
+            <summary>
+            The type of the RectAndPointPicker
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.RectAndPointPickerViewModel.Name">
+            <summary>
+            Tha name of the RectAndPointPicker
+            </summary>
+            <remarks>Possibly also contains a version number</remarks>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.SkylineAlgorithmViewModel">
+            <summary>
+            View model wired to the <see cref="T:PaunPacker.Plugins.SkylineAlgorithmProviderPlugin"/>'s view 
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.SkylineAlgorithmViewModel.#ctor(System.Collections.Generic.IEnumerable{System.Type},Unity.IUnityContainer)">
+            <summary>
+            Constructs the view model and sets the loaded types (that are later shown in view) to <paramref name="loadedISkylineRectAndPointPickerTypes"/>
+            </summary>
+            <param name="loadedISkylineRectAndPointPickerTypes">The types of loaded skyline rect and point pickers</param>
+            <param name="unityContainer">The unity container</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.SkylineAlgorithmViewModel.SkylineRectAndPointPickerVMs">
+            <summary>
+            The types implementing <see cref="T:PaunPacker.Core.Packing.Placement.Skyline.ISkylineRectAndPointPicker"/> interface that were loaded by the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.SkylineAlgorithmViewModel.SelectedRectAndPointPickerVM">
+            <summary>
+            The currently selected RectAndPointPicker
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.RectAndPointPickerView">
+            <summary>
+            Interaction logic for RectAndPointPickerView.xaml
+            </summary>
+            <summary>
+            RectAndPointPickerView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.RectAndPointPickerView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.SkylineAlgorithmView">
+            <summary>
+            Interaction logic for SkylineAlgorithmView.xaml
+            </summary>
+            <summary>
+            SkylineAlgorithmView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.SkylineAlgorithmView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.Plugins.LibGDXMetadataWriter</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.Core.Metadata.LibGDXMetadataWriter">
+            <summary>
+            This Plugin exports a <see cref="T:PaunPacker.Core.Metadata.LibGDXMetadataWriter"/> which exports <see cref="T:PaunPacker.Core.Metadata.MetadataCollection"/> about
+            Texture atlas into a ".atlas" format. 
+            Libgdx Texture Atlas Description (i.e. ".atlas" format) http://esotericsoftware.com/spine-atlas-format
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Core.Metadata.LibGDXMetadataWriter.WriteAsync(System.String,System.String,PaunPacker.Core.Metadata.MetadataCollection,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:PaunPacker.Core.Metadata.LibGDXMetadataWriter.Write(System.String,System.IO.StreamWriter,PaunPacker.Core.Metadata.MetadataCollection,System.Threading.CancellationToken)">
+            <summary>
+            Internal implementation of the <see cref="M:PaunPacker.Core.Metadata.LibGDXMetadataWriter.WriteAsync(System.String,System.String,PaunPacker.Core.Metadata.MetadataCollection,System.Threading.CancellationToken)"/> method that writes into a <paramref name="writer"/>
+            </summary>
+            <param name="writer">The stream to write to</param>
+            <param name="metadata">The metadata to be written</param>
+            <param name="token">The cancellation token</param>
+            <param name="textureAtlasPath">Path of the texture atlas corresponding to this metadata, LibGDX format requires it to be specified (needed for "page section" within the metadata file)</param>
+            <remarks>When the cancellation is requested, the already written data is left in the stream</remarks>
+            <returns>True on success, false on failure</returns>
+        </member>
+        <member name="P:PaunPacker.Core.Metadata.LibGDXMetadataWriter.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:PaunPacker.Core.Metadata.LibGDXMetadataWriter.ReportsProgress">
+            <inheritdoc />
+        </member>
+        <member name="E:PaunPacker.Core.Metadata.LibGDXMetadataWriter.ProgressChange">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

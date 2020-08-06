@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="C:\Users\calle\Documents\MFF\bakalarka\PaunPacker\test-data\metadata\unity1.xml">
+<SubTexture name="32.png" x="0" y="32" width="32" height="32" />
+<SubTexture name="48.png" x="32" y="80" width="48" height="48" />
+<SubTexture name="64.png" x="80" y="144" width="64" height="64" />
+<SubTexture name="96.png" x="144" y="240" width="96" height="96" />
+<SubTexture name="96x128.png" x="240" y="336" width="96" height="128" />
+<SubTexture name="128.png" x="336" y="464" width="128" height="128" />
+</TextureAtlas>

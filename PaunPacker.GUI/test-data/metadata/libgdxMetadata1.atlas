@@ -1,0 +1,34 @@
+libgdxMetadata1.atlas
+size: 192, 256
+format: Rgba8888
+repeat: none
+128.png
+ rotate: false
+ xy: 0, 128
+ size: 128, 128
+ index: -1
+96x128.png
+ rotate: false
+ xy: 0, 96
+ size: 96, 128
+ index: -1
+96.png
+ rotate: false
+ xy: 96, 192
+ size: 96, 96
+ index: -1
+32.png
+ rotate: false
+ xy: 96, 128
+ size: 32, 32
+ index: -1
+64.png
+ rotate: false
+ xy: 128, 192
+ size: 64, 64
+ index: -1
+48.png
+ rotate: false
+ xy: 128, 176
+ size: 48, 48
+ index: -1

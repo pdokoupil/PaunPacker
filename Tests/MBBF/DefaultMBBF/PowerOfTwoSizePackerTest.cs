@@ -1,0 +1,663 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using PaunPacker.Core.Packing;
+using PaunPacker.Core.Packing.MBBF;
+using PaunPacker.Core.Packing.Placement;
+using PaunPacker.Core.Types;
+
+namespace PaunPacker.Tests.MBBF
+{
+    [TestClass]
+    public class PowerOfTwoSizePackerTest
+    {
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares1()
+        {
+            //Arrange
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(1)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares2()
+        {
+            //Arrange
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(2)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares3()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(3)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares4()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(4)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares5()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(5)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares10()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(10)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares15()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(15)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares20()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(20)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestValidSquares50()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(50)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        //Assert
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PowerOfTwoSizePackerTestArgumentNull()
+        {
+            //Arrange 
+            IEnumerable<PPRect> inputSequence = null;
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestEmptyInput()
+        {
+            //Arrange 
+            var inputSequence = Enumerable.Empty<PPRect>();
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(0, result.Width);
+            Assert.AreEqual(0, result.Height);
+            Assert.AreEqual(0, result.Rects.Count());
+        }
+
+        [TestMethod]
+        public async Task PowerOfTwoSizePackerTestCancellationWorks()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(50)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            int calledTimes = 0;
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    calledTimes++;
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            //Act
+            var result = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result);
+            Assert.AreEqual(true, IsPoT(result.Width));
+            Assert.AreEqual(true, IsPoT(result.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+            Assert.IsTrue(calledTimes > 2);
+
+
+
+            //Now we know that it was called atleast three times, check that the use of cancellation reduce
+            //it to two calls (it is called two times before the "main-loop" starts and the cancellation is
+            //being checked in the main loop)
+            calledTimes = 0;
+            placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+            .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+            .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+            {
+                //Ensure that it is not too fast ...
+                Thread.Sleep(2000);
+                calledTimes++;
+                //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                int maxH = rects.Max(x => x.Height);
+                int sumW = rects.Sum(x => x.Width);
+                if (sumW > w || maxH > h)
+                    return null;
+                int left = 0;
+                return new PackingResult(sumW, maxH, rects.Select(x =>
+                {
+                    left += x.Width;
+                    return new PPRect(left, 0, left, x.Height);
+                })); ;
+            });
+            packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            using (var source = new CancellationTokenSource())
+            {
+                var cancellationToken = source.Token;
+
+                var task = Task.Run(() => packer.FindMinimumBoundingBox(inputSequence, cancellationToken));
+                await Task.Delay(500).ConfigureAwait(false);
+                source.Cancel();
+
+                result = await task.ConfigureAwait(false);
+            }
+
+            //Check that even though it was canceled, some meaningful result could be returned
+            //This is property of PowerOfTwoSizePacker, not general property of all minimum bounding box finders
+            if (result != null)
+            {
+                Assert.AreEqual(true, IsPoT(result.Width));
+                Assert.AreEqual(true, IsPoT(result.Height));
+                //Check that the returned result is valid
+                Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+            }
+            //Check that it was called exactly once
+            Assert.IsTrue(calledTimes == 1);
+        }
+
+        [TestMethod]
+        public async Task PowerOfTwoSizePackerTestRunCancelled()
+        {
+            //Now we know that it was called atleast three times (from the previous test case), check that the use of cancellation reduce
+            //it to two calls (it is called two times before the "main-loop" starts and the cancellation is
+            //being checked in the main loop)
+            var calledTimes = 0;
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(50)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+            .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+            .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+            {
+                //Ensure that it is not too fast ...
+                Thread.Sleep(1000);
+                calledTimes++;
+                //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                int maxH = rects.Max(x => x.Height);
+                int sumW = rects.Sum(x => x.Width);
+                if (sumW > w || maxH > h)
+                    return null;
+                int left = 0;
+                return new PackingResult(sumW, maxH, rects.Select(x =>
+                {
+                    left += x.Width;
+                    return new PPRect(left, 0, left, x.Height);
+                })); ;
+            });
+
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            using var source = new CancellationTokenSource();
+            var cancellationToken = source.Token;
+
+            var task = Task.Run(() => packer.FindMinimumBoundingBox(inputSequence, cancellationToken));
+            source.Cancel();
+
+            var result = await task.ConfigureAwait(false);
+
+            //Check that even though it was canceled, some meaningful result could be returned
+            if (result != null)
+            {
+                Assert.AreNotEqual(null, result);
+                Assert.AreEqual(true, IsPoT(result.Width));
+                Assert.AreEqual(true, IsPoT(result.Height));
+                //Check that the returned result is valid
+                Assert.AreEqual(true, TestUtil.IsPackingResultValid(result));
+            }
+
+            Assert.IsTrue(calledTimes == 0);
+
+            calledTimes = 0;
+            var result2 = packer.FindMinimumBoundingBox(inputSequence, cancellationToken);
+            Assert.IsTrue(calledTimes == 0);
+        }
+
+        [TestMethod]
+        public async Task PowerOfTwoSizePackerTestRunAfterCancellation()
+        {
+            //Now we know that it was called atleast three times (from the previous test case), check that the use of cancellation reduce
+            //it to two calls (it is called two times before the "main-loop" starts and the cancellation is
+            //being checked in the main loop)
+            var calledTimes = 0;
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(50)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+            .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+            .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+            {
+                calledTimes++;
+                //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                int maxH = rects.Max(x => x.Height);
+                int sumW = rects.Sum(x => x.Width);
+                if (sumW > w || maxH > h)
+                    return null;
+                int left = 0;
+                return new PackingResult(sumW, maxH, rects.Select(x =>
+                {
+                    left += x.Width;
+                    return new PPRect(left, 0, left, x.Height);
+                })); ;
+            });
+
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+
+            using (var source = new CancellationTokenSource())
+            {
+                var cancellationToken = source.Token;
+
+                var task = Task.Run(() => packer.FindMinimumBoundingBox(inputSequence, cancellationToken));
+                source.Cancel();
+
+                var result = await task.ConfigureAwait(false);
+            }
+
+
+            //Obtain new cancellation token
+            using (var source = new CancellationTokenSource())
+            {
+                var cancellationToken = source.Token;
+                calledTimes = 0;
+                var result2 = packer.FindMinimumBoundingBox(inputSequence, cancellationToken);
+
+                Assert.AreNotEqual(null, result2);
+                Assert.AreEqual(true, IsPoT(result2.Width));
+                Assert.AreEqual(true, IsPoT(result2.Height));
+                Assert.AreEqual(true, TestUtil.IsPackingResultValid(result2));
+            }
+
+            //Check that it was not cancelled
+            Assert.IsTrue(calledTimes > 2);
+        }
+
+        [TestMethod]
+        public void PowerOfTwoSizePackerTestInstanceReusability()
+        {
+            //Arrange 
+            var inputSequence = (TestUtil.Shuffle(TestUtil.GetIncreasingSquares(20)));
+            var placementAlgorithmMock = new Mock<IPlacementAlgorithm>();
+
+            placementAlgorithmMock
+                .Setup(x => x.PlaceRects(It.IsAny<int>(), It.IsAny<int>(), inputSequence, It.IsAny<CancellationToken>()))
+                .Returns<int, int, IEnumerable<PPRect>, CancellationToken>((w, h, rects, _) =>
+                {
+                    //Assume "dumb" placement algorithm that simple places all the rects consecutively next to each other
+                    int maxH = rects.Max(x => x.Height);
+                    int sumW = rects.Sum(x => x.Width);
+                    if (sumW > w || maxH > h)
+                        return null;
+                    int left = 0;
+                    return new PackingResult(sumW, maxH, rects.Select(x =>
+                    {
+                        left += x.Width;
+                        return new PPRect(left, 0, left, x.Height);
+                    })); ;
+                });
+            var packer = new PowerOfTwoSizePacker(placementAlgorithmMock.Object);
+            
+            //Act
+            var result1 = packer.FindMinimumBoundingBox(inputSequence);
+            var result2 = packer.FindMinimumBoundingBox(inputSequence);
+            var result3 = packer.FindMinimumBoundingBox(inputSequence);
+
+            //Assert
+            Assert.AreNotEqual(null, result1);
+            Assert.AreEqual(true, IsPoT(result1.Width));
+            Assert.AreEqual(true, IsPoT(result1.Height));
+            Assert.AreEqual(true, TestUtil.IsPackingResultValid(result1));
+            Assert.AreEqual(true, TestUtil.Succeeded(result1.Width, result1.Height, result2.Width, result2.Height));
+            Assert.AreEqual(true, TestUtil.Succeeded(result1.Width, result1.Height, result3.Width, result3.Height));
+        }
+
+        private static bool IsPoT(int value)
+        {
+            int v = value;
+            v--;
+            v |= v >> 1;
+            v |= v >> 2;
+            v |= v >> 4;
+            v |= v >> 8;
+            v |= v >> 16;
+            v++;
+            return v == value;
+        }
+    }
+}

@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin</name>
+    </assembly>
+    <members>
+        <member name="T:PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin">
+            <summary>
+            Main entry point of the plugin.
+            This plugin exports the <see cref="T:PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin"/> and provides a GUI for it
+            This GUI was seperated from PaunPacker.Core and PaunPacker.GUI to separate Plugin
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin.OnInitialized(Prism.Ioc.IContainerProvider)">
+            <summary>
+            Creates the view and the view model
+            The view is then registered so that the PaunPacker.GUI could load it later
+            </summary>
+            <remarks>Implementation of the Prism's <see cref="T:Prism.Modularity.IModule"/> interface</remarks>
+            <param name="containerProvider">Container provider given by the Prism</param>
+        </member>
+        <member name="M:PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin.OnModulesLoaded(PaunPacker.GUI.WPF.Common.Events.ModulesLoadedPayload)">
+            <summary>
+            Event handler of the <see cref="T:PaunPacker.GUI.WPF.Common.Events.ModulesLoadedEvent"/>
+            Gets all the Guillotine algorithm's dependencies that were loaded by the PaunPacker.GUI and passes them
+            to the <see cref="T:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel"/> so that the user could select it via the view of this plugin
+            </summary>
+            <param name="payload">The payload of the event</param>
+        </member>
+        <member name="M:PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin.RegisterTypes(Prism.Ioc.IContainerRegistry)">
+            <summary>
+            Does not do anything
+            Needed only to implement the interface
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.FreeRectangleExtractorViewModel">
+            <summary>
+            Represents a view model for FreeRectangleExtractor
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.FreeRectangleExtractorViewModel.#ctor(System.Type)">
+            <summary>
+            Constructs new FreeRectangleExtractorViewModel from a FreeRectangleExtractor of type <paramref name="type"/>
+            </summary>
+            <param name="type">The type of the FreeRectangleExtractor</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectangleExtractorViewModel.FreeRectangleExtractorType">
+            <summary>
+            The type of the FreeRectangleExtractor
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectangleExtractorViewModel.Name">
+            <summary>
+            Tha name of the FreeRectangleExtractor
+            </summary>
+            <remarks>Possibly also contains a version number</remarks>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.FreeRectangleMergerViewModel">
+            <summary>
+            Represents a view model for FreeRectangleMerger
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.FreeRectangleMergerViewModel.#ctor(System.Type)">
+            <summary>
+            Constructs new FreeRectangleMergerViewModel from a FreeRectangleMerger of type <paramref name="type"/>
+            </summary>
+            <param name="type">The type of the FreeRectangleMerger</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectangleMergerViewModel.FreeRectangleMergerType">
+            <summary>
+            The type of the FreeRectangleMerger
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectangleMergerViewModel.Name">
+            <summary>
+            Tha name of the FreeRectangleMerger
+            </summary>
+            <remarks>Possibly also contains a version number</remarks>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.FreeRectanglePostProcessorViewModel">
+            <summary>
+            Represents a view model for RectAndPointPicker
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.FreeRectanglePostProcessorViewModel.#ctor(System.Type)">
+            <summary>
+            Constructs new FreeRectanglePostProcessorViewModel from a FreeRectanglePostProcessor of type <paramref name="type"/>
+            </summary>
+            <param name="type">The type of the FreeRectanglePostProcessor</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectanglePostProcessorViewModel.FreeRectanglePostProcessorType">
+            <summary>
+            The type of the FreeRectanglePostProcessor
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectanglePostProcessorViewModel.Name">
+            <summary>
+            Tha name of the FreeRectanglePostProcessor
+            </summary>
+            <remarks>Possibly also contains a version number</remarks>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.FreeRectangleSplitterViewModel">
+            <summary>
+            Represents a view model for FreeRectangleSplitter
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.FreeRectangleSplitterViewModel.#ctor(System.Type)">
+            <summary>
+            Constructs new FreeRectangleSplitterViewModel from a FreeRectangleSplitter of type <paramref name="type"/>
+            </summary>
+            <param name="type">The type of the FreeRectangleSplitter</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectangleSplitterViewModel.FreeRectangleSplitterType">
+            <summary>
+            The type of the FreeRectangleSplitter
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.FreeRectangleSplitterViewModel.Name">
+            <summary>
+            Tha name of the FreeRectangleSplitter
+            </summary>
+            <remarks>Possibly also contains a version number</remarks>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel">
+            <summary>
+            View model wired to the <see cref="T:PaunPacker.Plugins.GuillotineAlgorithmProviderPlugin"/>'s view 
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.#ctor(System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type},Unity.IUnityContainer)">
+            <summary>
+            Constructs the view model of guillotine algorithm
+            </summary>
+            <param name="freeRectangleExtractorTypes">The types of loaded free rectangle extractors</param>
+            <param name="freeRectangleSplitterTypes">The types of loaded free rectangle splitters</param>
+            <param name="freeRectangleMergerTypes">The types of loaded free rectangle mergers</param>
+            <param name="rectOrientationSelectorTypes">The types of loaded rectangle orientation selectors</param>
+            <param name="postProcessorTypes">The types of loaded free rectangle post processors</param>
+            <param name="unityContainer">The unity container</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.FreeRectangleExtractorVMs">
+            <summary>
+            The types implementing <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleExtractor"/> interface that were loaded by the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.FreeRectangleMergerVMs">
+            <summary>
+            The types implementing <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleMerger"/> interface that were loaded by the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.FreeRectanglePostProcessorVMs">
+            <summary>
+            The types implementing <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectanglePostProcessor"/> interface that were loaded by the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.FreeRectangleSplitterVMs">
+            <summary>
+            The types implementing <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IFreeRectangleSplitter"/> interface that were loaded by the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.RectangleOrientationSelectorVMs">
+            <summary>
+            The types implementing <see cref="T:PaunPacker.Core.Packing.Placement.Guillotine.IRectOrientationSelector"/> interface that were loaded by the PaunPacker.GUI
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.SelectedFreeRectangleExtractorVM">
+            <summary>
+            The currently selected FreeRectangleExtractor
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.SelectedFreeRectangleMergerVM">
+            <summary>
+            The currently selected FreeRectangleMerger
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.SelectedFreeRectanglePostProcessorVM">
+            <summary>
+            The currently selected FreeRectanglePostProcessor
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.SelectedFreeRectangleSplitterVM">
+            <summary>
+            The currently selected FreeRectangleSplitter
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.GuillotineAlgorithmViewModel.SelectedRectangleOrientationSelectorVM">
+            <summary>
+            The currently selected RectangleOrientationSelector
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.ViewModels.RectangleOrientationSelectorViewModel">
+            <summary>
+            Represents a view model for RectangleOrientationSelector
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.ViewModels.RectangleOrientationSelectorViewModel.#ctor(System.Type)">
+            <summary>
+            Constructs new RectangleOrientationSelectorViewModel from a RectangleOrientationSelector of type <paramref name="type"/>
+            </summary>
+            <param name="type">The type of the RectangleOrientationSelector</param>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.RectangleOrientationSelectorViewModel.RectangleOrientationSelectorType">
+            <summary>
+            The type of the RectangleOrientationSelector
+            </summary>
+        </member>
+        <member name="P:PaunPacker.Plugins.ViewModels.RectangleOrientationSelectorViewModel.Name">
+            <summary>
+            Tha name of the RectangleOrientationSelector
+            </summary>
+            <remarks>Possibly also contains a version number</remarks>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.FreeRectangleExtractorView">
+            <summary>
+            Interaction logic for FreeRectangleExtractorView.xaml
+            </summary>
+            <summary>
+            FreeRectangleExtractorView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.FreeRectangleExtractorView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.FreeRectangleMergerView">
+            <summary>
+            Interaction logic for FreeRectangleMergerView.xaml
+            </summary>
+            <summary>
+            FreeRectangleMergerView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.FreeRectangleMergerView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.FreeRectanglePostProcessorView">
+            <summary>
+            Interaction logic for FreeRectanglePostProcessorView.xaml
+            </summary>
+            <summary>
+            FreeRectanglePostProcessorView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.FreeRectanglePostProcessorView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.FreeRectangleSplitterView">
+            <summary>
+            Interaction logic for FreeRectangleSplitter.xaml
+            </summary>
+            <summary>
+            FreeRectangleSplitterView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.FreeRectangleSplitterView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.GuillotineAlgorithmView">
+            <summary>
+            Interaction logic for GuillotineAlgorithmView.xaml
+            </summary>
+            <summary>
+            GuillotineAlgorithmView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.GuillotineAlgorithmView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:PaunPacker.Plugins.Views.RectangleOrientationSelectorView">
+            <summary>
+            Interaction logic for RectangleOrientationSelectorView.xaml
+            </summary>
+            <summary>
+            RectangleOrientationSelectorView
+            </summary>
+        </member>
+        <member name="M:PaunPacker.Plugins.Views.RectangleOrientationSelectorView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+    </members>
+</doc>

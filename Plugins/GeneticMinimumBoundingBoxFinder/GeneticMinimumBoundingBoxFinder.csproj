@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder</AssemblyName>
+    <RootNamespace>PaunPacker.Plugins</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>F:\MFF\3 rocnik\bakalarka\NewVersion\PaunPacker\Documentation\Comments\PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>F:\MFF\3 rocnik\bakalarka\NewVersion\PaunPacker\Documentation\Comments\PaunPacker.Plugins.GeneticMinimumBoundingBoxFinder.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.3" />
+    <PackageReference Include="Prism.Wpf" Version="7.2.0.1233-pre" />
+    <PackageReference Include="Unity" Version="5.10.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PaunPacker.Core\PaunPacker.Core.csproj" />
+    <ProjectReference Include="..\..\PaunPacker.GUI.WPF.Common\PaunPacker.GUI.WPF.Common.csproj" />
+  </ItemGroup>
+</Project>

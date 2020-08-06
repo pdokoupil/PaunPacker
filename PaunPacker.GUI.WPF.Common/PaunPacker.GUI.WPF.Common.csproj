@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Patrik Dokoupil</Authors>
+    <Company>Patrik Dokoupil</Company>
+    <Copyright>Copyright (c) 2019 Patrik Dokoupil</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>F:\MFF\3 rocnik\bakalarka\NewVersion\PaunPacker\Documentation\Comments\PaunPacker.GUI.WPF.Common.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>F:\MFF\3 rocnik\bakalarka\NewVersion\PaunPacker\Documentation\Comments\PaunPacker.GUI.WPF.Common.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.3" />
+    <PackageReference Include="Prism.Core" Version="7.2.0.1233-pre" />
+  </ItemGroup>
+
+</Project>
