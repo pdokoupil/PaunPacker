@@ -11,6 +11,7 @@ Several packing algorithms are currently implemented, namely:
  - Skyline algorithm
  - Guillotine algorithm
  - Genetic-based algorithm.
+ - Maximal rectangles algorithm (MaxRects)
   
 All these algorithms can be used as a starting point when developing new plugins. Custom packing algorithms could also be benchmarked using the benchmark runner that is a part of the solution.
 
